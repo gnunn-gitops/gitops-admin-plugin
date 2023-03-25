@@ -1,0 +1,94 @@
+[
+  {
+    "type": "console.flag/model",
+    "properties": {
+      "flag": "APPLICATION",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.context-provider",
+    "properties": {
+      "provider": { "$codeRef": "modalProvider.ModalProvider" },
+      "useValueHook": { "$codeRef": "modalProvider.useModalValue" }
+    }
+  },
+  {
+    "type": "console.navigation/section",
+    "properties": {
+      "id": "gitops",
+      "insertAfter": "workloads",
+      "perspective": "admin",
+      "name": "%plugin__gitops-plugin~GitOps%"
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
+      "id": "application",
+      "name": "%plugin__gitops-plugin~Applications%",
+      "perspective": "admin",
+      "section": "gitops",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/list",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      },
+      "component": {
+        "$codeRef": "ApplicationList"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/details",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      },
+      "component": { "$codeRef": "ApplicationDetails" }
+    }
+  },
+  {
+    "type": "console.yaml-template",
+    "properties": {
+      "name": "default",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      },
+      "template": {
+        "$codeRef": "yamlTemplates.defaultApplicationYamlTemplate"
+      }
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Application",
+        "version": "v1alpha1"
+      },
+      "provider": {
+        "$codeRef": "useApplicationActionsProvider.useApplicationActionsProvider"
+      }
+    }
+  }
+]

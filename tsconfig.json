@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "target": "es2016",
+    "lib": ["es2016", "es2019", "es2020.promise", "dom", "dom.iterable", "ES2021.String"],
+    "jsx": "react",
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "paths": {
+      "@gitops-utils": ["src/utils"],
+      "@gitops-utils/*": ["src/utils/*"],
+      "@application-model": ["src/application/models"],
+      "@application-model/*": ["src/application/models/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["**/node_modules"]
+}
