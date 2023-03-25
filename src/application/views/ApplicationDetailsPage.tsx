@@ -7,6 +7,8 @@ import {
   DescriptionListGroup,
   DescriptionListTermHelpText,
   DescriptionListTermHelpTextButton,
+  Grid,
+  GridItem,
   PageSection,
   Popover,
   Title
@@ -18,6 +20,10 @@ import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from './modals/LabelsModal/LabelsModal';
+import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
+import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
+import RevisionFragment from './components/Revision/RevisionFragment';
+import { getFriendlyClusterName } from '@gitops-utils/gitops';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -58,56 +64,119 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
         <Title headingLevel="h2" className="co-section-heading">
           {t('Application details')}
         </Title>
+        <Grid hasGutter={true} span={2} sm={2} md={3} lg={6} xl={6} xl2={6}>
+          <GridItem>
+            <DescriptionList>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Name')}</div>} bodyContent={<div>{t('Name must be unique within a namespace.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Name')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>{obj?.metadata?.name}</DescriptionListDescription>
+              </DescriptionListGroup>
 
-        <DescriptionList>
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Name')}</div>} bodyContent={<div>{t('Name must be unique within a namespace.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Name')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>{obj?.metadata?.name}</DescriptionListDescription>
-          </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Namespace')}</div>} bodyContent={<div>{t('Namespace defines the space within which each name must be unique.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Namespace')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <ResourceLink kind="Namespace" name={obj?.metadata?.namespace} />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
 
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Namespace')}</div>} bodyContent={<div>{t('Namespace defines the space within which each name must be unique.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Namespace')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-              <ResourceLink kind="Namespace" name={obj?.metadata?.namespace} />
-            </DescriptionListDescription>
-          </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
+                    <DescriptionListTermHelpTextButton>
+                      {t('Labels')}
+                    </DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <div>
+                    <Button variant="link" isInline icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
+                  </div>
+                  <MetadataLabels labels={obj?.metadata?.labels} />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
 
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-                <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
-                  <DescriptionListTermHelpTextButton>
-                    {t('Labels')}
-                  </DescriptionListTermHelpTextButton>
-                </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-              <div>
-                <Button variant="link" isInline icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
-              </div>
-              <MetadataLabels labels={obj?.metadata?.labels} />
-            </DescriptionListDescription>
-          </DescriptionListGroup>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Created at')}</div>} bodyContent={<div>{t('Time is a wrapper around time. Time which supports correct marshaling to YAML and JSON.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Created at')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {<Timestamp timestamp={obj?.metadata?.creationTimestamp} />}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+            </DescriptionList>
+          </GridItem>
 
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Created at')}</div>} bodyContent={<div>{t('Time is a wrapper around time. Time which supports correct marshaling to YAML and JSON.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Created at')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-              {<Timestamp timestamp={obj?.metadata?.creationTimestamp} />}
-            </DescriptionListDescription>
-          </DescriptionListGroup>
 
-        </DescriptionList>
+          <GridItem>
+            <DescriptionList>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Health Status')}</div>} bodyContent={<div>{t('Health status represents the overall health of the application.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Health Status')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <HealthStatusFragment
+                    status={obj.status?.health?.status || ''}
+                  />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Sync Status')}</div>} bodyContent={<div>{t('Sync status represents the overall syncrhonized state for the application.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Sync Status')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <SyncStatusFragment
+                    status={obj.status?.sync?.status || ''}
+                  />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Revision')}</div>} bodyContent={<div>{t('Current git revision for the appliation.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Revision')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <RevisionFragment
+                    revision={obj.status?.sync?.revision || ''}
+                    repoURL={obj.spec.source.repoURL}
+                  />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Destination')}</div>} bodyContent={<div>{t('The cluster and namespace where the application is targeted')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Destination')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {getFriendlyClusterName(obj?.spec?.destination.server)}/{obj?.spec?.destination.namespace}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+            </DescriptionList>
+
+
+          </GridItem>
+        </Grid>
+
+
+
       </PageSection>
     </div>
   );

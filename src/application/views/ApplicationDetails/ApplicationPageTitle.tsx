@@ -29,7 +29,7 @@ const ApplicationPageTitle: React.FC<ApplicationPageTitleProps> = ({ application
       <div className="co-m-nav-title co-m-nav-title--detail co-m-nav-title--breadcrumbs">
         <span className="co-m-pane__heading">
           <h1 className="co-m-pane__name co-resource-item">
-            <span className="co-m-resource-icon co-m-resource-icon--lg">{'DS'}</span>
+            <span className="co-m-resource-icon co-m-resource-icon--lg">{'A'}</span>
             <span data-test-id="resource-title" className="co-resource-item__resource-name">
               {name ?? application?.metadata?.name}{' '}
             </span>

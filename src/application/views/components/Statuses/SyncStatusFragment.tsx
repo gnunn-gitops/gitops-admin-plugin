@@ -4,7 +4,7 @@ import {
   GreenCheckCircleIcon,
 } from '@openshift-console/dynamic-plugin-sdk';
 
-import { SyncUnknownIcon, OutOfSyncIcon } from '../../../utils/status/icons';
+import { SyncUnknownIcon, OutOfSyncIcon } from './icons';
 
 
 interface SyncProps {

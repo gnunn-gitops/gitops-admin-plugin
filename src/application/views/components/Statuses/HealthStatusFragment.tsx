@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '../../../utils/status/icons';
+import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from './icons';
 
 interface HealthProps {
   status: string;

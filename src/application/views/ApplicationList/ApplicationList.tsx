@@ -17,8 +17,9 @@ import { TableColumn } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
 
 import ApplicationRowActions from './ApplicationRowActions';
-import SyncStatusFragment from './SyncStatusFragment';
-import HealthStatusFragment from './HealthStatusFragment';
+import SyncStatusFragment from '../components/Statuses/SyncStatusFragment';
+import HealthStatusFragment from '../components/Statuses/HealthStatusFragment';
+import RevisionFragment from '../components/Revision/RevisionFragment';
 
 type ApplicationListProps = {
   namespace: string;
@@ -60,6 +61,7 @@ const ApplicationList: React.FC<ApplicationListProps> = ({ namespace }) => {
 };
 
 const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeColumnIDs }) => {
+
   return (
     <>
       <TableData id="name" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
@@ -72,9 +74,6 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
       <TableData id="namespace" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
-      <TableData id="project" activeColumnIDs={activeColumnIDs}>
-        {obj.spec.project || ''}
-      </TableData>
       <TableData id="sync-status" activeColumnIDs={activeColumnIDs}>
       <SyncStatusFragment
         status={obj.status?.sync?.status || ''}
@@ -84,6 +83,15 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
           <HealthStatusFragment
             status={obj.status?.health?.status || ''}
           />
+      </TableData>
+      <TableData id="revision" activeColumnIDs={activeColumnIDs}>
+          <RevisionFragment
+            revision={obj.status?.sync?.revision || ''}
+            repoURL={obj.spec.source.repoURL}
+          />
+      </TableData>
+      <TableData id="project" activeColumnIDs={activeColumnIDs}>
+        {obj.spec.project || ''}
       </TableData>
       <TableData
         id="actions"
@@ -126,12 +134,6 @@ const useApplicationColumns = (namespace) => {
   }
   columns.push(
     {
-      title: 'Project',
-      sort: 'spec.project',
-      id: 'project',
-      transforms: [sortable],
-    },
-    {
       title: 'Sync Status',
       sort: 'status.sync.status',
       id: 'sync-status',
@@ -141,6 +143,18 @@ const useApplicationColumns = (namespace) => {
       title: 'Health Status',
       sort: 'status.health.status',
       id: 'health-status',
+      transforms: [sortable],
+    },
+    {
+      title: 'Revision',
+      sort: 'status.sync.revision',
+      id: 'revision',
+      transforms: [sortable],
+    },
+    {
+      title: 'Project',
+      sort: 'spec.project',
+      id: 'project',
       transforms: [sortable],
     },
     {
