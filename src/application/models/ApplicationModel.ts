@@ -69,6 +69,14 @@ export type ApplicationStatus = {
       status?: string
   }
   history?: ApplicationHistory[]
+  reconciledAt?: string
+  resources?: {
+      kind: string,
+      name: string,
+      status?: string,
+      version?: string
+  }
+  sourceType?: string
 }
 
 export type ApplicationKind = K8sResourceCommon & {

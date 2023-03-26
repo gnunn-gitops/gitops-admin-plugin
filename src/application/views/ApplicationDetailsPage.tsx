@@ -17,7 +17,7 @@ import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
 import { k8sPatch, ResourceLink, Timestamp } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
-import { ApplicationModel } from '@application-model/ApplicationModel';
+import { ApplicationHistory, ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from './modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
@@ -27,6 +27,7 @@ import { getFriendlyClusterName } from '@gitops-utils/gitops';
 import SourceListFragment from './components/Sources/SourcesFragment';
 
 import { ApplicationSource } from '@application-model';
+import HistoryListFragment from './components/History/HistoryFragment';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -44,6 +45,16 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
     sources = [obj?.spec?.source];
   } else if (obj?.spec?.sources) {
     sources = obj.spec.sources;
+  } else {
+    //Should never fall here since there always has to be a source or sources
+    sources = [];
+  }
+
+  var history: ApplicationHistory[];
+  if (obj?.status?.history) {
+    history = obj?.status?.history;
+  } else {
+    history = [];
   }
 
   const onEditLabels = () => {
@@ -200,6 +211,14 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
         </Title>
         <SourceListFragment
           sources={sources}
+        />
+      </PageSection>
+      <PageSection hasShadowTop={true}>
+        <Title headingLevel="h2" className="co-section-heading">
+          {t('History')}
+        </Title>
+        <HistoryListFragment
+          history={history}
         />
       </PageSection>
     </div>

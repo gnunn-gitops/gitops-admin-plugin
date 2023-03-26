@@ -13,7 +13,6 @@ interface SourceListProps {
 
 const SourceListFragment: React.FC<SourceListProps> = ({ sources }) => {
 
-    console.log(sources);
     return (
         <>
             <VirtualizedTable
