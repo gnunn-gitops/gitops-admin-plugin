@@ -9,6 +9,7 @@ import { Bullseye, Spinner } from '@patternfly/react-core';
 
 import ApplicationPageTitle from './ApplicationDetails/ApplicationPageTitle';
 import ApplicationDetailsPage from './ApplicationDetailsPage';
+import ApplicationResourcesPage from './ApplicationResourcesPage';
 import ApplicationYAMLPage from './ApplicationYAMLPage';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
@@ -37,6 +38,11 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         href: '',
         name: t('Details'),
         component: ApplicationDetailsPage,
+      },
+      {
+        href: 'resources',
+        name: t('Resources'),
+        component: ApplicationResourcesPage,
       },
       {
         href: 'yaml',

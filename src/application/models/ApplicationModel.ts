@@ -58,6 +58,37 @@ export type ApplicationHistory = {
   source: ApplicationSource
 }
 
+export type ApplicationResourceStatus = {
+  kind: string,
+  group: string,
+  name: string,
+  namespace?: string,
+  version?: string,
+  syncWave?: number,
+  status?: string
+  health?: {
+    status?: string
+  }
+}
+
+export type OperationState = {
+  finishedAt?: string,
+  message?: string,
+  operation?: {
+    initiatedBy: {
+      automated?: boolean
+    }
+    retry?: {
+      limit?: number
+    }
+    sync?: {
+      revision: string
+    }
+  },
+  phase?: string,
+  startedAt?: string,
+}
+
 export type SyncStatus = {
   revision?: string,
   status?: string
@@ -68,14 +99,10 @@ export type ApplicationStatus = {
   health?: {
       status?: string
   }
-  history?: ApplicationHistory[]
+  history?: ApplicationHistory[],
+  operationState?: OperationState,
   reconciledAt?: string
-  resources?: {
-      kind: string,
-      name: string,
-      status?: string,
-      version?: string
-  }
+  resources?: ApplicationResourceStatus[];
   sourceType?: string
 }
 
