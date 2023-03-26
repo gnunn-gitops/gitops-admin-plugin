@@ -17,7 +17,8 @@
       "@gitops-utils": ["src/utils"],
       "@gitops-utils/*": ["src/utils/*"],
       "@application-model": ["src/application/models"],
-      "@application-model/*": ["src/application/models/*"]
+      "@application-model/*": ["src/application/models/*"],
+      "@images": ["src/images"]
     }
   },
   "include": ["src"],

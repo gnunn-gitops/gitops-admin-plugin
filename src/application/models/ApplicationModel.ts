@@ -15,17 +15,47 @@ export const ApplicationModel: K8sModel = {
   crd: true,
 };
 
+export type ApplicationSource = {
+  chart: string,
+  directory: {
+    exclude?: string,
+    include?: string,
+    recurse?: boolean
+  }
+  helm: {
+    releaseName?: string,
+    version?: string
+  }
+  kustomize: {
+    namePrefix?: string,
+    nameSuffix?: string,
+    version?: string
+  }
+  plugin?: {
+    name: string
+  }
+  path?: string,
+  ref?: string,
+  repoURL?: string,
+  targetRevision?: string
+}
+
 export type ApplicationSpec = {
   destination?: {
       namespace?: string,
       server?: string
   },
   project?: string,
-  source?: {
-      path?: string,
-      repoURL?: string,
-      targetRevision?: string
-  }
+  source?: ApplicationSource,
+  sources?: ApplicationSource[]
+}
+
+export type ApplicationHistory = {
+  deployStartedAt?: string,
+  deployedAt?: string,
+  id?: number,
+  revision: string,
+  source: ApplicationSource
 }
 
 export type SyncStatus = {
@@ -38,6 +68,7 @@ export type ApplicationStatus = {
   health?: {
       status?: string
   }
+  history?: ApplicationHistory[]
 }
 
 export type ApplicationKind = K8sResourceCommon & {

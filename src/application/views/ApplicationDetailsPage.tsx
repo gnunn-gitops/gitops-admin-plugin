@@ -24,6 +24,9 @@ import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import RevisionFragment from './components/Revision/RevisionFragment';
 import { getFriendlyClusterName } from '@gitops-utils/gitops';
+import SourceListFragment from './components/Sources/SourcesFragment';
+
+import { ApplicationSource } from '@application-model';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -35,6 +38,13 @@ type ApplicationDetailsPageProps = RouteComponentProps<{
 const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
+
+  var sources: ApplicationSource[];
+  if (obj?.spec?.source) {
+    sources = [obj?.spec?.source];
+  } else if (obj?.spec?.sources) {
+    sources = obj.spec.sources;
+  }
 
   const onEditLabels = () => {
     createModal(({ isOpen, onClose }) => (
@@ -64,7 +74,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
         <Title headingLevel="h2" className="co-section-heading">
           {t('Application details')}
         </Title>
-        <Grid hasGutter={true} span={2} sm={2} md={3} lg={6} xl={6} xl2={6}>
+        <Grid hasGutter={true} span={2} sm={3} md={6} lg={6} xl={6} xl2={6}>
           <GridItem>
             <DescriptionList>
               <DescriptionListGroup>
@@ -161,6 +171,17 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
 
               <DescriptionListGroup>
                 <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Project')}</div>} bodyContent={<div>{t('The Argo CD Project that this application belongs to.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Project')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {obj?.spec?.project}
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
                   <Popover headerContent={<div>{t('Destination')}</div>} bodyContent={<div>{t('The cluster and namespace where the application is targeted')}</div>}>
                     <DescriptionListTermHelpTextButton>{t('Destination')}</DescriptionListTermHelpTextButton>
                   </Popover>
@@ -170,13 +191,16 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListDescription>
               </DescriptionListGroup>
             </DescriptionList>
-
-
           </GridItem>
         </Grid>
-
-
-
+      </PageSection>
+      <PageSection hasShadowTop={true}>
+        <Title headingLevel="h2" className="co-section-heading">
+          {t('Sources')}
+        </Title>
+        <SourceListFragment
+          sources={sources}
+        />
       </PageSection>
     </div>
   );
