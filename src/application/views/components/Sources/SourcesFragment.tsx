@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ApplicationSource } from '@application-model';
 import { RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
+import ExternalLink from '../ExternalLink/ExternalLink';
 
 //import * as  gitIcon from '../../../../images/git.png';
 //import * as  helmIcon from '../../../../images/helm.png';
@@ -31,11 +32,13 @@ const sourceListRow: React.FC<RowProps<ApplicationSource>> = ({ obj, activeColum
 
     return (
         <>
-            <TableData id="type" activeColumnIDs={activeColumnIDs} className={"icon-column"}  >
+            <TableData id="type" activeColumnIDs={activeColumnIDs}>
                 <img loading="lazy" src={(obj.chart ? require("../../../../images/helm.png"): require("../../../../images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
             </TableData>
             <TableData id="repository" activeColumnIDs={activeColumnIDs}>
-                {obj.repoURL}
+                <ExternalLink href={obj.repoURL}>
+                    {obj.repoURL}
+                </ExternalLink>
             </TableData>
             <TableData id="chart" activeColumnIDs={activeColumnIDs}>
                 {obj.chart || '-'}

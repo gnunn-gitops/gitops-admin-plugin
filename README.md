@@ -1,11 +1,16 @@
-# OpenShift CronTab Dynamic Plugin
+# OpenShift GitOps Dynamic Plugin
 
-This project serves as a minimal template for an Openshift dynamic plugin. It shows basic operations with a Custom Resource Definition (CRD), in this case CronTab CRD, such as creating, editing and deleting.
+This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift GitOps in the Administrator perspective. At this point it is very rough from a feature and UI perspective and thus absolutely not recommended in production environments.
 
-It requires OpenShift 4.11.
+At the moment it supports viewing Application objects including basic information, sources, deployment history and resources that it is managing. There is currently no interactivity with Argo CD (i.e. sync from the OCP console) but hope to add that in the future.
 
-The CronTab Dynamic Plugin creates new menu entry, routes, list page, details page and a
-default YAML template for a CRD.
+## Acknowledgements
+
+Thanks to the following individuals:
+
+* Pavel Kratochvíl whose crontab example provides a great starting point for building plugins needed to support CRDs.
+* Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
+* Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
 
 ## Deployment on cluster
 
@@ -15,12 +20,12 @@ A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShif
 
 To deploy the plugin on a cluster using a Helm chart:
 ```shell
-helm upgrade -i crontab-plugin charts/crontab-plugin -n crontab-plugin-ns --create-namespace --set plugin.image=docker.io/raspbeep/crontab-plugin:latest
+helm upgrade -i gitops-plugin charts/openshift-console-plugin -n gitops-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-plugin:latest
 ```
 
-`-i crontab-plugin`: specifies installation of a release named `crontab-plugin`
+`-i gitops-plugin`: specifies installation of a release named `gitops-plugin`
 
-`-n crontab-plugin-ns --create-namespace`: creates a new namespace for the helm chart
+`-n gitops-plugin --create-namespace`: creates a new namespace for the helm chart
 
 `plugin.image`: Specifies the location of the image containing the plugin, to be deployed
 
@@ -40,7 +45,7 @@ Once deployed, patch the [Console operator](https://github.com/openshift/console
 config to enable the plugin.
 
 ```sh
-oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["crontab-plugin"] } }' --type=merge
+oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["gitops-plugin"] } }' --type=merge
 ```
 
 
@@ -63,17 +68,17 @@ Before you can deploy your plugin on a cluster, you must build an image and
 push it to an image registry.
 
 1. Build the image:
-   
+
    NOTE: If you have a Mac with Apple silicon, you will need to add the flag
    `--platform=linux/amd64` when building the image to target the correct platform
    to run in-cluster.
 
    ```sh
-   docker build -f Dockerfile -t $NAME/crontab-plugin:latest . --no-cache
+   docker build -f Dockerfile -t $NAME/gitops-plugin:latest . --no-cache
    ```
 
 3. Push the image:
 
    ```sh
-   docker push $NAME/crontab-plugin:latest
+   docker push $NAME/gitops-plugin:latest
    ```

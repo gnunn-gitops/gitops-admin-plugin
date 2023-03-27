@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ApplicationHistory } from '@application-model';
 import { RowProps, TableColumn, TableData, Timestamp, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
+import RevisionFragment from '../Revision/RevisionFragment';
 
 interface HistoryListProps {
     history: ApplicationHistory[]
@@ -38,13 +39,29 @@ const historyListRow: React.FC<RowProps<ApplicationHistory>> = ({ obj, activeCol
             <Timestamp timestamp={obj.deployedAt} />
             </TableData>
             <TableData id="revision" activeColumnIDs={activeColumnIDs}>
-                {obj.revision}
+                <RevisionFragment
+                    revision={obj.revision || ''}
+                    repoURL={obj.source.repoURL}
+                  />
             </TableData>
-            <TableData id="source" activeColumnIDs={activeColumnIDs}>
-                {obj.source.repoURL}
-                {obj.source.path}
-                {obj.source.targetRevision}
-            </TableData>
+            {/* <TableData id="source" activeColumnIDs={activeColumnIDs}>
+                <DescriptionList isCompact isHorizontal>
+                    <DescriptionListGroup>
+                        <DescriptionListTerm>Repository</DescriptionListTerm>
+                        <DescriptionListDescription>{obj.source.repoURL}</DescriptionListDescription>
+                    </DescriptionListGroup>
+
+                    <DescriptionListGroup>
+                        <DescriptionListTerm>Path</DescriptionListTerm>
+                        <DescriptionListDescription>{obj.source.path}</DescriptionListDescription>
+                    </DescriptionListGroup>
+
+                    <DescriptionListGroup>
+                        <DescriptionListTerm>Revision</DescriptionListTerm>
+                        <DescriptionListDescription>{obj.source.targetRevision}</DescriptionListDescription>
+                    </DescriptionListGroup>
+                </DescriptionList>
+            </TableData> */}
         </>
     );
 };
@@ -76,13 +93,13 @@ export const useHistoryColumns = () => {
                 id: 'revision',
                 transforms: [sortable],
                 sort: 'revision'
-            },
-            {
-                title: 'Source',
-                sort: 'source',
-                id: 'source',
-                transforms: []
             }
+            // {
+            //     title: 'Source',
+            //     sort: 'source',
+            //     id: 'source',
+            //     transforms: []
+            // }
         ],
         [],
     );
