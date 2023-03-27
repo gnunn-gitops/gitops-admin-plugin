@@ -4,7 +4,7 @@ This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift
 
 At the moment it supports viewing Application objects including basic information, sources, deployment history and resources that it is managing. There is currently no interactivity with Argo CD (i.e. sync from the OCP console) but hope to add that in the future.
 
-[alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/master/docs/img/gitops-admin-plugin-list.png)
+[alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-list.png)
 
 ## Acknowledgements
 
