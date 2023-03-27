@@ -4,6 +4,8 @@ This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift
 
 At the moment it supports viewing Application objects including basic information, sources, deployment history and resources that it is managing. There is currently no interactivity with Argo CD (i.e. sync from the OCP console) but hope to add that in the future.
 
+[alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/master/docs/img/gitops-admin-plugin-list.png)
+
 ## Acknowledgements
 
 Thanks to the following individuals:
@@ -20,10 +22,10 @@ A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShif
 
 To deploy the plugin on a cluster using a Helm chart:
 ```shell
-helm upgrade -i gitops-admin-plugin charts/openshift-console-plugin -n gitops-admin-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-plugin:latest
+helm upgrade -i gitops-admin-plugin charts/openshift-console-plugin -n gitops-admin-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-admin-plugin:latest
 ```
 
-`-i gitops-admin-plugin`: specifies installation of a release named `gitops-plugin`
+`-i gitops-admin-plugin`: specifies installation of a release named `gitops-admin-plugin`
 
 `-n gitops-admin-plugin --create-namespace`: creates a new namespace for the helm chart
 
