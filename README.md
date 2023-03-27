@@ -20,12 +20,12 @@ A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShif
 
 To deploy the plugin on a cluster using a Helm chart:
 ```shell
-helm upgrade -i gitops-plugin charts/openshift-console-plugin -n gitops-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-plugin:latest
+helm upgrade -i gitops-admin-plugin charts/openshift-console-plugin -n gitops-admin-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-plugin:latest
 ```
 
-`-i gitops-plugin`: specifies installation of a release named `gitops-plugin`
+`-i gitops-admin-plugin`: specifies installation of a release named `gitops-plugin`
 
-`-n gitops-plugin --create-namespace`: creates a new namespace for the helm chart
+`-n gitops-admin-plugin --create-namespace`: creates a new namespace for the helm chart
 
 `plugin.image`: Specifies the location of the image containing the plugin, to be deployed
 

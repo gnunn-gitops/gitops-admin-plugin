@@ -23,14 +23,14 @@
       "id": "gitops",
       "insertAfter": "workloads",
       "perspective": "admin",
-      "name": "%plugin__gitops-plugin~GitOps%"
+      "name": "%plugin__gitops-admin-plugin~GitOps%"
     }
   },
   {
     "type": "console.navigation/resource-ns",
     "properties": {
       "id": "application",
-      "name": "%plugin__gitops-plugin~Applications%",
+      "name": "%plugin__gitops-admin-plugin~Applications%",
       "perspective": "admin",
       "section": "gitops",
       "model": {

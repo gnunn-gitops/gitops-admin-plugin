@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-npm_package_consolePlugin_name="gitops-plugin"
+npm_package_consolePlugin_name="gitops-admin-plugin"
 
 CONSOLE_IMAGE=${CONSOLE_IMAGE:="quay.io/openshift/origin-console:latest"}
 CONSOLE_PORT=${CONSOLE_PORT:=9000}

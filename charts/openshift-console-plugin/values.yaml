@@ -1,6 +1,6 @@
 ---
 plugin:
-  name: ""
+  name: "gitops-plugin"
   description: ""
   image: ""
   imagePullPolicy: IfNotPresent

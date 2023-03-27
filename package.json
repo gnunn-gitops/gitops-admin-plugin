@@ -1,5 +1,5 @@
 {
-  "name": "gitops-plugin",
+  "name": "gitops-admin-plugin",
   "version": "0.0.1",
   "private": true,
   "repository": "git@github.com:gnunn-gitops/gitops-console-plugin.git",
@@ -58,7 +58,7 @@
     "webpack-dev-server": "^4.5.0"
   },
   "consolePlugin": {
-    "name": "gitops-plugin",
+    "name": "gitops-admin-plugin",
     "version": "0.0.1",
     "displayName": "OpenShift GitOps Plugin",
     "description": "Administrator Perspective Console Plugin for OpenShift GitOps",
