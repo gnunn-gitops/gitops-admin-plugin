@@ -17,7 +17,7 @@ Thanks to the following individuals:
 ## Deployment on cluster
 
 
-### Option 1: Installing the Helm Chart (WIP - does not work yet)
+### Installing the Helm Chart
 A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShift environment.
 
 To deploy the plugin on a cluster using a Helm chart:
@@ -32,24 +32,6 @@ helm upgrade -i gitops-admin-plugin charts/openshift-console-plugin -n gitops-ad
 `plugin.image`: Specifies the location of the image containing the plugin, to be deployed
 
 Additional parameters can be specified if desired. Consult the chart [values](charts/openshift-console-plugin/values.yaml) file for the full set of supported parameters.
-
-
-### Option 2:
-You can deploy the plugin to a cluster by applying `oc-manifest.yaml`.
-
-```sh
-oc apply -f oc-manifest.yaml
-```
-
-`oc-manifest.yaml` specifies all Kubernetes resources (and their desired state) necessary for the dynamic plugin. This includes: Namespace, CustomResourceDefinition, Deployment (with plugin image location), Configmap, Service and Console Plugin.
-
-Once deployed, patch the [Console operator](https://github.com/openshift/console-operator)
-config to enable the plugin.
-
-```sh
-oc patch consoles.operator.openshift.io cluster --patch '{ "spec": { "plugins": ["gitops-plugin"] } }' --type=merge
-```
-
 
 ## Local development
 
