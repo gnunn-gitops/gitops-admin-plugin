@@ -8,7 +8,7 @@ At the moment it supports viewing Application objects including basic informatio
 
 Thanks to the following individuals:
 
-* Pavel Kratochvíl whose crontab example provides a great starting point for building plugins needed to support CRDs.
+* Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
 * Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
 * Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
 
