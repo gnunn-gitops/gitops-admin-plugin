@@ -23,7 +23,7 @@ const SyncStatusFragment: React.FC<SyncProps> = ({ status }) => {
   return (
         (
           <div>
-            {targetIcon} {status}
+            {(status?targetIcon:"")} {status}
           </div>
         )
   );

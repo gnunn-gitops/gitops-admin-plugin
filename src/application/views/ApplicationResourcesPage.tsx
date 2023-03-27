@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ApplicationKind, ApplicationResourceStatus } from '@application-model';
-import { RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
@@ -46,16 +46,26 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
 
 const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj, activeColumnIDs }) => {
 
+    const gvk : K8sGroupVersionKind = {
+        version: obj.version,
+        group: obj.group,
+        kind: obj.kind
+    }
+
     return (
         <>
             <TableData id="name" activeColumnIDs={activeColumnIDs} >
-                {obj.name}
+            <ResourceLink
+                groupVersionKind={gvk}
+                name={obj.name}
+                namespace={obj.namespace}
+            />
             </TableData>
             <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
                 {obj.namespace}
             </TableData>
             <TableData id="group" activeColumnIDs={activeColumnIDs}>
-                {obj.group + "/" + obj.kind}
+                { (obj.group? obj.group + "/":"") + obj.kind}
             </TableData>
             <TableData id="syncWave" activeColumnIDs={activeColumnIDs}>
                 {obj.syncWave}
