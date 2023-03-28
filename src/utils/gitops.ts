@@ -1,4 +1,4 @@
-import { k8sListItems, K8sResourceCommon, useK8sModel } from "@openshift-console/dynamic-plugin-sdk";
+import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 
 export function createRevisionURL(repo: string, revision: string) {
     if (!repo || !revision) return undefined;
@@ -34,11 +34,10 @@ export function getIconForSourceType(sourceType: string) {
     }
 }
 
-export const getArgoServerURL = async (namespace: string) => {
+export const getArgoServerURL = async (model, namespace: string) => {
 
     console.log("namespace = " + namespace);
 
-    const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
     try {
       const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
         model: model,

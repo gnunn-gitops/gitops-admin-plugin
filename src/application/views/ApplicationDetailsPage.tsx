@@ -15,7 +15,7 @@ import {
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
-import { k8sPatch, ResourceLink, Timestamp } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sPatch, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { ApplicationHistory, ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
@@ -40,12 +40,13 @@ type ApplicationDetailsPageProps = RouteComponentProps<{
 const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
+  const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
 
   const [argoServerURL, setArgoServerURL] = React.useState('');
 
   React.useEffect(() => {
     (async () => {
-      getArgoServerURL(obj.metadata.namespace)
+      getArgoServerURL(model, obj.metadata.namespace)
         .then((url) => {
           console.log("Argo URL " + url);
           setArgoServerURL(url);
