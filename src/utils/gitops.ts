@@ -1,3 +1,5 @@
+import { k8sListItems, K8sResourceCommon, useK8sModel } from "@openshift-console/dynamic-plugin-sdk";
+
 export function createRevisionURL(repo: string, revision: string) {
     if (!repo || !revision) return undefined;
 
@@ -31,3 +33,29 @@ export function getIconForSourceType(sourceType: string) {
         }
     }
 }
+
+export const getArgoServerURL = async (namespace: string) => {
+
+    console.log("namespace = " + namespace);
+
+    const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
+    try {
+      const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
+        model: model,
+        queryParams: {
+          ns: namespace,
+          labelSelector: {
+            matchLabels: {
+              'app.kubernetes.io/part-of': 'argocd',
+            },
+          },
+        },
+      });
+      console.log(argoServerURL);
+      console.log("https://" + argoServerURL["spec"]["host"]);
+      return "https://" + argoServerURL["spec"]["host"];
+    } catch (e) {
+      console.warn('Error while fetching Argo CD Server url:', e);
+      return '';
+    }
+  };

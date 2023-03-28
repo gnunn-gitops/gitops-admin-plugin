@@ -23,11 +23,12 @@ import { LabelsModal } from './modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import RevisionFragment from './components/Revision/RevisionFragment';
-import { getFriendlyClusterName } from '@gitops-utils/gitops';
+import { getArgoServerURL, getFriendlyClusterName } from '@gitops-utils/gitops';
 import SourceListFragment from './components/Sources/SourcesFragment';
 
 import { ApplicationSource } from '@application-model';
 import HistoryListFragment from './components/History/HistoryFragment';
+import ExternalLink from './components/ExternalLink/ExternalLink';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -39,6 +40,21 @@ type ApplicationDetailsPageProps = RouteComponentProps<{
 const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
+
+  const [argoServerURL, setArgoServerURL] = React.useState('');
+
+  React.useEffect(() => {
+    (async () => {
+      getArgoServerURL(obj.metadata.namespace)
+        .then((url) => {
+          console.log("Argo URL " + url);
+          setArgoServerURL(url);
+        })
+        .catch((err) => {
+          console.error('Error:', err);
+        });
+    })();
+  }, [])
 
   var sources: ApplicationSource[];
   if (obj?.spec?.source) {
@@ -94,7 +110,12 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                     <DescriptionListTermHelpTextButton>{t('Name')}</DescriptionListTermHelpTextButton>
                   </Popover>
                 </DescriptionListTermHelpText>
-                <DescriptionListDescription>{obj?.metadata?.name}</DescriptionListDescription>
+                <DescriptionListDescription>
+                  {obj?.metadata?.name}
+                  <ExternalLink href={argoServerURL}>
+                    <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
+                  </ExternalLink>
+                </DescriptionListDescription>
               </DescriptionListGroup>
 
               <DescriptionListGroup>
