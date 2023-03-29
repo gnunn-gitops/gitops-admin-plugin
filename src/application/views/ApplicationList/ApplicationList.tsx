@@ -42,7 +42,7 @@ const ApplicationList: React.FC<ApplicationListProps> = ({ namespace }) => {
 
   return (
     <>
-      <ListPageHeader title={'Application'}>
+      <ListPageHeader title={'Applications'}>
         <ListPageCreate groupVersionKind={modelToRef(ApplicationModel)}>Create Application</ListPageCreate>
       </ListPageHeader>
       <ListPageBody>
