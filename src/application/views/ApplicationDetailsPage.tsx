@@ -7,6 +7,8 @@ import {
   DescriptionListGroup,
   DescriptionListTermHelpText,
   DescriptionListTermHelpTextButton,
+  Flex,
+  FlexItem,
   Grid,
   GridItem,
   PageSection,
@@ -112,10 +114,14 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                  {obj?.metadata?.name}
-                  <ExternalLink href={argoServerURL}>
-                    <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
-                  </ExternalLink>
+                  <Flex>
+                  <FlexItem>{obj?.metadata?.name}</FlexItem>
+                  <FlexItem>
+                    <ExternalLink href={argoServerURL + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
+                      <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
+                    </ExternalLink>
+                  </FlexItem>
+                  </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
