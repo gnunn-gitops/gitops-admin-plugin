@@ -3,7 +3,7 @@ plugin:
   name: "gitops-admin-plugin"
   description: ""
   image: ""
-  imagePullPolicy: IfNotPresent
+  imagePullPolicy: Always
   replicas: 2
   port: 9443
   securityContext:
