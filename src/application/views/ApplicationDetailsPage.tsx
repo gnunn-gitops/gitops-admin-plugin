@@ -99,6 +99,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
       />
     ))
   }
+
   return (
     <div>
       <PageSection>
@@ -239,18 +240,10 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                    <FlexItem>
-                      <Label>{(obj?.spec?.syncPolicy?.automated ? 'Automated' : '')}</Label>
-                    </FlexItem>
-                    <FlexItem>
-                      <Label>{(obj?.spec?.syncPolicy?.automated?.selfHeal ? 'Self Heal' : '')}</Label>
-                    </FlexItem>
-                    <FlexItem>
-                      <Label>{(obj?.spec?.syncPolicy?.automated?.prune ? 'Prune' : '')}</Label>
-                    </FlexItem>
-                    <FlexItem>
-                      <Label>{(obj?.spec?.syncPolicy?.retry ? 'Retry' : '')}</Label>
-                    </FlexItem>
+                    {obj?.spec?.syncPolicy?.automated && <FlexItem><Label color="blue">Automated</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated.selfHeal && <FlexItem><Label color="blue">Self Heal</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated.prune && <FlexItem><Label color="blue">Prune</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.retry && <FlexItem><Label color="blue">Retry</Label></FlexItem>}
                   </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
