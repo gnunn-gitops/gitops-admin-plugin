@@ -40,6 +40,22 @@ export type ApplicationSource = {
   targetRevision?: string
 }
 
+export type SyncPolicy = {
+  automated?: {
+    selfHeal?: boolean,
+    prune?: boolean,
+    allowEmpty?: boolean,
+  }
+  retry?: {
+    limit?: number,
+    backoff?: {
+      duration?: string,
+      factor?: number,
+      maxDuration?: string
+    }
+  }
+}
+
 export type ApplicationSpec = {
   destination?: {
       namespace?: string,
@@ -47,7 +63,8 @@ export type ApplicationSpec = {
   },
   project?: string,
   source?: ApplicationSource,
-  sources?: ApplicationSource[]
+  sources?: ApplicationSource[],
+  syncPolicy?: SyncPolicy
 }
 
 export type ApplicationHistory = {

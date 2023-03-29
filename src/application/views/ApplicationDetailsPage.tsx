@@ -11,6 +11,7 @@ import {
   FlexItem,
   Grid,
   GridItem,
+  Label,
   PageSection,
   Popover,
   Title
@@ -229,6 +230,31 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   {getFriendlyClusterName(obj?.spec?.destination.server)}/{obj?.spec?.destination.namespace}
                 </DescriptionListDescription>
               </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Sync Policy')}</div>} bodyContent={<div>{t('Provides options to determine application syncrhonization behavior')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Sync Policy')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <Flex>
+                    <FlexItem>
+                      <Label>{(obj?.spec?.syncPolicy?.automated ? 'Automated' : '')}</Label>
+                    </FlexItem>
+                    <FlexItem>
+                      <Label>{(obj?.spec?.syncPolicy?.automated?.selfHeal ? 'Self Heal' : '')}</Label>
+                    </FlexItem>
+                    <FlexItem>
+                      <Label>{(obj?.spec?.syncPolicy?.automated?.prune ? 'Prune' : '')}</Label>
+                    </FlexItem>
+                    <FlexItem>
+                      <Label>{(obj?.spec?.syncPolicy?.retry ? 'Retry' : '')}</Label>
+                    </FlexItem>
+                  </Flex>
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
             </DescriptionList>
           </GridItem>
         </Grid>
