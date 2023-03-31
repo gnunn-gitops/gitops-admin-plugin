@@ -8,6 +8,7 @@ import {
   ListPageCreate,
   ListPageFilter,
   ListPageHeader,
+  RowFilter,
   useK8sWatchResource,
   useListPageFilter,
   VirtualizedTable,
@@ -20,12 +21,14 @@ import ApplicationRowActions from './ApplicationRowActions';
 import SyncStatusFragment from '../components/Statuses/SyncStatusFragment';
 import HealthStatusFragment from '../components/Statuses/HealthStatusFragment';
 import RevisionFragment from '../components/Revision/RevisionFragment';
+import { HEALTH_STATUS_DEGRADED, HEALTH_STATUS_HEALTHY, HEALTH_STATUS_MISSING, HEALTH_STATUS_PROGRESSING, HEALTH_STATUS_SUSPENDED, HEALTH_STATUS_UNKNOWN, SYNC_STATUS_OUT_OF_SYNC, SYNC_STATUS_SYNCED, SYNC_STATUS_UNKNOWN } from '@gitops-utils/constants';
 
 type ApplicationListProps = {
   namespace: string;
 };
 
 const ApplicationList: React.FC<ApplicationListProps> = ({ namespace }) => {
+
   const [applications, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
     isList: true,
     groupVersionKind: {
@@ -38,7 +41,8 @@ const ApplicationList: React.FC<ApplicationListProps> = ({ namespace }) => {
   });
   // const { t } = useTranslation();
   const columns = useApplicationColumns(namespace);
-  const [data, filteredData, onFilterChange] = useListPageFilter(applications);
+  //const [data, filteredData, onFilterChange] = useListPageFilter(applications);
+  const [data, filteredData, onFilterChange] = useListPageFilter(applications, filters);
 
   return (
     <>
@@ -46,10 +50,15 @@ const ApplicationList: React.FC<ApplicationListProps> = ({ namespace }) => {
         <ListPageCreate groupVersionKind={modelToRef(ApplicationModel)}>Create Application</ListPageCreate>
       </ListPageHeader>
       <ListPageBody>
-        <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+        <ListPageFilter
+          data={data}
+          loaded={loaded}
+          rowFilters={filters}
+          onFilterChange={onFilterChange}
+        />
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
-          unfilteredData={applications}
+          unfilteredData={data}
           loaded={loaded}
           loadError={loadError}
           columns={columns}
@@ -75,20 +84,20 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
       <TableData id="sync-status" activeColumnIDs={activeColumnIDs}>
-      <SyncStatusFragment
-        status={obj.status?.sync?.status || ''}
-      />
+        <SyncStatusFragment
+          status={obj.status?.sync?.status || ''}
+        />
       </TableData>
       <TableData id="sync-status" activeColumnIDs={activeColumnIDs}>
-          <HealthStatusFragment
-            status={obj.status?.health?.status || ''}
-          />
+        <HealthStatusFragment
+          status={obj.status?.health?.status || ''}
+        />
       </TableData>
       <TableData id="revision" activeColumnIDs={activeColumnIDs}>
-          <RevisionFragment
-            revision={obj.status?.sync?.revision || ''}
-            repoURL={obj.spec.source.repoURL}
-          />
+        <RevisionFragment
+          revision={obj.status?.sync?.revision || ''}
+          repoURL={obj.spec.source.repoURL}
+        />
       </TableData>
       <TableData id="project" activeColumnIDs={activeColumnIDs}>
         {obj.spec.project || ''}
@@ -209,7 +218,49 @@ const useApplicationColumns = (namespace) => {
   //   [],
   // );
 
-//  return columns;
+  //  return columns;
 };
+
+export const filters: RowFilter[] = [
+  {
+    filterGroupName: 'Sync Status',
+    type: 'app-sync',
+    reducer: (application) => (application.status?.sync?.status),
+    filter: (input, application) => {
+      if (input.selected?.length && application?.status?.sync?.status) {
+        return input.selected.includes(application.status.sync.status);
+      } else {
+        return true;
+      }
+    },
+    items: [
+      { id: SYNC_STATUS_SYNCED, title: SYNC_STATUS_SYNCED },
+      { id: SYNC_STATUS_OUT_OF_SYNC, title: SYNC_STATUS_OUT_OF_SYNC },
+      { id: SYNC_STATUS_UNKNOWN, title: SYNC_STATUS_UNKNOWN },
+    ],
+  },
+  {
+    filterGroupName: 'Health Status',
+    type: 'app-health',
+    reducer: (application) => (application.status?.health?.status),
+    filter: (input, application) => {
+      if (input.selected?.length && application?.status?.health?.status) {
+        return input.selected.includes(application.status.health.status);
+      } else {
+        return true;
+      }
+    },
+    items: [
+      { id: HEALTH_STATUS_UNKNOWN, title: HEALTH_STATUS_UNKNOWN },
+      { id: HEALTH_STATUS_PROGRESSING, title: HEALTH_STATUS_PROGRESSING },
+      { id: HEALTH_STATUS_SUSPENDED, title: HEALTH_STATUS_SUSPENDED },
+      { id: HEALTH_STATUS_HEALTHY, title: HEALTH_STATUS_HEALTHY },
+      { id: HEALTH_STATUS_DEGRADED, title: HEALTH_STATUS_DEGRADED },
+      { id: HEALTH_STATUS_MISSING, title: HEALTH_STATUS_MISSING },
+    ],
+  },
+
+
+];
 
 export default ApplicationList;

@@ -5,6 +5,7 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 
 import { SyncUnknownIcon, OutOfSyncIcon } from './icons';
+import { SYNC_STATUS_OUT_OF_SYNC, SYNC_STATUS_SYNCED } from '@gitops-utils/constants';
 
 
 interface SyncProps {
@@ -13,9 +14,9 @@ interface SyncProps {
 
 const SyncStatusFragment: React.FC<SyncProps> = ({ status }) => {
   let targetIcon: React.ReactNode;
-  if (status === 'Synced') {
+  if (status === SYNC_STATUS_SYNCED) {
     targetIcon = <GreenCheckCircleIcon />;
-  } else if (status === 'OutOfSync') {
+  } else if (status === SYNC_STATUS_OUT_OF_SYNC) {
     targetIcon = <OutOfSyncIcon />;
   } else {
     targetIcon = <SyncUnknownIcon />;

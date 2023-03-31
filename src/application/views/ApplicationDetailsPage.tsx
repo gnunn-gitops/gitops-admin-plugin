@@ -240,10 +240,10 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                    {obj?.spec?.syncPolicy?.automated && <FlexItem><Label color="blue">Automated</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated.selfHeal && <FlexItem><Label color="blue">Self Heal</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated.prune && <FlexItem><Label color="blue">Prune</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.retry && <FlexItem><Label color="blue">Retry</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated && <FlexItem><Label color="blue">{t('Automated')}</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated.selfHeal && <FlexItem><Label color="blue">{t('Self Heal')}</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated.prune && <FlexItem><Label color="blue">{t('Prune')}</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.retry && <FlexItem><Label color="blue">{t('Retry')}</Label></FlexItem>}
                   </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
