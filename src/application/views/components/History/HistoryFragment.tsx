@@ -5,6 +5,8 @@ import { RowProps, TableColumn, TableData, Timestamp, VirtualizedTable } from '@
 import { sortable } from '@patternfly/react-table';
 import RevisionFragment from '../Revision/RevisionFragment';
 
+import './HistoryFragment.scss';
+
 interface HistoryListProps {
     history: ApplicationHistory[]
 }
@@ -29,7 +31,7 @@ const historyListRow: React.FC<RowProps<ApplicationHistory>> = ({ obj, activeCol
 
     return (
         <>
-            <TableData id="id" activeColumnIDs={activeColumnIDs} >
+            <TableData id="id" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__history-id-column" >
                 {obj.id}
             </TableData>
             <TableData id="deployStartedAt" activeColumnIDs={activeColumnIDs}>
@@ -44,24 +46,6 @@ const historyListRow: React.FC<RowProps<ApplicationHistory>> = ({ obj, activeCol
                     repoURL={obj.source.repoURL}
                   />
             </TableData>
-            {/* <TableData id="source" activeColumnIDs={activeColumnIDs}>
-                <DescriptionList isCompact isHorizontal>
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Repository</DescriptionListTerm>
-                        <DescriptionListDescription>{obj.source.repoURL}</DescriptionListDescription>
-                    </DescriptionListGroup>
-
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Path</DescriptionListTerm>
-                        <DescriptionListDescription>{obj.source.path}</DescriptionListDescription>
-                    </DescriptionListGroup>
-
-                    <DescriptionListGroup>
-                        <DescriptionListTerm>Revision</DescriptionListTerm>
-                        <DescriptionListDescription>{obj.source.targetRevision}</DescriptionListDescription>
-                    </DescriptionListGroup>
-                </DescriptionList>
-            </TableData> */}
         </>
     );
 };
@@ -74,7 +58,8 @@ export const useHistoryColumns = () => {
                 title: 'ID',
                 id: 'id',
                 transforms: [sortable],
-                sort: `id`
+                sort: `id`,
+                props: { className: 'gitops-admin-plugin__history-id-column' }
             },
             {
                 title: 'Deploy Started At',

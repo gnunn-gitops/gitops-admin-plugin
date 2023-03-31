@@ -173,52 +173,7 @@ const useApplicationColumns = (namespace) => {
     }
   );
 
-  return columns;
-
-  // const columns: TableColumn<K8sResourceCommon>[] = React.useMemo(
-  //   () => [
-  //     {
-  //       title: 'Name',
-  //       id: 'name',
-  //       transforms: [sortable],
-  //       sort: 'metadata.name',
-  //       props: { className: 'pf-m-width-15' },
-  //     },
-  //     {
-  //       title: 'Namespace',
-  //       id: 'namespace',
-  //       transforms: [sortable],
-  //       sort: 'metadata.namespace',
-  //       props: { className: 'pf-m-width-15' },
-  //     },
-  //     {
-  //       title: 'Project',
-  //       sort: 'spec.project',
-  //       id: 'project',
-  //       transforms: [sortable],
-  //     },
-  //     {
-  //       title: 'Sync Status',
-  //       sort: 'status.sync.status',
-  //       id: 'sync-status',
-  //       transforms: [sortable],
-  //     },
-  //     {
-  //       title: 'Health Status',
-  //       sort: 'status.health.status',
-  //       id: 'health-status',
-  //       transforms: [sortable],
-  //     },
-  //     {
-  //       title: '',
-  //       id: 'actions',
-  //       props: { className: 'dropdown-kebab-pf pf-c-table__action' },
-  //     },
-  //   ],
-  //   [],
-  // );
-
-  //  return columns;
+  return React.useMemo(() => columns, [namespace]);
 };
 
 export const filters: RowFilter[] = [

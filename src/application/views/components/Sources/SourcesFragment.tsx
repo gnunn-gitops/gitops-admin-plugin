@@ -5,6 +5,8 @@ import { RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-c
 import { sortable } from '@patternfly/react-table';
 import ExternalLink from '../ExternalLink/ExternalLink';
 
+import './SourcesFragment.scss';
+
 //import * as  gitIcon from '../../../../images/git.png';
 //import * as  helmIcon from '../../../../images/helm.png';
 
@@ -32,7 +34,7 @@ const sourceListRow: React.FC<RowProps<ApplicationSource>> = ({ obj, activeColum
 
     return (
         <>
-            <TableData id="type" activeColumnIDs={activeColumnIDs}>
+            <TableData id="type" activeColumnIDs={activeColumnIDs} className='gitops-admin-plugin__sources-type-column'>
                 <img loading="lazy" src={(obj.chart ? require("../../../../images/helm.png"): require("../../../../images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
             </TableData>
             <TableData id="repository" activeColumnIDs={activeColumnIDs}>
@@ -60,7 +62,8 @@ export const useSourcesColumns = () => {
             {
                 title: 'Type',
                 id: 'type',
-                transforms: []
+                transforms: [],
+                props: { className: 'gitops-admin-plugin__sources-type-column' }
             },
             {
                 title: 'Repository',
