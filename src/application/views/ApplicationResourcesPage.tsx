@@ -22,6 +22,8 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
     var resources: ApplicationResourceStatus[];
     if (obj?.status?.resources) {
         resources = obj?.status?.resources;
+    } else {
+        resources = [];
     }
 
     return (
