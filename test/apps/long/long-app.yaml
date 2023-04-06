@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: long
+  namespace: gitops-basic-demo
+spec:
+  destination:
+    namespace: demo
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: test/apps/long/manifests
+    repoURL: https://github.com/gnunn-gitops/gitops-admin-plugin.git
+    targetRevision: HEAD
+  syncPolicy: {}

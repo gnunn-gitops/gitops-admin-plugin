@@ -1,0 +1,3 @@
+resources:
+- github.com/gitops-examples/simple-app-example
+- long-job.yaml
