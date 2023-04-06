@@ -27,7 +27,7 @@ export const ConditionsPopover: React.FC<ConditionsPopoverProps> = ({ conditions
             }
             secondColumn='Error'
         >
-            {conditions.map(condition => (<StatusPopupItem value={condition.type}><span>{condition.message}</span></StatusPopupItem>))}
+            {conditions.map(condition => (<StatusPopupItem value={condition.type}><span className="pf-u-pr-md">{condition.message}</span></StatusPopupItem>))}
         </StatusPopupSection>
         </div>
       }
