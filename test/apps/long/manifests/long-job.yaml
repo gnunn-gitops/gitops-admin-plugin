@@ -5,7 +5,6 @@ metadata:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
   name: long-job
-  namespace: gitops
 spec:
   suspend: false
   template:
