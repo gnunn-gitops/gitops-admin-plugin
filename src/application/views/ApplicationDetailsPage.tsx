@@ -32,6 +32,7 @@ import SourceListFragment from './components/Sources/SourcesFragment';
 import { ApplicationSource } from '@application-model';
 import HistoryListFragment from './components/History/HistoryFragment';
 import ExternalLink from './components/ExternalLink/ExternalLink';
+import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -117,12 +118,12 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                  <FlexItem>{obj?.metadata?.name}</FlexItem>
-                  <FlexItem>
-                    <ExternalLink href={argoServerURL + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
-                      <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
-                    </ExternalLink>
-                  </FlexItem>
+                    <FlexItem>{obj?.metadata?.name}</FlexItem>
+                    <FlexItem>
+                      <ExternalLink href={argoServerURL + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
+                        <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
+                      </ExternalLink>
+                    </FlexItem>
                   </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
@@ -190,9 +191,20 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                  <SyncStatusFragment
-                    status={obj.status?.sync?.status || ''}
-                  />
+                  <Flex>
+                    <FlexItem>
+                      <SyncStatusFragment
+                        status={obj.status?.sync?.status || ''}
+                      />
+                    </FlexItem>
+                      {obj?.status?.conditions &&
+                         <FlexItem>
+                          <ConditionsPopover
+                            conditions = {obj.status.conditions}
+                          />
+                         </FlexItem>
+                    }
+                  </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
@@ -241,8 +253,8 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 <DescriptionListDescription>
                   <Flex>
                     {obj?.spec?.syncPolicy?.automated && <FlexItem><Label color="blue">{t('Automated')}</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated.selfHeal && <FlexItem><Label color="blue">{t('Self Heal')}</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated.prune && <FlexItem><Label color="blue">{t('Prune')}</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated?.selfHeal && <FlexItem><Label color="blue">{t('Self Heal')}</Label></FlexItem>}
+                    {obj?.spec?.syncPolicy?.automated?.prune && <FlexItem><Label color="blue">{t('Prune')}</Label></FlexItem>}
                     {obj?.spec?.syncPolicy?.retry && <FlexItem><Label color="blue">{t('Retry')}</Label></FlexItem>}
                   </Flex>
                 </DescriptionListDescription>

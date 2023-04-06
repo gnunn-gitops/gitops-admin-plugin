@@ -88,6 +88,12 @@ export type ApplicationResourceStatus = {
   }
 }
 
+export type ApplicationCondition = {
+  lastTransitionTime?: string,
+  message?: string,
+  type?: string
+}
+
 export type OperationState = {
   finishedAt?: string,
   message?: string,
@@ -112,6 +118,7 @@ export type SyncStatus = {
 }
 
 export type ApplicationStatus = {
+  conditions?: ApplicationCondition[],
   sync?: SyncStatus,
   health?: {
       status?: string

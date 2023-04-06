@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from './icons';
+import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '../../utils/Icons/icons';
 import { HEALTH_STATUS_DEGRADED, HEALTH_STATUS_HEALTHY, HEALTH_STATUS_MISSING, HEALTH_STATUS_PROGRESSING, HEALTH_STATUS_SUSPENDED } from '@gitops-utils/constants';
 
 interface HealthProps {

@@ -4,7 +4,7 @@ import {
   GreenCheckCircleIcon,
 } from '@openshift-console/dynamic-plugin-sdk';
 
-import { SyncUnknownIcon, OutOfSyncIcon } from './icons';
+import { SyncUnknownIcon, OutOfSyncIcon } from '../../utils/Icons/icons';
 import { SYNC_STATUS_OUT_OF_SYNC, SYNC_STATUS_SYNCED } from '@gitops-utils/constants';
 
 
@@ -23,9 +23,9 @@ const SyncStatusFragment: React.FC<SyncProps> = ({ status }) => {
   }
   return (
         (
-          <div>
+          <span>
             {(status?targetIcon:"")} {status}
-          </div>
+          </span>
         )
   );
 };
