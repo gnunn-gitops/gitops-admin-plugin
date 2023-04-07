@@ -20,7 +20,7 @@ import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
 import { k8sPatch, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
-import { ApplicationHistory, ApplicationModel } from '@application-model/ApplicationModel';
+import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from './modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
@@ -38,7 +38,7 @@ type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
   name: string;
 }> & {
-  obj?: any;
+  obj?: ApplicationKind;
 };
 
 const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) => {
@@ -186,17 +186,34 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
 
               <DescriptionListGroup>
                 <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Sync Status')}</div>} bodyContent={<div>{t('Sync status represents the overall syncrhonized state for the application.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Sync Status')}</DescriptionListTermHelpTextButton>
+                  <Popover headerContent={<div>{t('Current Sync Status')}</div>} bodyContent={<div>{t('Sync status represents the current synchronized state for the application.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Current Sync Status')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                    <Flex>
+                      <FlexItem>
+                        <SyncStatusFragment status={obj.status?.sync?.status || ''}/>
+                      </FlexItem>
+                      <FlexItem>
+                        <Label>
+                          <RevisionFragment revision={obj.status?.sync?.revision || ''} repoURL={obj.spec.source.repoURL}/>
+                        </Label>
+                      </FlexItem>
+                    </Flex>
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Last Sync Result')}</div>} bodyContent={<div>{t('The result of the last sync status.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Last Sync Result')}</DescriptionListTermHelpTextButton>
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                    <FlexItem>
-                      <SyncStatusFragment
-                        status={obj.status?.sync?.status || ''}
-                      />
-                    </FlexItem>
+                      <FlexItem>{obj?.status?.operationState?.phase}</FlexItem>
+
                       {obj?.status?.conditions &&
                          <FlexItem>
                           <ConditionsPopover
@@ -205,20 +222,6 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                          </FlexItem>
                     }
                   </Flex>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
-
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Revision')}</div>} bodyContent={<div>{t('Current git revision for the appliation.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Revision')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <RevisionFragment
-                    revision={obj.status?.sync?.revision || ''}
-                    repoURL={obj.spec.source.repoURL}
-                  />
                 </DescriptionListDescription>
               </DescriptionListGroup>
 

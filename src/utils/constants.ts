@@ -1,14 +1,24 @@
 export const DEFAULT_NAMESPACE = 'default';
 
-/* Application Sync Statuses */
-export const SYNC_STATUS_SYNCED = "Synced";
-export const SYNC_STATUS_OUT_OF_SYNC = "OutOfSync";
-export const SYNC_STATUS_UNKNOWN = "Unknown";
+export enum SyncStatus {
+    SYNCED = "Synced",
+    OUT_OF_SYNC = "OutOfSync",
+    UNKNOWN = "Unknown"
+}
 
-/* Application Health Statuses */
-export const HEALTH_STATUS_HEALTHY = "Healthy";
-export const HEALTH_STATUS_DEGRADED = "Degraded";
-export const HEALTH_STATUS_SUSPENDED = "Suspended";
-export const HEALTH_STATUS_MISSING = "Missing";
-export const HEALTH_STATUS_PROGRESSING = "Progressing";
-export const HEALTH_STATUS_UNKNOWN = "Unknown";
+export enum HealthStatus {
+    HEALTHY = "Healthy",
+    DEGRADED = "Degraded",
+    SUSPENDED = "Suspended",
+    MISSING = "Missing",
+    PROGRESSING = "Progressing",
+    UNKNOWN = "Unknown"
+}
+
+export enum PhaseStatus {
+    TERMINATING = 'Terminating',
+    RUNNING = 'Running',
+    SUCCEEDED = 'Succeeded',
+    FAILED = 'Failed',
+    ERROR = 'Error'
+}

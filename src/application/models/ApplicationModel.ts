@@ -1,3 +1,4 @@
+import { HealthStatus, PhaseStatus, SyncStatus } from '@gitops-utils/constants';
 import { modelToRef } from '@gitops-utils/utils';
 import { K8sResourceCommon } from '@openshift-console/dynamic-plugin-sdk';
 import { K8sModel } from '@openshift-console/dynamic-plugin-sdk/lib/api/common-types';
@@ -108,20 +109,20 @@ export type OperationState = {
       revision: string
     }
   },
-  phase?: string,
+  phase?: PhaseStatus,
   startedAt?: string,
 }
 
-export type SyncStatus = {
+export type CurrentSyncStatus = {
   revision?: string,
-  status?: string
+  status?: SyncStatus
 }
 
 export type ApplicationStatus = {
   conditions?: ApplicationCondition[],
-  sync?: SyncStatus,
+  sync?: CurrentSyncStatus,
   health?: {
-      status?: string
+      status?: HealthStatus
   }
   history?: ApplicationHistory[],
   operationState?: OperationState,

@@ -21,7 +21,7 @@ import ApplicationRowActions from './ApplicationRowActions';
 import SyncStatusFragment from '../components/Statuses/SyncStatusFragment';
 import HealthStatusFragment from '../components/Statuses/HealthStatusFragment';
 import RevisionFragment from '../components/Revision/RevisionFragment';
-import { HEALTH_STATUS_DEGRADED, HEALTH_STATUS_HEALTHY, HEALTH_STATUS_MISSING, HEALTH_STATUS_PROGRESSING, HEALTH_STATUS_SUSPENDED, HEALTH_STATUS_UNKNOWN, SYNC_STATUS_OUT_OF_SYNC, SYNC_STATUS_SYNCED, SYNC_STATUS_UNKNOWN } from '@gitops-utils/constants';
+import { HealthStatus, SyncStatus } from '@gitops-utils/constants';
 
 type ApplicationListProps = {
   namespace: string;
@@ -189,9 +189,9 @@ export const filters: RowFilter[] = [
       }
     },
     items: [
-      { id: SYNC_STATUS_SYNCED, title: SYNC_STATUS_SYNCED },
-      { id: SYNC_STATUS_OUT_OF_SYNC, title: SYNC_STATUS_OUT_OF_SYNC },
-      { id: SYNC_STATUS_UNKNOWN, title: SYNC_STATUS_UNKNOWN },
+      { id: SyncStatus.SYNCED, title: SyncStatus.SYNCED },
+      { id: SyncStatus.OUT_OF_SYNC, title: SyncStatus.OUT_OF_SYNC },
+      { id: SyncStatus.UNKNOWN, title: SyncStatus.UNKNOWN },
     ],
   },
   {
@@ -206,12 +206,12 @@ export const filters: RowFilter[] = [
       }
     },
     items: [
-      { id: HEALTH_STATUS_UNKNOWN, title: HEALTH_STATUS_UNKNOWN },
-      { id: HEALTH_STATUS_PROGRESSING, title: HEALTH_STATUS_PROGRESSING },
-      { id: HEALTH_STATUS_SUSPENDED, title: HEALTH_STATUS_SUSPENDED },
-      { id: HEALTH_STATUS_HEALTHY, title: HEALTH_STATUS_HEALTHY },
-      { id: HEALTH_STATUS_DEGRADED, title: HEALTH_STATUS_DEGRADED },
-      { id: HEALTH_STATUS_MISSING, title: HEALTH_STATUS_MISSING },
+      { id: HealthStatus.UNKNOWN, title: HealthStatus.UNKNOWN },
+      { id: HealthStatus.PROGRESSING, title: HealthStatus.PROGRESSING },
+      { id: HealthStatus.SUSPENDED, title: HealthStatus.SUSPENDED },
+      { id: HealthStatus.HEALTHY, title: HealthStatus.HEALTHY },
+      { id: HealthStatus.DEGRADED, title: HealthStatus.DEGRADED },
+      { id: HealthStatus.MISSING, title: HealthStatus.MISSING },
     ],
   },
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '../../utils/Icons/icons';
-import { HEALTH_STATUS_DEGRADED, HEALTH_STATUS_HEALTHY, HEALTH_STATUS_MISSING, HEALTH_STATUS_PROGRESSING, HEALTH_STATUS_SUSPENDED } from '@gitops-utils/constants';
+import { HealthStatus } from '@gitops-utils/constants';
 
 interface HealthProps {
   status: string;
@@ -9,19 +9,26 @@ interface HealthProps {
 
 const HealthStatusFragment: React.FC<HealthProps> = ({ status }) => {
   let targetIcon: React.ReactNode;
-  if (status === HEALTH_STATUS_HEALTHY) {
-    targetIcon = <HealthHealthyIcon />;
-  } else if (status === HEALTH_STATUS_DEGRADED) {
-    targetIcon = <HealthDegradedIcon />;
-  } else if (status === HEALTH_STATUS_SUSPENDED) {
-    targetIcon = <HealthSuspendedIcon />;
-  } else if (status === HEALTH_STATUS_MISSING) {
-    targetIcon = <HealthMissingIcon />;
-  } else if (status === HEALTH_STATUS_PROGRESSING) {
-    targetIcon = <HealthProgressingIcon />;
-  } else {
-    targetIcon = < HealthUnknownIcon />;
+  switch (status) {
+    case HealthStatus.HEALTHY:
+      targetIcon = <HealthHealthyIcon />;
+      break;
+    case HealthStatus.DEGRADED:
+      targetIcon = <HealthDegradedIcon />;
+      break;
+    case HealthStatus.SUSPENDED:
+      targetIcon = <HealthSuspendedIcon />;
+      break;
+    case HealthStatus.MISSING:
+      targetIcon = <HealthMissingIcon />;
+      break;
+    case HealthStatus.PROGRESSING:
+      targetIcon = <HealthProgressingIcon />;
+      break;
+    default:
+      targetIcon = < HealthUnknownIcon />;
   }
+
   return (
         (
           <div>
