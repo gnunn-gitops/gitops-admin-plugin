@@ -101,6 +101,7 @@ export type OperationState = {
   message?: string,
   operation?: {
     initiatedBy: {
+      username?: string,
       automated?: boolean
     }
     retry?: {

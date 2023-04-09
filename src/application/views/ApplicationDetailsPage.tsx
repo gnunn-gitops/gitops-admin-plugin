@@ -192,16 +192,16 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                    <Flex>
-                      <FlexItem>
-                        <SyncStatusFragment status={obj.status?.sync?.status || ''}/>
-                      </FlexItem>
-                      <FlexItem>
-                        <Label>
-                          <RevisionFragment revision={obj.status?.sync?.revision || ''} repoURL={obj.spec.source.repoURL}/>
-                        </Label>
-                      </FlexItem>
-                    </Flex>
+                  <Flex>
+                    <FlexItem>
+                      <SyncStatusFragment status={obj.status?.sync?.status || ''} />
+                    </FlexItem>
+                    <FlexItem>
+                      <Label>
+                        <RevisionFragment revision={obj.status?.sync?.revision || ''} repoURL={obj.spec.source.repoURL} />
+                      </Label>
+                    </FlexItem>
+                  </Flex>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
@@ -213,18 +213,17 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                      {obj?.status?.operationState &&
+                    {obj?.status?.operationState &&
                         <FlexItem>
-                          <OperationStateFragment app={obj}/>
+                           <OperationStateFragment app={obj}/>
                         </FlexItem>
-                      }
-
-                      {obj?.status?.conditions &&
-                         <FlexItem>
-                          <ConditionsPopover
-                            conditions = {obj.status.conditions}
-                          />
-                         </FlexItem>
+                    }
+                    {obj?.status?.conditions &&
+                      <FlexItem>
+                        <ConditionsPopover
+                          conditions={obj.status.conditions}
+                        />
+                      </FlexItem>
                     }
                   </Flex>
                 </DescriptionListDescription>
