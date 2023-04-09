@@ -51,7 +51,7 @@ export const OutOfSyncIcon: React.FC<ColoredIconProps> = ({ className, title }) 
 );
 
 export const SyncUnknownIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
-    <CircleNotchIcon color={disabledColor.value} className={className} title={title} />
+    <CircleNotchIcon color={disabledColor.value} className={className + " fa-spin"} title={title} />
 );
 
 export const HealthUnknownIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
