@@ -11,7 +11,9 @@ import {
   OutlinedPauseCircleIcon,
   HeartIcon,
   HeartBrokenIcon,
-  GhostIcon
+  GhostIcon,
+  BanIcon,
+  ExclamationCircleIcon
 } from '@patternfly/react-icons';
 import { global_danger_color_100 as dangerColor } from '@patternfly/react-tokens/dist/js/global_danger_color_100';
 import { global_default_color_200 as blueDefaultColor } from '@patternfly/react-tokens/dist/js/global_default_color_200';
@@ -57,7 +59,7 @@ export const HealthUnknownIcon: React.FC<ColoredIconProps> = ({ className, title
   );
 
 export const HealthProgressingIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
-    <CircleNotchIcon color={blueDefaultColor.value} className={className} title={title} />
+    <CircleNotchIcon color={blueDefaultColor.value} className={className + " fa-spin"} title={title} />
 );
 
 export const HealthSuspendedIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
@@ -74,4 +76,15 @@ export const HealthDegradedIcon: React.FC<ColoredIconProps> = ({ className, titl
 
 export const HealthMissingIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
     <GhostIcon color={warningColor.value} className={className} title={title} />
+);
+
+export const PhaseErrorIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
+  <ExclamationCircleIcon color={dangerColor.value} className={className} title={title} />
+);
+
+export const PhaseFailedIcon = PhaseErrorIcon;
+export const PhaseRunningIcon = HealthProgressingIcon;
+export const PhaseSucceededIcon = HealthHealthyIcon;
+export const PhaseTerminatingIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
+  <BanIcon color={disabledColor.value} className={className} title={title} />
 );

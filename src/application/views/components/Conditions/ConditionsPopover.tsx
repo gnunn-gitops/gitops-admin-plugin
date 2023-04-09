@@ -29,14 +29,14 @@ export const ConditionsPopover: React.FC<ConditionsPopoverProps> = ({ conditions
                     <span>Message</span>
                 </>
                 }
-                secondColumn='Error'
+                secondColumn='Type'
             >
                 {conditions.map(condition => (<StatusPopupItem value={condition.type}><span className="pf-u-pr-md">{condition.message}</span></StatusPopupItem>))}
             </StatusPopupSection>
             </div>
         }
         >
-        <Label color="grey" >
+        <Label color="grey">
             {summary.error > 0 &&
                 <div>
                     <RedExclamationCircleIcon/><span className="pf-u-pl-sm">{(summary.error == 1 ? "1 Error" : summary.error + " Errors")}</span>

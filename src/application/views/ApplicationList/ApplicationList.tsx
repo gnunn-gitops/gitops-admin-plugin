@@ -22,6 +22,8 @@ import SyncStatusFragment from '../components/Statuses/SyncStatusFragment';
 import HealthStatusFragment from '../components/Statuses/HealthStatusFragment';
 import RevisionFragment from '../components/Revision/RevisionFragment';
 import { HealthStatus, SyncStatus } from '@gitops-utils/constants';
+import { OperationStateFragment } from '../components/Statuses/OperationStateFragment';
+import { Flex, FlexItem } from '@patternfly/react-core';
 
 type ApplicationListProps = {
   namespace: string;
@@ -84,11 +86,18 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
       <TableData id="sync-status" activeColumnIDs={activeColumnIDs}>
-        <SyncStatusFragment
-          status={obj.status?.sync?.status || ''}
-        />
+        <Flex>
+          <FlexItem>
+            <SyncStatusFragment
+              status={obj.status?.sync?.status || ''}
+            />
+          </FlexItem>
+          <FlexItem>
+            <OperationStateFragment app={obj} quiet={true}/>
+          </FlexItem>
+        </Flex>
       </TableData>
-      <TableData id="sync-status" activeColumnIDs={activeColumnIDs}>
+      <TableData id="health-status" activeColumnIDs={activeColumnIDs}>
         <HealthStatusFragment
           status={obj.status?.health?.status || ''}
         />

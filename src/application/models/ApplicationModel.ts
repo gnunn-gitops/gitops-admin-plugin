@@ -79,6 +79,7 @@ export type ApplicationHistory = {
 export type ApplicationResourceStatus = {
   kind: string,
   group: string,
+  message: string;
   name: string,
   namespace?: string,
   version?: string,
@@ -111,6 +112,9 @@ export type OperationState = {
   },
   phase?: PhaseStatus,
   startedAt?: string,
+  syncResult?: {
+    resources?: ApplicationResourceStatus[]
+  }
 }
 
 export type CurrentSyncStatus = {

@@ -33,6 +33,7 @@ import { ApplicationSource } from '@application-model';
 import HistoryListFragment from './components/History/HistoryFragment';
 import ExternalLink from './components/ExternalLink/ExternalLink';
 import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
+import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -212,7 +213,11 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <Flex>
-                      <FlexItem>{obj?.status?.operationState?.phase}</FlexItem>
+                      {obj?.status?.operationState &&
+                        <FlexItem>
+                          <OperationStateFragment app={obj}/>
+                        </FlexItem>
+                      }
 
                       {obj?.status?.conditions &&
                          <FlexItem>
