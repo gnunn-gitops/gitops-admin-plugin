@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        job-name: create-pipeline-local-user
+        job-name: long-job
     spec:
       containers:
       - command:
