@@ -8,6 +8,7 @@ import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-s
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import DeleteModal from '../modals/DeleteModal/DeleteModal';
 import { LabelsModal } from '../modals/LabelsModal/LabelsModal';
+import { sync } from '@gitops-utils/gitops';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -101,6 +102,14 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, application, 'delete'),
       },
+      {
+        id: 'gitops-action-sync-application',
+        disabled: false,
+        label: t('Sync'),
+        cta: () =>
+          sync(application)
+      },
+
     ],
     [/*t, */ application, createModal /*, dataSource*/, history],
   );

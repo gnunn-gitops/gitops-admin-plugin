@@ -1,3 +1,4 @@
+import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 
 export function createRevisionURL(repo: string, revision: string) {
@@ -36,7 +37,6 @@ export function getIconForSourceType(sourceType: string) {
 
 export const getArgoServerURL = async (model, namespace: string) => {
 
-  console.log("namespace = " + namespace);
 
   try {
     const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
@@ -50,11 +50,37 @@ export const getArgoServerURL = async (model, namespace: string) => {
         },
       },
     });
-    console.log(argoServerURL);
-    console.log("https://" + argoServerURL["spec"]["host"]);
     return "https://" + argoServerURL["spec"]["host"];
   } catch (e) {
     console.warn('Error while fetching Argo CD Server url:', e);
     return '';
   }
 };
+
+const getSessionToken = () => {
+
+  console.log("Document.cookie: " + document.cookie);
+
+  const cookiePrefix = 'ee4d5f50aeaffc63a5a5fc30a3072a27=';
+  return (
+    document &&
+    document.cookie &&
+    document.cookie
+      .split(';')
+      .map((c) => c.trim())
+      .filter((c) => c.startsWith(cookiePrefix))
+      .map((c) => c.slice(cookiePrefix.length))
+      .pop()
+  );
+};
+
+export const sync = async (app: ApplicationKind) => {
+
+  var sessionToken = getSessionToken();
+
+  console.log("token " + sessionToken);
+
+  console.log("Synchronizing application " + app.metadata.name);
+
+
+}
