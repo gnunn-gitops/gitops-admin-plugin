@@ -1,3 +1,22 @@
+# Note this project has been shelved
+
+This was intended as a POC to understand the feasibility of building a lite UI in the OpenShift POC to manage OpenShift GitOps. Goals of the POC were:
+
+1. Provide a basic view of Application objects in OpenShift
+2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
+
+Unfortunately at this time Option #2 does not appear to be feasible without signficant Engineering effort or changes in Architecture.
+
+OpenShift dynamic plugins run in the browser as part of the OpenShift console, the inherit the identity of the current logged in user. To support the second use case, we need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user would not have access to that secret either.
+
+The challenge with using the current identity is that in OpenShift GitOps access to Argo is protected by Dex and requires a Dex OIDC token, not an OpenShift OAuth token, to interact with Argo APIs. This involves overcoming two obstacles: Getting an OpenShift session token for the current user and exchanging it for a Dex token.
+
+Taking the second part first, while Token Exchange is not currently supported in Dex there is a [PR](https://github.com/dexidp/dex/pull/2806) available for it. I tested the PR and wrote a bit of [Go code](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L202) plus a horrific [hack](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L69) and was able to get the token exchange to work.
+
+However the first part of the challenge, retrieving the users session token appears to be insurmountable at this time. The session token is stored is an httpOnly cookie which prevents code in the browser from accessing it which is a good thing from a security perspective. Additionally as far as I can tell there is no way to have a new token minted or access this token via an API. Again a good thing since we don't want a malicious plugin sending tokens to bad actors.
+
+Unfortunately this means there is no way to interact with the Argo CD API in a way that fulfills the goals of this POC and hence I'm stopping work on it at this point. Should things change, or someone finds an alternative way to do this, I'm happy to revisit the topic.
+
 # OpenShift GitOps Dynamic Plugin
 
 This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift GitOps in the Administrator perspective. At this point it is very rough from a feature and UI perspective and thus absolutely not recommended in production environments.
@@ -13,6 +32,7 @@ Thanks to the following individuals:
 * Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
 * Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
 * Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
+* Argo CD UI where I leveraged the existing code for determining Operation State
 
 ## Deployment on cluster
 
