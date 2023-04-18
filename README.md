@@ -17,6 +17,8 @@ However the first part of the challenge, retrieving the users session token appe
 
 Unfortunately this means there is no way to interact with the Argo CD API in a way that fulfills the goals of this POC and hence I'm stopping work on it at this point. Should things change, or someone finds an alternative way to do this, I'm happy to revisit the topic.
 
+Making this work would likely require an internal accessible service in the console be available to do the token exchange for us or provide a way to mint a short lived access token (<5 minutes?) that plugins could leverage.
+
 # OpenShift GitOps Dynamic Plugin
 
 This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift GitOps in the Administrator perspective. At this point it is very rough from a feature and UI perspective and thus absolutely not recommended in production environments.
