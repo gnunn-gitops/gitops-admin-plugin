@@ -79,7 +79,9 @@ export type ApplicationHistory = {
 export type ApplicationResourceStatus = {
   kind: string,
   group: string,
-  message: string;
+  hookPhase?: string,
+  hookType?: string,
+  message?: string;
   name: string,
   namespace?: string,
   version?: string,

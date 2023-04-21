@@ -5,8 +5,8 @@ import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Vi
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
-import { PageSection, Title } from '@patternfly/react-core';
-import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import { PageSection } from '@patternfly/react-core';
+//import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ApplicationResourcesPageProps = RouteComponentProps<{
     ns: string;
@@ -17,7 +17,7 @@ type ApplicationResourcesPageProps = RouteComponentProps<{
 
 const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj }) => {
 
-    const { t } = useGitOpsTranslation();
+    //const { t } = useGitOpsTranslation();
 
     var resources: ApplicationResourceStatus[];
     if (obj?.status?.resources) {
@@ -29,10 +29,6 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
     return (
         <div>
             <PageSection>
-                <Title headingLevel="h2" className="co-section-heading">
-                    {t('Application resources')}
-                </Title>
-
                 <VirtualizedTable
                     data={resources}
                     unfilteredData={resources}
@@ -66,9 +62,6 @@ const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj
             <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
                 {obj.namespace}
             </TableData>
-            <TableData id="group" activeColumnIDs={activeColumnIDs}>
-                { (obj.group? obj.group + "/":"") + obj.kind}
-            </TableData>
             <TableData id="syncWave" activeColumnIDs={activeColumnIDs}>
                 {obj.syncWave}
             </TableData>
@@ -96,12 +89,6 @@ export const useResourceColumns = () => {
                 id: 'namespace',
                 transforms: [sortable],
                 sort: `namespace`
-            },
-            {
-                title: 'Group/Kind',
-                id: 'group',
-                transforms: [sortable],
-                sort: `group`
             },
             {
                 title: 'Sync Order',

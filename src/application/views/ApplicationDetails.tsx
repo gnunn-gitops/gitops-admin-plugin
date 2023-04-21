@@ -12,6 +12,7 @@ import ApplicationDetailsPage from './ApplicationDetailsPage';
 import ApplicationResourcesPage from './ApplicationResourcesPage';
 import ApplicationYAMLPage from './ApplicationYAMLPage';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import ApplicationSyncStatusPage from './ApplicationSycnStatusPage';
 
 type ApplicationPageProps = {
   name: string;
@@ -43,6 +44,11 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         href: 'resources',
         name: t('Resources'),
         component: ApplicationResourcesPage,
+      },
+      {
+        href: 'syncStatus',
+        name: t('Sync Status'),
+        component: ApplicationSyncStatusPage,
       },
       {
         href: 'yaml',
