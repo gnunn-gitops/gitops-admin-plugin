@@ -7,6 +7,7 @@ import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, PageSection, Popover } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import { getDuration } from '@gitops-utils/gitops';
 
 type ApplicationSyncStatusPageProps = RouteComponentProps<{
     ns: string;
@@ -37,7 +38,9 @@ const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ o
                             </Popover>
                         </DescriptionListTermHelpText>
                         <DescriptionListDescription>
-                            {obj.status?.operationState?.phase}
+                            {obj.status?.operationState?.operation?.sync &&
+                                <span>Sync</span>
+                            }
                         </DescriptionListDescription>
                     </DescriptionListGroup>
 
@@ -81,7 +84,11 @@ const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ o
                             </Popover>
                         </DescriptionListTermHelpText>
                         <DescriptionListDescription>
-
+                            {obj.status?.operationState?.finishedAt &&
+                                <span>
+                                    {getDuration(obj.status.operationState.startedAt, obj.status.operationState.finishedAt)/1000} seconds
+                                </span>
+                            }
                         </DescriptionListDescription>
                     </DescriptionListGroup>
 

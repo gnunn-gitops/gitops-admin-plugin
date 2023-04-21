@@ -35,6 +35,20 @@ export function getIconForSourceType(sourceType: string) {
   }
 }
 
+export function getDuration(startAt: string, finishAt: string) {
+  try {
+    var start:Date = new Date(startAt);
+    var finish:Date = new Date(finishAt);
+    console.log(start);
+    console.log(finish);
+
+    return finish.getTime() - start.getTime();
+  } catch(e) {
+    console.log("Error calculating duration", e);
+    return 0;
+  }
+}
+
 export const getArgoServerURL = async (model, namespace: string) => {
 
 
