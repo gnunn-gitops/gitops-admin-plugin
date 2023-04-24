@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plugin-token-exchange
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: plugin-token-exchange
+    app.kubernetes.io/name: plugin-token-exchange
+    app.kubernetes.io/instance: plugin-token-exchange
+    app.openshift.io/runtime: go
+    app.kubernetes.io/part-of: gitops-admin-plugin
+spec:
+  selector:
+    matchLabels:
+      name: plugin-token-exchange
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: plugin-token-exchange
+    spec:
+      containers:
+        - name: plugin-token-exchange
+          image: quay.io/gnunn/plugin-token-exchange:latest
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8443
+            protocol: TCP
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /mnt/certs
+            name: plugin-token-exchange-certs
+            readOnly: true
+      volumes:
+      - name: plugin-token-exchange-certs
+        secret:
+          defaultMode: 420
+          secretName: plugin-token-exchange-certs
