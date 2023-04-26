@@ -26,7 +26,7 @@ import { LabelsModal } from './modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import RevisionFragment from './components/Revision/RevisionFragment';
-import { getArgoServerURL, getFriendlyClusterName } from '@gitops-utils/gitops';
+import { ArgoServer, getArgoServer, getFriendlyClusterName } from '@gitops-utils/gitops';
 import SourceListFragment from './components/Sources/SourcesFragment';
 
 import { ApplicationSource } from '@application-model';
@@ -47,14 +47,14 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
   const { createModal } = useModal();
   const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
 
-  const [argoServerURL, setArgoServerURL] = React.useState('');
+  const [argoServer, setArgoServer] = React.useState<ArgoServer>({host: "", protocol: ""})
 
   React.useEffect(() => {
     (async () => {
-      getArgoServerURL(model, obj.metadata.namespace)
-        .then((url) => {
-          console.log("Argo URL " + url);
-          setArgoServerURL(url);
+      getArgoServer(model, obj.metadata.namespace)
+        .then((argoServer) => {
+          console.log("Argo Server: " + argoServer);
+          setArgoServer(argoServer);
         })
         .catch((err) => {
           console.error('Error:', err);
@@ -121,7 +121,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   <Flex>
                     <FlexItem>{obj?.metadata?.name}</FlexItem>
                     <FlexItem>
-                      <ExternalLink href={argoServerURL + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
+                      <ExternalLink href={argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
                         <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
                       </ExternalLink>
                     </FlexItem>

@@ -1,5 +1,6 @@
 import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
+import { getDexToken } from "src/services/token-exchange";
 
 export function createRevisionURL(repo: string, revision: string) {
   if (!repo || !revision) return undefined;
@@ -47,8 +48,17 @@ export function getDuration(startAt: string, finishAt: string) {
   }
 }
 
-export const getArgoServerURL = async (model, namespace: string) => {
+export type ArgoServer = {
+  host: string,
+  protocol: string,
+}
 
+export const getArgoServer = async (model, namespace: string): Promise<ArgoServer> => {
+
+  var info: ArgoServer = {
+      host: "",
+      protocol: "",
+  }
 
   try {
     const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
@@ -62,37 +72,25 @@ export const getArgoServerURL = async (model, namespace: string) => {
         },
       },
     });
-    return "https://" + argoServerURL["spec"]["host"];
+    // TODO - Don't hardcode this, determine from route
+    info.protocol = "https";
+    info.host = argoServerURL["spec"]["host"]
+    console.log("Argo Server is: " + info);
+    return info;
   } catch (e) {
     console.warn('Error while fetching Argo CD Server url:', e);
-    return '';
+    return info;
   }
 };
 
-const getSessionToken = () => {
+export const sync = async (model, app: ApplicationKind) => {
 
-  console.log("Document.cookie: " + document.cookie);
+  var server = await getArgoServer(model, app.metadata.namespace);
 
-  const cookiePrefix = 'ee4d5f50aeaffc63a5a5fc30a3072a27=';
-  return (
-    document &&
-    document.cookie &&
-    document.cookie
-      .split(';')
-      .map((c) => c.trim())
-      .filter((c) => c.startsWith(cookiePrefix))
-      .map((c) => c.slice(cookiePrefix.length))
-      .pop()
-  );
-};
+  var dexToken = getDexToken(server);
 
-export const sync = async (app: ApplicationKind) => {
-
-  var sessionToken = getSessionToken();
-
-  console.log("token " + sessionToken);
+  console.log("token " + dexToken);
 
   console.log("Synchronizing application " + app.metadata.name);
-
 
 }

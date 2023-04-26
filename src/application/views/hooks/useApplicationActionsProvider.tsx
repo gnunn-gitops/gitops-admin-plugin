@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, k8sDelete, k8sPatch, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import DeleteModal from '../modals/DeleteModal/DeleteModal';
@@ -18,6 +18,7 @@ const t = (key: string) => key;
 export const useApplicationActionsProvider: UseApplicationActionsProvider = (application) => {
   const { createModal } = useModal();
   const history = useHistory();
+  const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
 
   const actions = React.useMemo(
     () => [
@@ -106,8 +107,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         id: 'gitops-action-sync-application',
         disabled: false,
         label: t('Sync'),
-        cta: () =>
-          sync(application)
+        cta: () => {
+          sync(model, application)
+        }
       },
 
     ],

@@ -23,7 +23,7 @@ plugin:
     requests:
       cpu: 10m
       memory: 50Mi
-  basePath: /
+  basePath: /plugin/
   certificateSecretName: ""
   serviceAccount:
     create: true

@@ -1,29 +1,37 @@
+import { ArgoServer } from "@gitops-utils/gitops";
 import { consoleFetchJSON } from "@openshift-console/dynamic-plugin-sdk";
 
-export const getDexToken = async (consoleToken, namespace, serverURL: string) => {
+// export type TokenExchange = {
+//     access_token: string,
+//     issued_token_type: string,
+//     token_type: string,
+//     expires_in: number
+// }
+
+export const getDexToken = async (server: ArgoServer):Promise<string> => {
 
     var jsonBody = {
-        'grant-type': 'urn:ietf:params:oauth:grant-type:token-exchange',
-        'audience': 'openshift',
-        'subject_token': consoleToken,
-        'subject_token_type': 'urn:ietf:params:oauth:token-type:access_token',
-        'requested_token_type': 'urn:ietf:params:oauth:token-type:id_token',
-        'scope': 'email groups',
-        'resource': 'argo-cd'
+        'host': server.host,
+        'protocol': server.protocol,
+        'path': '/api/dex/token'
     }
 
-    var formBody = [];
-    for (var property in jsonBody) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(jsonBody[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-
-    consoleFetchJSON(serverURL + '/api/dex/token', 'POST', {
+    const response = await consoleFetchJSON('/api/proxy/plugin/gitops-admin-plugin/token-exchange/token', 'POST', {
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            'content-type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json'
         },
-        body: formBody.join("&")
+        body: JSON.stringify(jsonBody),
     });
 
+    const {data, errors} = await response.json()
+    if (response.ok) {
+      const access_token = data?.access_token
+        return access_token
+    } else {
+      // handle the graphql errors
+      const error = new Error(errors?.map(e => e.message).join('\n') ?? 'unknown')
+      return Promise.reject(error)
+    }
 }
