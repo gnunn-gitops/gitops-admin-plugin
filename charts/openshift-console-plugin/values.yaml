@@ -1,8 +1,8 @@
 ---
 plugin:
   name: "gitops-admin-plugin"
-  description: ""
-  image: ""
+  description: "GitOps Admin Plugin"
+  image: "quay.io/gnunn/gitops-admin-plugin:latest"
   imagePullPolicy: Always
   replicas: 2
   port: 9443
