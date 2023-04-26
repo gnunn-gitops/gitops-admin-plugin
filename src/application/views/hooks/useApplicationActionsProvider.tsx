@@ -8,7 +8,7 @@ import { Action, k8sDelete, k8sPatch, useK8sModel } from '@openshift-console/dyn
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import DeleteModal from '../modals/DeleteModal/DeleteModal';
 import { LabelsModal } from '../modals/LabelsModal/LabelsModal';
-import { sync } from '@gitops-utils/gitops';
+import { refresh, sync } from '@gitops-utils/gitops';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -22,6 +22,27 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
 
   const actions = React.useMemo(
     () => [
+      {
+        id: 'gitops-action-sync-application',
+        disabled: false,
+        label: t('Sync'),
+        cta: () =>
+          sync(model, application)
+      },
+      {
+        id: 'gitops-action-refresh-application',
+        disabled: false,
+        label: t('Refresh'),
+        cta: () =>
+          refresh(model, application, false)
+      },
+      {
+        id: 'gitops-action-refresh-hard-application',
+        disabled: false,
+        label: t('Refresh (Hard)'),
+        cta: () =>
+          refresh(model, application, true)
+      },
       {
         id: 'dataimportcron-action-edit-labels',
         disabled: false,
@@ -102,15 +123,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, application, 'delete'),
-      },
-      {
-        id: 'gitops-action-sync-application',
-        disabled: false,
-        label: t('Sync'),
-        cta: () => {
-          sync(model, application)
-        }
-      },
+      }
 
     ],
     [/*t, */ application, createModal /*, dataSource*/, history],

@@ -10,6 +10,8 @@ import { consoleFetchJSON } from "@openshift-console/dynamic-plugin-sdk";
 
 export const getDexToken = async (server: ArgoServer):Promise<string> => {
 
+    console.log("Getting Dex Token");
+
     var jsonBody = {
         'host': server.host,
         'protocol': server.protocol,

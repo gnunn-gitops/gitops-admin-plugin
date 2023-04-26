@@ -1,5 +1,6 @@
 import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
+import { refreshApp, syncApp } from "src/services/argocd";
 import { getDexToken } from "src/services/token-exchange";
 
 export function createRevisionURL(repo: string, revision: string) {
@@ -85,12 +86,32 @@ export const getArgoServer = async (model, namespace: string): Promise<ArgoServe
 
 export const sync = async (model, app: ApplicationKind) => {
 
+  console.log("Syncing application " + app.metadata.name);
+
   var server = await getArgoServer(model, app.metadata.namespace);
 
-  var dexToken = getDexToken(server);
+  var dexToken = await getDexToken(server);
+
+  syncApp(server, dexToken, app);
 
   console.log("token " + dexToken);
 
   console.log("Synchronizing application " + app.metadata.name);
+
+}
+
+export const refresh = async (model, app: ApplicationKind, hard: boolean) => {
+
+  console.log("Refreshing application " + app.metadata.name);
+
+  var server = await getArgoServer(model, app.metadata.namespace);
+
+  var dexToken = await getDexToken(server);
+
+  refreshApp(server, dexToken, app, hard);
+
+  console.log("token " + dexToken);
+
+  console.log("Refreshing application " + app.metadata.name);
 
 }
