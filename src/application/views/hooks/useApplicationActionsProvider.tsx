@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sDelete, k8sPatch, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import DeleteModal from '../modals/DeleteModal/DeleteModal';

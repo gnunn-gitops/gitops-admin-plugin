@@ -1,7 +1,6 @@
 import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 import { refreshApp, syncApp } from "src/services/argocd";
-import { getDexToken } from "src/services/token-exchange";
 
 export function createRevisionURL(repo: string, revision: string) {
   if (!repo || !revision) return undefined;

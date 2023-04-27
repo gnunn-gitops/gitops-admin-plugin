@@ -1,6 +1,6 @@
 {
   "name": "gitops-admin-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "repository": "git@github.com:gnunn-gitops/gitops-console-plugin.git",
   "license": "Apache-2.0",
