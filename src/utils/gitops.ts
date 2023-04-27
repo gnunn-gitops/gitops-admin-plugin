@@ -84,33 +84,17 @@ export const getArgoServer = async (model, namespace: string): Promise<ArgoServe
   }
 };
 
-export const sync = async (model, app: ApplicationKind) => {
+export const sync = async (app: ApplicationKind) => {
 
   console.log("Syncing application " + app.metadata.name);
 
-  var server = await getArgoServer(model, app.metadata.namespace);
-
-  var dexToken = await getDexToken(server);
-
-  syncApp(server, dexToken, app);
-
-  console.log("token " + dexToken);
-
-  console.log("Synchronizing application " + app.metadata.name);
+  syncApp(app);
 
 }
 
-export const refresh = async (model, app: ApplicationKind, hard: boolean) => {
+export const refresh = async (app: ApplicationKind, hard: boolean) => {
 
-  console.log("Refreshing application " + app.metadata.name);
-
-  var server = await getArgoServer(model, app.metadata.namespace);
-
-  var dexToken = await getDexToken(server);
-
-  refreshApp(server, dexToken, app, hard);
-
-  console.log("token " + dexToken);
+  refreshApp(app, hard);
 
   console.log("Refreshing application " + app.metadata.name);
 

@@ -18,7 +18,6 @@ const t = (key: string) => key;
 export const useApplicationActionsProvider: UseApplicationActionsProvider = (application) => {
   const { createModal } = useModal();
   const history = useHistory();
-  const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
 
   const actions = React.useMemo(
     () => [
@@ -27,21 +26,21 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         disabled: false,
         label: t('Sync'),
         cta: () =>
-          sync(model, application)
+          sync(application)
       },
       {
         id: 'gitops-action-refresh-application',
         disabled: false,
         label: t('Refresh'),
         cta: () =>
-          refresh(model, application, false)
+          refresh(application, false)
       },
       {
         id: 'gitops-action-refresh-hard-application',
         disabled: false,
         label: t('Refresh (Hard)'),
         cta: () =>
-          refresh(model, application, true)
+          refresh(application, true)
       },
       {
         id: 'dataimportcron-action-edit-labels',

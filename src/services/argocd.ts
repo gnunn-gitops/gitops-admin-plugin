@@ -1,13 +1,11 @@
 import { ApplicationKind } from "@application-model";
-import { ArgoServer } from "@gitops-utils/gitops";
 import { consoleFetchJSON } from "@openshift-console/dynamic-plugin-sdk";
 
-export const syncApp = async (server:ArgoServer, token: string, app: ApplicationKind):Promise<boolean> => {
+export const syncApp = async (app: ApplicationKind): Promise<boolean> => {
 
-    const response = await consoleFetchJSON(server.protocol + "://" + server.host + "/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
+    const response = await consoleFetchJSON("/api/proxy/plugin/gitops-admin-plugin/token-exchange/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token,
             'content-type': 'application/json;charset=UTF-8',
             'Accept': 'application/json'
         }
@@ -17,13 +15,12 @@ export const syncApp = async (server:ArgoServer, token: string, app: Application
     return (response.status == 200);
 }
 
-export const refreshApp = async (server:ArgoServer, token: string, app: ApplicationKind, hard: boolean):Promise<boolean> => {
+export const refreshApp = async (app: ApplicationKind, hard: boolean): Promise<boolean> => {
 
-    const response = await consoleFetchJSON(server.protocol + "://" + server.host + "/api/v1/applications/" + app.metadata.name + "?refresh=" + (hard?'hard':'normal'), 'GET', {
+    const response = await consoleFetchJSON("/api/proxy/plugin/gitops-admin-plugin/token-exchange/api/v1/applications/" + app.metadata.name + "?refresh=" + (hard ? 'hard' : 'normal'), 'GET', {
         headers: {
-            'Authorization': 'Bearer ' + token,
             'content-type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
         }
     });
 
