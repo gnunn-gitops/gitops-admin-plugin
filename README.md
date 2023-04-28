@@ -1,40 +1,30 @@
-# Note this project has been shelved
+# Introduction
 
-This was intended as a POC to understand the feasibility of building a lite UI in the OpenShift POC to manage OpenShift GitOps. Goals of the POC were:
+This is intended as a POC to understand the feasibility of building a in the OpenShift console to manage OpenShift GitOps. Goals of the POC were:
 
-1. Provide a basic view of Application objects in OpenShift
+1. Provide a basic view of Application objects in the OpenShift console
 2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
 
-Unfortunately at this time Option #2 does not appear to be feasible without signficant Engineering effort or changes in Architecture.
+This is not intended as a general replacement for the Argo CD UI since it operates under a different philosphy. Specifically the OpenShift Console is a Kubernetes resource driven of the cluster and this plugin adheres to that philosphy.
 
-OpenShift dynamic plugins run in the browser as part of the OpenShift console, the inherit the identity of the current logged in user. To support the second use case, we need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user would not have access to that secret either.
-
-The challenge with using the current identity is that in OpenShift GitOps access to Argo is protected by Dex and requires a Dex OIDC token, not an OpenShift OAuth token, to interact with Argo APIs. This involves overcoming two obstacles: Getting an OpenShift session token for the current user and exchanging it for a Dex token.
-
-Taking the second part first, while Token Exchange is not currently supported in Dex there is a [PR](https://github.com/dexidp/dex/pull/2806) available for it. I tested the PR and wrote a bit of [Go code](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L202) plus a horrific [hack](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L69) and was able to get the token exchange to work.
-
-However the first part of the challenge, retrieving the users session token appears to be insurmountable at this time. The session token is stored is an httpOnly cookie which prevents code in the browser from accessing it which is a good thing from a security perspective. Additionally as far as I can tell there is no way to have a new token minted or access this token via an API. Again a good thing since we don't want a malicious plugin sending tokens to bad actors.
-
-Unfortunately this means there is no way to interact with the Argo CD API in a way that fulfills the goals of this POC and hence I'm stopping work on it at this point. Should things change, or someone finds an alternative way to do this, I'm happy to revisit the topic.
-
-Making this work would likely require an internal accessible service in the console be available to do the token exchange for us or provide a way to mint a short lived access token (<5 minutes?) that plugins could leverage.
-
-# OpenShift GitOps Dynamic Plugin
-
-This plugin is a POC level OpenShift Console dynamic plugin to support OpenShift GitOps in the Administrator perspective. At this point it is very rough from a feature and UI perspective and thus absolutely not recommended in production environments.
-
-At the moment it supports viewing Application objects including basic information, sources, deployment history and resources that it is managing. There is currently no interactivity with Argo CD (i.e. sync from the OCP console) but hope to add that in the future.
+If the console user has the necessary Kubernetes RBAC to see the object then it will be shown to them, Argo CD RBAC is not used at all to evaluate object visibility. Having said that, any interaction with the Argo CD API does use the identity of the console user and thus will respect Argo CD RBAC.
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-list.png)
 
-## Acknowledgements
+# Prerequisites
 
-Thanks to the following individuals:
+In order for this plugin to interact with the Argo CD API it performs a token exchange with Dex. At the moment the only features that depend on this ability are triggering a Sync and Refresh in Application objects.
 
-* Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
-* Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
-* Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
-* Argo CD UI where I leveraged the existing code for determining Operation State
+To replace the default Dex provided by OpenShift Gitops with an image that supports token exchange modify the following in your Argo CD CR under `spec.sso.dex`:
+
+```
+   sso:
+      dex:
+         image: quay.io/gnunn/dex
+         version: token-exchange-1.7
+```
+
+Note the above is not supported by Red Hat and not recommended in production environments.
 
 ## Deployment on cluster
 
@@ -88,3 +78,22 @@ push it to an image registry.
    ```sh
    docker push $NAME/gitops-plugin:latest
    ```
+
+## Token Architecture
+
+OpenShift dynamic plugins run in the browser as part of the OpenShift console, the inherit the identity of the current logged in user. We need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied for any features outside the scope of Kubernetes resouce RBAC. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user may not have access to that secret either.
+
+The challenge with using the current identity is that in OpenShift GitOps access to Argo is protected by Dex and requires a Dex OIDC token, not an OpenShift OAuth token, to interact with Argo APIs. This involves overcoming two obstacles: Getting an OpenShift session token for the current user and exchanging it for a Dex token.
+
+Taking the second part first, while Token Exchange is not currently supported in Dex there is a [PR](https://github.com/dexidp/dex/pull/2806) available for it. I tested the PR and wrote a bit of [Go code](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L202) plus a horrific [hack](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L69) and was able to get the token exchange to work.
+
+For the first part, the only way to get the OAuth token from the token is to have a proxy service in the console as per this [documentation](https://github.com/openshift/enhancements/blob/master/enhancements/console/dynamic-plugins.md#delivering-plugins). The [gitops-plugin-proxy](https://github.com/gnunn-gitops/gitops-plugin-proxy) is a small Go application that will accept requests from the plugin in the console, extract the OAuth token and perform a token exchange with Dex before calling the requested Argo CD API.
+
+## Acknowledgements
+
+Thanks to the following individuals:
+
+* Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
+* Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
+* Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
+* Argo CD UI where I leveraged the existing code for determining Operation State
