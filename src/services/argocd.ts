@@ -7,7 +7,8 @@ export const syncApp = async (app: ApplicationKind): Promise<boolean> => {
         method: 'POST',
         headers: {
             'content-type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'namespace': app.metadata.namespace
         }
     });
 
@@ -21,6 +22,7 @@ export const refreshApp = async (app: ApplicationKind, hard: boolean): Promise<b
         headers: {
             'content-type': 'application/json;charset=UTF-8',
             'Accept': 'application/json',
+            'namespace': app.metadata.namespace
         }
     });
 
