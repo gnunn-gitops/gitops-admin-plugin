@@ -9,6 +9,11 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "openshift-console-plugin.labels" . | nindent 4 }}
+    app: gitops-admin-plugin
+    app.kubernetes.io/name: gitops-admin-plugin
+    app.kubernetes.io/instance: gitops-admin-plugin
+    app.openshift.io/runtime: nodejs
+    app.kubernetes.io/part-of: gitops-admin-plugin
 spec:
   ports:
     - name: {{ .Values.plugin.port }}-tcp
