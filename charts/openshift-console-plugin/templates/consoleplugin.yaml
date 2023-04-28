@@ -14,11 +14,11 @@ spec:
       port: {{ .Values.plugin.port }}
     type: Service
   proxy:
-  - alias: token-exchange
+  - alias: proxy
     authorization: UserToken
     endpoint:
       type: Service
       service:
-        name: plugin-token-exchange
+        name: gitops-plugin-proxy
         namespace: {{ .Release.Namespace }}
         port: 8443
