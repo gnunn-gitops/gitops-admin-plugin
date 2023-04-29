@@ -82,19 +82,3 @@ export const getArgoServer = async (model, namespace: string): Promise<ArgoServe
     return info;
   }
 };
-
-export const sync = async (app: ApplicationKind) => {
-
-  console.log("Syncing application " + app.metadata.name);
-
-  syncApp(app);
-
-}
-
-export const refresh = async (app: ApplicationKind, hard: boolean) => {
-
-  refreshApp(app, hard);
-
-  console.log("Refreshing application " + app.metadata.name);
-
-}
