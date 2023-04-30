@@ -3,13 +3,12 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, ErrorStatus, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import DeleteModal from '../modals/DeleteModal/DeleteModal';
 import { LabelsModal } from '../modals/LabelsModal/LabelsModal';
-import { refresh } from '@gitops-utils/gitops';
-import { syncApp } from 'src/services/argocd';
+import { refreshApp, syncApp } from 'src/services/argocd';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -27,28 +26,24 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         disabled: false,
         label: t('Sync'),
         cta: () =>
-          syncApp(application).then((res) => {
-            if (!res) {
-              console.log("Application sync failed")
-              return createModal(({ isOpen, onClose }) => (
-                <ErrorStatus title={'Application failed to sync'} popoverTitle={'Sync Failed'} />
-              ))
-            }
-          }),
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          syncApp(application)
       },
       {
         id: 'gitops-action-refresh-application',
         disabled: false,
         label: t('Refresh'),
         cta: () =>
-          refresh(application, false)
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+         refreshApp(application, false)
       },
       {
         id: 'gitops-action-refresh-hard-application',
         disabled: false,
         label: t('Refresh (Hard)'),
         cta: () =>
-          refresh(application, true)
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          refreshApp(application, true)
       },
       {
         id: 'dataimportcron-action-edit-labels',

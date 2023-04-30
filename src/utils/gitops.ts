@@ -1,6 +1,4 @@
-import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
-import { refreshApp, syncApp } from "src/services/argocd";
 
 export function createRevisionURL(repo: string, revision: string) {
   if (!repo || !revision) return undefined;
