@@ -17,6 +17,7 @@ import ConfirmActionMessage from '../components/ConfirmActionMessage/ConfirmActi
 import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../modals/LabelsModal/LabelsModal';
 import TabModal from '../modals/TabModal/TabModal';
+import { refreshApp, syncApp } from 'src/services/argocd';
 
 type ApplicationRowActionsProps = {
   obj?: ApplicationKind;
@@ -105,6 +106,18 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
     ));
   };
 
+  const onSyncApplication = () => {
+    syncApp(obj);
+  };
+
+  const onRefreshApplication = () => {
+    refreshApp(obj, false);
+  };
+
+  const onRefreshHardApplication = () => {
+    refreshApp(obj, true);
+  };
+
   return (
     <Dropdown
       menuAppendTo={getContentScrollableElement}
@@ -113,6 +126,15 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
+        <DropdownItem onClick={onSyncApplication} key="application-sync">
+          {'Sync'}
+        </DropdownItem>,
+        <DropdownItem onClick={onRefreshApplication} key="application-refresh">
+          {'Refresh'}
+        </DropdownItem>,
+        <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard">
+          {'Refresh (Hard)'}
+        </DropdownItem>,
         <DropdownItem onClick={onEditLabelsModalToggle} key="application-delete">
           {'Edit labels'}
         </DropdownItem>,
