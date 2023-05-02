@@ -5,9 +5,9 @@ import { ApplicationKind, ApplicationModel, applicationModelRef } from '@applica
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
-import { AnnotationsModal } from '../modals/AnnotationsModal/AnnotationsModal';
-import DeleteModal from '../modals/DeleteModal/DeleteModal';
-import { LabelsModal } from '../modals/LabelsModal/LabelsModal';
+import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
+import DeleteModal from '../../../shared/views/modals/DeleteModal/DeleteModal';
+import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
 import { refreshApp, syncApp } from 'src/services/argocd';
 
 type UseApplicationActionsProvider = (

@@ -22,7 +22,7 @@ import { k8sPatch, ResourceLink, Timestamp, useK8sModel } from '@openshift-conso
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { LabelsModal } from './modals/LabelsModal/LabelsModal';
+import { LabelsModal } from '../../shared/views/modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import RevisionFragment from './components/Revision/RevisionFragment';
