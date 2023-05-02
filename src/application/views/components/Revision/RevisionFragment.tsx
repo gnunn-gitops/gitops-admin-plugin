@@ -5,23 +5,31 @@ import ExternalLink from '../ExternalLink/ExternalLink';
 interface RevisionProps {
     repoURL: string;
     revision: string;
+    helm: boolean;
 }
 
-const RevisionFragment: React.FC<RevisionProps> = ({ repoURL, revision }) => {
+const RevisionFragment: React.FC<RevisionProps> = ({ repoURL, revision, helm }) => {
     if (revision) {
         return (
             (
-                <ExternalLink href={createRevisionURL(repoURL, revision)}>
-                    {revision.substring(0,7) || ''}
-                </ExternalLink>
+                <div>
+                    {!helm &&
+                        <ExternalLink href={createRevisionURL(repoURL, revision)}>
+                            {revision.substring(0, 7) || ''}
+                        </ExternalLink>
+                    }
+                    {helm &&
+                        <span>{ revision }</span>
+                    }
+                </div>
             )
         )
     } else {
-      return (
-        (
-            <span>None</span>
+        return (
+            (
+                <span>None</span>
+            )
         )
-      )
     }
 };
 

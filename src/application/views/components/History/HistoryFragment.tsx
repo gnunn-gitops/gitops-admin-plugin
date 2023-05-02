@@ -44,6 +44,7 @@ const historyListRow: React.FC<RowProps<ApplicationHistory>> = ({ obj, activeCol
                 <RevisionFragment
                     revision={obj.revision || ''}
                     repoURL={obj.source.repoURL}
+                    helm={false}
                   />
             </TableData>
         </>

@@ -198,7 +198,11 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                     </FlexItem>
                     <FlexItem>
                       <Label>
-                        <RevisionFragment revision={obj.status?.sync?.revision || ''} repoURL={obj.spec.source.repoURL} />
+                        <RevisionFragment
+                           revision={obj.status?.sync?.revision || ''}
+                           repoURL={obj.spec.source.repoURL}
+                           helm={obj.status?.sourceType == "helm"}
+                           />
                       </Label>
                     </FlexItem>
                   </Flex>

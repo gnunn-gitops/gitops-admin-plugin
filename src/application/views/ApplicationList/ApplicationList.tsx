@@ -93,7 +93,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
             />
           </FlexItem>
           <FlexItem>
-            <OperationStateFragment app={obj} quiet={true}/>
+            <OperationStateFragment app={obj} quiet={true} />
           </FlexItem>
         </Flex>
       </TableData>
@@ -106,6 +106,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
         <RevisionFragment
           revision={obj.status?.sync?.revision || ''}
           repoURL={obj.spec.source.repoURL}
+          helm={obj.status?.sourceType == "Helm"}
         />
       </TableData>
       <TableData id="project" activeColumnIDs={activeColumnIDs}>
