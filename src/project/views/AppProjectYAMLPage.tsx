@@ -10,10 +10,10 @@ type AppProjectYAMLPageProps = RouteComponentProps<{
   ns: string;
   name: string;
 }> & {
-  appProject?: AppProjectKind;
+  obj?: AppProjectKind;
 };
 
-const AppProjectYAMLPage: React.FC<AppProjectYAMLPageProps> = ({ appProject }) => {
+const AppProjectYAMLPage: React.FC<AppProjectYAMLPageProps> = ({ obj: appProject }) => {
   const { t } = useGitOpsTranslation();
   return !appProject ? (
     <div>

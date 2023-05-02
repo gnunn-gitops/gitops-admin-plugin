@@ -29,7 +29,7 @@ const AppProjectPageTitle: React.FC<AppProjectPageTitleProps> = ({ appProject, n
       <div className="co-m-nav-title co-m-nav-title--detail co-m-nav-title--breadcrumbs">
         <span className="co-m-pane__heading">
           <h1 className="co-m-pane__name co-resource-item">
-            <span className="co-m-resource-icon co-m-resource-icon--lg">{'DS'}</span>
+            <span className="co-m-resource-icon co-m-resource-icon--lg">{'AP'}</span>
             <span data-test-id="resource-title" className="co-resource-item__resource-name">
               {name ?? appProject?.metadata?.name}{' '}
             </span>
