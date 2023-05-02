@@ -1,8 +1,8 @@
 import React from 'react';
-import { getContentScrollableElement } from 'src/application/views/ApplicationList/ApplicationRowActions';
-import { useApplicationActionsProvider } from 'src/application/views/hooks/useApplicationActionsProvider';
+import { getContentScrollableElement } from '../../AppProjectList/AppProjectRowActions';
+import { useAppProjectActionsProvider } from '../../hooks/useAppProjectActionsProvider';
 
-import { ApplicationKind } from '@application-model';
+import { AppProjectKind } from '@appproject-model';
 import { Action } from '@openshift-console/dynamic-plugin-sdk';
 import {
   Dropdown,
@@ -12,18 +12,18 @@ import {
   KebabToggle,
 } from '@patternfly/react-core';
 
-import './ApplicationActions.scss';
+import './AppProjectActions.scss';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
-type ApplicationActionProps = {
-  application: ApplicationKind;
+type AppProjectActionProps = {
+  appProject: AppProjectKind;
   isKebabToggle?: boolean;
 };
 
-export const ApplicationActions: React.FC<ApplicationActionProps> = ({ application, isKebabToggle }) => {
+export const AppProjectActions: React.FC<AppProjectActionProps> = ({ appProject, isKebabToggle }) => {
   const { t } = useGitOpsTranslation();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [actions /*, onLazyOpen*/] = useApplicationActionsProvider(application);
+  const [actions /*, onLazyOpen*/] = useAppProjectActionsProvider(appProject);
 
   const handleClick = (action: Action) => {
     if (typeof action?.cta === 'function') {
@@ -40,7 +40,7 @@ export const ApplicationActions: React.FC<ApplicationActionProps> = ({ applicati
   return (
     <Dropdown
       menuAppendTo={getContentScrollableElement}
-      data-test-id="console-application-actions"
+      data-test-id="console-app-project-actions"
       isPlain={isKebabToggle}
       isOpen={isOpen}
       position={DropdownPosition.right}

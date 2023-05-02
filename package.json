@@ -65,9 +65,13 @@
     "exposedModules": {
       "ApplicationList": "./application/views/ApplicationList/ApplicationList.tsx",
       "ApplicationDetails": "./application/views/ApplicationDetails.tsx",
-      "yamlTemplates": "src/application/templates/index.ts",
-      "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx",
-      "useApplicationActionsProvider": "./application/views/hooks/useApplicationActionsProvider.tsx"
+      "useApplicationActionsProvider": "./application/views/hooks/useApplicationActionsProvider.tsx",
+      "yamlApplicationTemplates": "src/application/templates/index.ts",
+      "AppProjectList": "./project/views/AppProjectList/AppProjectList.tsx",
+      "AppProjectDetails": "./project/views/AppProjectDetails.tsx",
+      "useAppProjectActionsProvider": "./project/views/hooks/useAppProjectActionsProvider.tsx",
+      "yamlAppProjectTemplates": "src/project/templates/index.ts",
+      "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
     },
     "dependencies": {
       "@console/pluginAPI": "^4.11"
