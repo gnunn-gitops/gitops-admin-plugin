@@ -15,9 +15,17 @@ export const AppProjectModel: K8sModel = {
   crd: true,
 };
 
+export type Destination = {
+  name?: string,
+  namespace: string,
+  server: string
+}
+
 export type AppProjectKind = K8sResourceCommon & {
   spec?: {
-    description?: string
+    description?: string,
+    destinations?: Destination[],
+    sourceNamespaces?: string[],
     sourceRepos?: string[]
   };
   status?: { [key: string]: any };
