@@ -159,9 +159,6 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
             destinations={obj.spec.destinations}
           />
       </PageSection>
-
-
-
     </div>
   );
 };

@@ -9,7 +9,6 @@ interface DestinationListProps {
 }
 
 const DestinationsListFragment: React.FC<DestinationListProps> = ({ destinations }) => {
-
     return (
         <>
             <VirtualizedTable
