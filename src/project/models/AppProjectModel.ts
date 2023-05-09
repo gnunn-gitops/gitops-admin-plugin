@@ -15,6 +15,11 @@ export const AppProjectModel: K8sModel = {
   crd: true,
 };
 
+export type ResourceAllowDeny = {
+  group: string,
+  kind: string
+}
+
 export type Destination = {
   name?: string,
   namespace: string,
@@ -26,7 +31,11 @@ export type AppProjectKind = K8sResourceCommon & {
     description?: string,
     destinations?: Destination[],
     sourceNamespaces?: string[],
-    sourceRepos?: string[]
+    sourceRepos?: string[],
+    clusterResourceWhitelist?: ResourceAllowDeny[],
+    clusterResourceBlacklist?: ResourceAllowDeny[],
+    namespaceResourceWhitelist?: ResourceAllowDeny[],
+    namespaceResourceBlacklist?: ResourceAllowDeny[]
   };
   status?: { [key: string]: any };
 };

@@ -23,6 +23,7 @@ import { AppProjectModel } from '@appproject-model/AppProjectModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import DestinationsListFragment from './components/Destinations/DestinationFragment';
+import ResourceAllowDenyListFragment from './components/ResourceAllowDenyList/ResourceAllowDenyFragment';
 
 type AppProjectDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -159,6 +160,87 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
             destinations={obj.spec.destinations}
           />
       </PageSection>
+
+      <PageSection hasShadowTop={true}>
+        <Title headingLevel="h2" className="co-section-heading">
+          {t('Resource Allow/Deny Lists')}
+        </Title>
+
+          <DescriptionList>
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Cluster Resource Allow List')}</div>} bodyContent={<div>{t('Cluster resources allowed in applications in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Cluster Resource Allow List')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {obj.spec.clusterResourceWhitelist &&
+                      <ResourceAllowDenyListFragment
+                        list={obj.spec.clusterResourceWhitelist}
+                      />
+                  }
+                  {!obj.spec.clusterResourceWhitelist &&
+                    <div>The cluster resource allow list is empty</div>
+                  }
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Cluster Resource Deny List')}</div>} bodyContent={<div>{t('Cluster resources denied in applications in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Cluster Resource Deny List')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {obj.spec.clusterResourceBlacklist &&
+                    <ResourceAllowDenyListFragment
+                      list={obj.spec.clusterResourceBlacklist}
+                    />
+                  }
+                  {!obj.spec.clusterResourceBlacklist &&
+                    <div>The cluster resource deny list is empty</div>
+                  }
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Namespace Resource Allow List')}</div>} bodyContent={<div>{t('Namespace resources allowed in applications in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Namespace Resource Allow List')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {obj.spec.namespaceResourceWhitelist &&
+                    <ResourceAllowDenyListFragment
+                      list={obj.spec.namespaceResourceWhitelist}
+                    />
+                  }
+                  {!obj.spec.namespaceResourceWhitelist &&
+                    <div>The namespace resource allow list is empty</div>
+                  }
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Namespace Resource Deny List')}</div>} bodyContent={<div>{t('Namespace resources denied in applications in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Namespace Resource Deny List')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {obj.spec.namespaceResourceBlacklist &&
+                    <ResourceAllowDenyListFragment
+                      list={obj.spec.namespaceResourceBlacklist}
+                    />
+                  }
+                  {!obj.spec.namespaceResourceBlacklist &&
+                    <div>The namespace resource deny list is empty</div>
+                  }
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+            </DescriptionList>
+      </PageSection>
+
     </div>
   );
 };
