@@ -6,6 +6,8 @@ import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import { PageSection } from '@patternfly/react-core';
+import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
+import { HealthStatus } from '@gitops-utils/constants';
 //import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ApplicationResourcesPageProps = RouteComponentProps<{
@@ -66,6 +68,12 @@ const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj
                 {obj.syncWave}
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
+                {(obj.health?.status && obj.health.status != HealthStatus.HEALTHY) &&
+                    <HealthStatusFragment
+                    status={obj.health.status}
+                    message={obj.health.message}
+                    />
+                }
                 <SyncStatusFragment
                     status={obj.status}
                 />

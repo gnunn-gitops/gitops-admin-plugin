@@ -88,7 +88,8 @@ export type ApplicationResourceStatus = {
   syncWave?: number,
   status?: string
   health?: {
-    status?: string
+    status?: string,
+    message?: string
   }
 }
 
