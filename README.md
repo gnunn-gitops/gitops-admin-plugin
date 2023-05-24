@@ -89,6 +89,8 @@ Taking the second part first, while Token Exchange is not currently supported in
 
 For the first part, the only way to get the OAuth token from the token is to have a proxy service in the console as per this [documentation](https://github.com/openshift/enhancements/blob/master/enhancements/console/dynamic-plugins.md#delivering-plugins). The [gitops-plugin-proxy](https://github.com/gnunn-gitops/gitops-plugin-proxy) is a small Go application that will accept requests from the plugin in the console, extract the OAuth token and perform a token exchange with Dex before calling the requested Argo CD API.
 
+![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-architecture.png)
+
 ## Acknowledgements
 
 Thanks to the following individuals:
