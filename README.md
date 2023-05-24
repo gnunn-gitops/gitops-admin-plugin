@@ -21,7 +21,7 @@ To replace the default Dex provided by OpenShift Gitops with an image that suppo
    sso:
       dex:
          image: quay.io/gnunn/dex
-         version: token-exchange-1.7
+         version: token-exchange-1.8
 ```
 
 Note the above is not supported by Red Hat and not recommended in production environments.
