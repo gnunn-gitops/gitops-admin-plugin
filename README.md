@@ -5,7 +5,7 @@ This is intended as a POC to understand the feasibility of building a in the Ope
 1. Provide a basic view of Application objects in the OpenShift console
 2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
 
-This is not intended as a general replacement for the Argo CD UI since it operates under a different philosphy. Specifically the OpenShift Console is a Kubernetes resource driven of the cluster and this plugin adheres to that philosphy.
+This is not intended as a general replacement for the Argo CD UI since it operates under a different philosphy. Specifically the OpenShift Console is a Kubernetes resource driven view of the cluster and this plugin adheres to that philosphy.
 
 If the console user has the necessary Kubernetes RBAC to see the object then it will be shown to them, Argo CD RBAC is not used at all to evaluate object visibility. Having said that, any interaction with the Argo CD API does use the identity of the console user and thus will respect Argo CD RBAC.
 
