@@ -81,7 +81,7 @@ push it to an image registry.
 
 ## Token Architecture
 
-OpenShift dynamic plugins run in the browser as part of the OpenShift console, the inherit the identity of the current logged in user. We need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied for any features outside the scope of Kubernetes resouce RBAC. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user may not have access to that secret either.
+OpenShift dynamic plugins run in the browser as part of the OpenShift console, they inherit the identity of the current logged in user. We need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied for any features outside the scope of Kubernetes resouce RBAC. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user may not have access to that secret either.
 
 The challenge with using the current identity is that in OpenShift GitOps access to Argo is protected by Dex and requires a Dex OIDC token, not an OpenShift OAuth token, to interact with Argo APIs. This involves overcoming two obstacles: Getting an OpenShift session token for the current user and exchanging it for a Dex token.
 
