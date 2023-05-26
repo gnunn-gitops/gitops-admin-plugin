@@ -26,6 +26,15 @@ To replace the default Dex provided by OpenShift Gitops with an image that suppo
 
 Note the above is not supported by Red Hat and not recommended in production environments.
 
+# Limitations
+
+There are a few limitations in this POC level implementation:
+
+- Little to no error handling, if things don't work use the browser's Developer Tools to view the console log
+- Limited testing across the wide swath of Argo CD features, for example Helm apps have only been lightly tested.
+- No edit capabilities beyond editing the yaml
+- No useability testing but suggestions for UI improvements definitely welcome!
+
 ## Deployment on cluster
 
 
