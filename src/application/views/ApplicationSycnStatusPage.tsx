@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { ApplicationKind, ApplicationResourceStatus } from '@application-model';
-import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Timestamp, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Timestamp, VirtualizedTable, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Grid, GridItem, PageSection, Popover } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import { getDuration } from '@gitops-utils/gitops';
+import { ArgoServer, getArgoServer, getDuration } from '@gitops-utils/gitops';
+import ResourceRowActions from './ResourceRowActions';
 
 type ApplicationSyncStatusPageProps = RouteComponentProps<{
     ns: string;
@@ -19,6 +20,23 @@ type ApplicationSyncStatusPageProps = RouteComponentProps<{
 const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ obj }) => {
 
     const { t } = useGitOpsTranslation();
+
+    const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
+
+    const [argoServer, setArgoServer] = React.useState<ArgoServer>({host: "", protocol: ""})
+
+    React.useEffect(() => {
+      (async () => {
+        getArgoServer(model, obj)
+          .then((argoServer) => {
+            console.log("Argo Server: " + argoServer);
+            setArgoServer(argoServer);
+          })
+          .catch((err) => {
+            console.error('Error:', err);
+          });
+      })();
+    }, [])
 
     var resources: ApplicationResourceStatus[];
     if (obj?.status?.operationState?.syncResult?.resources) {
@@ -134,14 +152,21 @@ const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ o
                     loaded={true}
                     loadError={null}
                     columns={useResourceColumns()}
-                    Row={applicationListRow}
+                    Row={resourceListRow}
+                    rowData={{ argoBaseURL: argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}}
                 />
             </PageSection>
         </div>
     )
 }
 
-const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj, activeColumnIDs }) => {
+const resourceListRow: React.FC<RowProps<
+                                  ApplicationResourceStatus,
+                                  {
+                                    argoBaseURL: string
+                                  }
+                                  >
+                                > = ({ obj, activeColumnIDs, rowData: {argoBaseURL} }) => {
 
     const gvk: K8sGroupVersionKind = {
         version: obj.version,
@@ -171,6 +196,13 @@ const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj
             </TableData>
             <TableData id="message" activeColumnIDs={activeColumnIDs}>
                 {obj.message}
+            </TableData>
+            <TableData
+                id="actions"
+                activeColumnIDs={activeColumnIDs}
+                className="dropdown-kebab-pf pf-c-table__action"
+            >
+                <ResourceRowActions resource={obj} argoBaseURL={argoBaseURL} />
             </TableData>
         </>
     );
@@ -209,6 +241,11 @@ export const useResourceColumns = () => {
                 id: 'message',
                 transforms: [sortable],
                 sort: 'message'
+            },
+            {
+                title: '',
+                id: 'actions',
+                props: { className: 'dropdown-kebab-pf pf-c-table__action' }
             }
         ],
         [],
