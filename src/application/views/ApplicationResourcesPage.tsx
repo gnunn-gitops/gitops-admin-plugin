@@ -8,6 +8,7 @@ import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import { PageSection } from '@patternfly/react-core';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import { HealthStatus } from '@gitops-utils/constants';
+import ResourceRowActions from './ResourceRowActions';
 //import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ApplicationResourcesPageProps = RouteComponentProps<{
@@ -78,6 +79,13 @@ const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj
                     status={obj.status}
                 />
             </TableData>
+            <TableData
+                id="actions"
+                activeColumnIDs={activeColumnIDs}
+                className="dropdown-kebab-pf pf-c-table__action"
+            >
+                <ResourceRowActions resource={obj} />
+            </TableData>
         </>
     );
 };
@@ -109,6 +117,11 @@ export const useResourceColumns = () => {
                 id: 'status',
                 transforms: [sortable],
                 sort: 'status'
+            },
+            {
+              title: '',
+              id: 'actions',
+              props: { className: 'dropdown-kebab-pf pf-c-table__action' },
             }
         ],
         [],

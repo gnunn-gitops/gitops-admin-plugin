@@ -1,3 +1,4 @@
+import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 
 export function createRevisionURL(repo: string, revision: string) {
@@ -51,7 +52,7 @@ export type ArgoServer = {
   protocol: string,
 }
 
-export const getArgoServer = async (model, namespace: string): Promise<ArgoServer> => {
+export const getArgoServer = async (model, app: ApplicationKind): Promise<ArgoServer> => {
 
   var info: ArgoServer = {
       host: "",
@@ -62,7 +63,7 @@ export const getArgoServer = async (model, namespace: string): Promise<ArgoServe
     const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
       model: model,
       queryParams: {
-        ns: namespace,
+        ns: app.metadata.namespace,
         labelSelector: {
           matchLabels: {
             'app.kubernetes.io/part-of': 'argocd',

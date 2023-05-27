@@ -51,7 +51,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
 
   React.useEffect(() => {
     (async () => {
-      getArgoServer(model, obj.metadata.namespace)
+      getArgoServer(model, obj)
         .then((argoServer) => {
           console.log("Argo Server: " + argoServer);
           setArgoServer(argoServer);
