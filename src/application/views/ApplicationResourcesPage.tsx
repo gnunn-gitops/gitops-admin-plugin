@@ -38,14 +38,14 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
                     loaded={true}
                     loadError={null}
                     columns={useResourceColumns()}
-                    Row={applicationListRow}
+                    Row={resourceListRow}
                 />
             </PageSection>
         </div>
     )
 }
 
-const applicationListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj, activeColumnIDs }) => {
+const resourceListRow: React.FC<RowProps<ApplicationResourceStatus>> = ({ obj, activeColumnIDs }) => {
 
     const gvk : K8sGroupVersionKind = {
         version: obj.version,
