@@ -10,14 +10,21 @@ import { ApplicationResourceStatus } from '@application-model';
 
 type ResourceRowActionsProps = {
   resource: ApplicationResourceStatus;
+  argoBaseURL: string;
 };
 
-const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource }) => {
+function getResourceURL(argoBaseURL: string, resource: ApplicationResourceStatus): string {
+  return argoBaseURL+"?resource=&node=" + encodeURI((resource.group?resource.group:"") + "/" + resource.kind + "/" + (resource.namespace?resource.namespace:"") + "/" + resource.name);
+}
+
+const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, argoBaseURL }) => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
-  const onDiff = () => {
-    console.log("diff")
+  const onViewResource = () => {
+    window.open(getResourceURL(argoBaseURL, resource), '_blank');
   };
+
+  console.log(argoBaseURL);
 
   return (
     <Dropdown
@@ -27,8 +34,8 @@ const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource }) => 
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onDiff} key="resource-diff">
-          {'Diff'}
+        <DropdownItem onClick={onViewResource} key="resource-diff">
+          <span>View (Argo CD)</span>
         </DropdownItem>
       ]}
       position={DropdownPosition.right}
