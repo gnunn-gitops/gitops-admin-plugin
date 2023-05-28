@@ -7,7 +7,6 @@ import {
 } from '@patternfly/react-core';
 import { ApplicationResourceStatus } from '@application-model';
 
-
 type ResourceRowActionsProps = {
   resource: ApplicationResourceStatus;
   argoBaseURL: string;
