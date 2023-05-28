@@ -30,7 +30,7 @@ const resourceAllowDenyListRow: React.FC<RowProps<ResourceAllowDeny>> = ({ obj, 
                 {obj.kind}
             </TableData>
             <TableData id="group" activeColumnIDs={activeColumnIDs}>
-                {obj.group}
+                {obj.group?obj.group:"-"}
             </TableData>
         </>
     );
