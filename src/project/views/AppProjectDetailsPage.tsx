@@ -32,6 +32,20 @@ type AppProjectDetailsPageProps = RouteComponentProps<{
   obj?: any;
 };
 
+function renderStringArray(items: string[]) {
+  if (items) {
+    return (
+      <List isPlain isBordered>
+      {items.map(el=> <ListItem>{el}</ListItem>)}
+      </List>
+    )
+  } else {
+    return (
+      <div className="pf-u-text-align-center">Not found</div>
+    )
+  }
+}
+
 const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
@@ -135,21 +149,13 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Source Repositories')}
         </Title>
-          {obj.spec.sourceRepos &&
-            <List isPlain isBordered>
-              {obj.spec.sourceRepos.map(el=> <ListItem>{el}</ListItem>)}
-           </List>
-        }
+          {renderStringArray(obj.spec.sourceRepos)}
       </PageSection>
       <PageSection hasShadowTop={true}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Source Namespaces')}
         </Title>
-          {obj.spec.sourceNamespaces &&
-            <List isPlain isBordered>
-              {obj.spec.sourceNamespaces.map(el=> <ListItem>{el}</ListItem>)}
-            </List>
-          }
+          {renderStringArray(obj.spec.sourceNamespaces)}
       </PageSection>
 
       <PageSection hasShadowTop={true}>
