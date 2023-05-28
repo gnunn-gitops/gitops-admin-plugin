@@ -41,6 +41,11 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         component: ApplicationDetailsPage,
       },
       {
+        href: 'yaml',
+        name: t('YAML'),
+        component: ApplicationYAMLPage,
+      },
+      {
         href: 'resources',
         name: t('Resources'),
         component: ApplicationResourcesPage,
@@ -49,11 +54,6 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         href: 'syncStatus',
         name: t('Sync Status'),
         component: ApplicationSyncStatusPage,
-      },
-      {
-        href: 'yaml',
-        name: t('YAML'),
-        component: ApplicationYAMLPage,
       },
     ],
     [],

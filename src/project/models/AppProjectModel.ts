@@ -26,6 +26,24 @@ export type Destination = {
   server: string
 }
 
+export type Role = {
+  name: string,
+  description?: string,
+  groups?: string[],
+  policies?: string[]
+}
+
+export type SyncWindow = {
+  kind: string,
+  schedule: string,
+  duration: string,
+  applications?: string[],
+  clusters?: string[],
+  namespaces?: string[],
+  manualSync?: boolean,
+  timeZone?: string
+}
+
 export type AppProjectKind = K8sResourceCommon & {
   spec?: {
     description?: string,
@@ -35,7 +53,9 @@ export type AppProjectKind = K8sResourceCommon & {
     clusterResourceWhitelist?: ResourceAllowDeny[],
     clusterResourceBlacklist?: ResourceAllowDeny[],
     namespaceResourceWhitelist?: ResourceAllowDeny[],
-    namespaceResourceBlacklist?: ResourceAllowDeny[]
+    namespaceResourceBlacklist?: ResourceAllowDeny[],
+    roles?: Role[],
+    syncWindows: SyncWindow[]
   };
   status?: { [key: string]: any };
 };
