@@ -1,5 +1,5 @@
 apiVersion: v2
-name: openshift-console-plugin
-description: A Helm chart for Kubernetes
+name: gitops-admin-plugin
+description: GitOps Plugin for the OpenShift Console
 type: application
 version: 0.1.0
