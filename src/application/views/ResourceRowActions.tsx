@@ -34,7 +34,7 @@ const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, argoB
       isPlain
       dropdownItems={[
         <DropdownItem onClick={onViewResource} key="resource-diff">
-          <span>View (Argo CD)</span>
+          <span>Details</span>
         </DropdownItem>
       ]}
       position={DropdownPosition.right}
