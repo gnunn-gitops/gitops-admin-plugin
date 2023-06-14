@@ -5,10 +5,12 @@ import {
   DropdownPosition,
   KebabToggle,
 } from '@patternfly/react-core';
-import { ApplicationResourceStatus } from '@application-model';
+import { ApplicationKind, ApplicationResourceStatus } from '@application-model';
+import { syncResource } from 'src/services/argocd';
 
 type ResourceRowActionsProps = {
   resource: ApplicationResourceStatus;
+  application: ApplicationKind;
   argoBaseURL: string;
 };
 
@@ -16,14 +18,17 @@ function getResourceURL(argoBaseURL: string, resource: ApplicationResourceStatus
   return argoBaseURL+"?resource=&node=" + encodeURI((resource.group?resource.group:"") + "/" + resource.kind + "/" + (resource.namespace?resource.namespace:"") + "/" + resource.name);
 }
 
-const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, argoBaseURL }) => {
+const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, application, argoBaseURL }) => {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
   const onViewResource = () => {
     window.open(getResourceURL(argoBaseURL, resource), '_blank');
   };
 
-  console.log(argoBaseURL);
+  const onSyncResource = () => {
+    syncResource(application, resource)
+  };
+
 
   return (
     <Dropdown
@@ -34,7 +39,10 @@ const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, argoB
       isPlain
       dropdownItems={[
         <DropdownItem onClick={onViewResource} key="resource-diff">
-          <span>Details</span>
+          {'Details'}
+        </DropdownItem>,
+        <DropdownItem onClick={onSyncResource} key="resource-sync" isDisabled={resource.status==undefined}>
+          {'Sync'}
         </DropdownItem>
       ]}
       position={DropdownPosition.right}

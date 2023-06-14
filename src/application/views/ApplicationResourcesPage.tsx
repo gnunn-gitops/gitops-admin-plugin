@@ -58,7 +58,7 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
                     loadError={null}
                     columns={useResourceColumns()}
                     Row={resourceListRow}
-                    rowData={{ argoBaseURL: argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}}
+                    rowData={{ application: obj, argoBaseURL: argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}}
                 />
             </PageSection>
         </div>
@@ -68,10 +68,11 @@ const ApplicationResourcesPage: React.FC<ApplicationResourcesPageProps> = ({ obj
 const resourceListRow: React.FC<RowProps<
                                   ApplicationResourceStatus,
                                   {
+                                    application: ApplicationKind,
                                     argoBaseURL: string
                                   }
                                   >
-                                > = ({ obj, activeColumnIDs, rowData: {argoBaseURL} }) => {
+                                > = ({ obj, activeColumnIDs, rowData: {application, argoBaseURL} }) => {
 
     const gvk: K8sGroupVersionKind = {
         version: obj.version,
@@ -110,7 +111,7 @@ const resourceListRow: React.FC<RowProps<
                 activeColumnIDs={activeColumnIDs}
                 className="dropdown-kebab-pf pf-c-table__action"
             >
-                <ResourceRowActions resource={obj} argoBaseURL={argoBaseURL} />
+                <ResourceRowActions resource={obj} argoBaseURL={argoBaseURL} application={application} />
             </TableData>
         </>
     );
