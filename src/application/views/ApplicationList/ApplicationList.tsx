@@ -186,6 +186,9 @@ const useApplicationColumns = (namespace) => {
   return React.useMemo(() => columns, [namespace]);
 };
 
+// Need to differentiate between Sync and Health Unknown for filtering
+const FilterUnknownStatus: string = 'Sync.'+SyncStatus.UNKNOWN;
+
 export const filters: RowFilter[] = [
   {
     filterGroupName: 'Sync Status',
@@ -193,7 +196,8 @@ export const filters: RowFilter[] = [
     reducer: (application) => (application.status?.sync?.status),
     filter: (input, application) => {
       if (input.selected?.length && application?.status?.sync?.status) {
-        return input.selected.includes(application.status.sync.status);
+        return input.selected.includes(application.status.sync.status) ||
+               (input.selected.includes(FilterUnknownStatus) && application.status.sync.status == SyncStatus.UNKNOWN)
       } else {
         return true;
       }
@@ -201,7 +205,7 @@ export const filters: RowFilter[] = [
     items: [
       { id: SyncStatus.SYNCED, title: SyncStatus.SYNCED },
       { id: SyncStatus.OUT_OF_SYNC, title: SyncStatus.OUT_OF_SYNC },
-      { id: SyncStatus.UNKNOWN, title: SyncStatus.UNKNOWN },
+      { id: FilterUnknownStatus, title: SyncStatus.UNKNOWN },
     ],
   },
   {
