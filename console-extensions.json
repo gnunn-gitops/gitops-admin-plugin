@@ -29,6 +29,20 @@
   {
     "type": "console.navigation/resource-ns",
     "properties": {
+      "id": "applicationset",
+      "name": "%plugin__gitops-admin-plugin~ApplicationSets%",
+      "perspective": "admin",
+      "section": "gitops",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "ApplicationSet",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
       "id": "application",
       "name": "%plugin__gitops-admin-plugin~Applications%",
       "perspective": "admin",
