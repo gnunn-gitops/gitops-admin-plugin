@@ -13,10 +13,10 @@ import {
   KebabToggle,
 } from '@patternfly/react-core';
 
-import ConfirmActionMessage from '../components/ConfirmActionMessage/ConfirmActionMessage';
-import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
-import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
-import TabModal from '../../../shared/views/modals/TabModal/TabModal';
+import ConfirmActionMessage from '../../components/ConfirmActionMessage/ConfirmActionMessage';
+import { AnnotationsModal } from '../../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
+import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsModal';
+import TabModal from '../../../../shared/views/modals/TabModal/TabModal';
 import { refreshApp, syncApp } from 'src/services/argocd';
 
 type ApplicationRowActionsProps = {

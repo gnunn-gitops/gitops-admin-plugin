@@ -18,6 +18,8 @@
       "@gitops-utils/*": ["src/utils/*"],
       "@shared": ["src/shared"],
       "@shared/*": ["src/shared/*"],
+      "@application": ["src/application"],
+      "@appproject": ["src/appproject"],
       "@application-model": ["src/application/models"],
       "@application-model/*": ["src/application/models/*"],
       "@appproject-model": ["src/project/models"],

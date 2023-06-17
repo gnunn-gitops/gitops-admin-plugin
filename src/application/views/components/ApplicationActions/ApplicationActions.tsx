@@ -1,5 +1,5 @@
 import React from 'react';
-import { getContentScrollableElement } from 'src/application/views/ApplicationList/ApplicationRowActions';
+import { getContentScrollableElement } from 'src/application/views/components/ApplicationList/ApplicationRowActions';
 import { useApplicationActionsProvider } from 'src/application/views/hooks/useApplicationActionsProvider';
 
 import { ApplicationKind } from '@application-model';
