@@ -43,6 +43,21 @@
   {
     "type": "console.navigation/resource-ns",
     "properties": {
+      "id": "rollout",
+      "name": "%plugin__gitops-admin-plugin~Rollouts%",
+      "perspective": "admin",
+      "section": "workloads",
+      "insertAfter": "statefulsets",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
       "id": "application",
       "name": "%plugin__gitops-admin-plugin~Applications%",
       "perspective": "admin",
