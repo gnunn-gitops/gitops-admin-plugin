@@ -54,7 +54,12 @@ const AppProjectNavPage: React.FC<AppProjectPageProps> = ({ name, namespace, kin
         href: 'windows',
         name: t('Windows'),
         component: AppProjectWindowsPage,
-      }
+      },
+      // {
+      //   href: 'applications',
+      //   name: t('Applications'),
+      //   component: AppProjectAppsPage,
+      // },
     ],
     [],
   );

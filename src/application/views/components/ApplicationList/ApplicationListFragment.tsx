@@ -14,6 +14,9 @@ import { AppProjectKind } from '@appproject-model';
 
 interface ApplicationProps {
   namespace: string;
+  // Here to support plugging in view in Projects (i.e. show list of apps that belong to project)
+  // Needs the console API to support defining your own static filter though since neither a label
+  // or a field-selector is available to select just the project apps based on k8s watch api.
   project?: AppProjectKind;
 }
 
@@ -29,15 +32,29 @@ const ApplicationListFragment: React.FC<ApplicationProps> = ({ namespace, projec
         namespaced: true,
         namespace,
       });
+
       // const { t } = useTranslation();
       const columns = useApplicationColumns(namespace);
+
+      // var staticFilters: { [key: string]: FilterValue; }
+      // if (project != undefined) {
+      //   staticFilters = { project: { selected: [project.metadata.name] }, }
+      // } else {
+      //   staticFilters = undefined;
+      // }
+      // const [data, filteredData, onFilterChange] = useListPageFilter(applications, filters, {
+      //   'image-nam' : { selected: ['cluster-config'] },
+      // });
+
       const [data, filteredData, onFilterChange] = useListPageFilter(applications, filters);
 
     return (
         <div>
-          <ListPageHeader title={'Applications'}>
-            <ListPageCreate groupVersionKind={modelToRef(ApplicationModel)}>Create Application</ListPageCreate>
-          </ListPageHeader>
+          {project == undefined &&
+            <ListPageHeader title={'Applications'}>
+              <ListPageCreate groupVersionKind={modelToRef(ApplicationModel)}>Create Application</ListPageCreate>
+            </ListPageHeader>
+          }
           <ListPageBody>
             <ListPageFilter
               data={data}
