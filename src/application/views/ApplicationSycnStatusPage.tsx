@@ -5,10 +5,12 @@ import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Ti
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
-import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Grid, GridItem, PageSection, Popover } from '@patternfly/react-core';
+import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Flex, FlexItem, Grid, GridItem, PageSection, Popover } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import { ArgoServer, getArgoServer, getDuration } from '@gitops-utils/gitops';
 import ResourceRowActions from './ResourceRowActions';
+import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
+import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 
 type ApplicationSyncStatusPageProps = RouteComponentProps<{
     ns: string;
@@ -59,9 +61,20 @@ const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ o
                                     </Popover>
                                 </DescriptionListTermHelpText>
                                 <DescriptionListDescription>
-                                    {obj.status?.operationState?.operation?.sync &&
-                                        <span>Sync</span>
-                                    }
+                                    <Flex>
+                                        {obj?.status?.operationState &&
+                                            <FlexItem>
+                                            <OperationStateFragment app={obj}/>
+                                            </FlexItem>
+                                        }
+                                        {obj?.status?.conditions &&
+                                        <FlexItem>
+                                            <ConditionsPopover
+                                            conditions={obj.status.conditions}
+                                            />
+                                        </FlexItem>
+                                        }
+                                    </Flex>
                                 </DescriptionListDescription>
                             </DescriptionListGroup>
 
