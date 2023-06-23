@@ -71,7 +71,8 @@
       "AppProjectDetails": "./project/views/AppProjectDetails.tsx",
       "useAppProjectActionsProvider": "./project/views/hooks/useAppProjectActionsProvider.tsx",
       "yamlAppProjectTemplates": "src/project/templates/index.ts",
-      "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
+      "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx",
+      "AppSetAppsPage": "./applicationset/views/ApplicationSetAppsPage.tsx"
     },
     "dependencies": {
       "@console/pluginAPI": "^4.11"

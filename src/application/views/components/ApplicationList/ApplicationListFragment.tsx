@@ -18,9 +18,25 @@ interface ApplicationProps {
   // Needs the console API to support defining your own static filter though since neither a label
   // or a field-selector is available to select just the project apps based on k8s watch api.
   project?: AppProjectKind;
+  appset?: K8sResourceCommon;
 }
 
-const ApplicationListFragment: React.FC<ApplicationProps> = ({ namespace, project }) => {
+function filterApp(project: AppProjectKind, appset: K8sResourceCommon) {
+    return function(app: ApplicationKind) {
+
+        if (project != undefined) {
+          return (app.spec.project == project.metadata.name)
+        } else if (appset != undefined && app.metadata.ownerReferences != undefined) {
+          app.metadata.ownerReferences.forEach( (owner) => {
+            if (owner.kind == appset.kind && owner.name == appset.metadata.name) return true;
+            return false;
+          });
+        }
+        return true;
+    }
+}
+
+const ApplicationListFragment: React.FC<ApplicationProps> = ({ namespace, project, appset }) => {
 
     const [applications, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
         isList: true,
@@ -50,21 +66,21 @@ const ApplicationListFragment: React.FC<ApplicationProps> = ({ namespace, projec
 
     return (
         <div>
-          {project == undefined &&
+          {(project == undefined || appset == undefined) &&
             <ListPageHeader title={'Applications'}>
               <ListPageCreate groupVersionKind={modelToRef(ApplicationModel)}>Create Application</ListPageCreate>
             </ListPageHeader>
           }
           <ListPageBody>
             <ListPageFilter
-              data={data}
+              data={data.filter(filterApp(project, appset))}
               loaded={loaded}
               rowFilters={filters}
               onFilterChange={onFilterChange}
             />
             <VirtualizedTable<K8sResourceCommon>
-              data={filteredData}
-              unfilteredData={data}
+              data={filteredData.filter(filterApp(project, appset))}
+              unfilteredData={data.filter(filterApp(project, appset))}
               loaded={loaded}
               loadError={loadError}
               columns={columns}

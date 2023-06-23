@@ -13,6 +13,7 @@ import AppProjectYAMLPage from './AppProjectYAMLPage';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import AppProjectRolesPage from './AppProjectRolesPage';
 import AppProjectWindowsPage from './AppProjectWindowsPage';
+import AppProjectAppsPage from './AppProjectAppsPage';
 
 type AppProjectPageProps = {
   name: string;
@@ -55,11 +56,11 @@ const AppProjectNavPage: React.FC<AppProjectPageProps> = ({ name, namespace, kin
         name: t('Windows'),
         component: AppProjectWindowsPage,
       },
-      // {
-      //   href: 'applications',
-      //   name: t('Applications'),
-      //   component: AppProjectAppsPage,
-      // },
+      {
+        href: 'applications',
+        name: t('Applications'),
+        component: AppProjectAppsPage,
+      },
     ],
     [],
   );
