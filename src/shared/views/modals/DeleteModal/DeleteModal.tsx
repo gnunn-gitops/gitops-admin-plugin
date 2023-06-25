@@ -10,7 +10,7 @@ import { useK8sModel } from '@openshift-console/dynamic-plugin-sdk/lib/utils/k8s
 import { useLastNamespace } from '@openshift-console/dynamic-plugin-sdk-internal';
 import { ButtonVariant } from '@patternfly/react-core';
 
-import ConfirmActionMessage from '../../../../application/views/components/ConfirmActionMessage/ConfirmActionMessage';
+import ConfirmActionMessage from '../../ConfirmActionMessage/ConfirmActionMessage';
 import TabModal from '../TabModal/TabModal';
 
 type DeleteModalProps = {

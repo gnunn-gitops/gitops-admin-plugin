@@ -6,18 +6,17 @@ import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { DEFAULT_NAMESPACE } from '@gitops-utils/constants';
 import { k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 import {
-  ButtonVariant,
   Dropdown,
   DropdownItem,
   DropdownPosition,
   KebabToggle,
 } from '@patternfly/react-core';
 
-import ConfirmActionMessage from '../../components/ConfirmActionMessage/ConfirmActionMessage';
 import { AnnotationsModal } from '../../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsModal';
-import TabModal from '../../../../shared/views/modals/TabModal/TabModal';
 import { refreshApp, syncApp } from 'src/services/argocd';
+import DeleteModal from '@shared/views/modals/DeleteModal/DeleteModal';
+import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ApplicationRowActionsProps = {
   obj?: ApplicationKind;
@@ -28,12 +27,7 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
   const history = useHistory();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
-  const onDelete = React.useCallback(() => {
-    return k8sDelete({
-      model: ApplicationModel,
-      resource: obj,
-    }).catch(console.error);
-  }, [obj]);
+  const { t } = useGitOpsTranslation();
 
   const onEditLabelsModalToggle = () => {
     createModal(({ isOpen, onClose }) => (
@@ -92,17 +86,18 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
 
   const onDeleteModalToggle = () => {
     createModal(({ isOpen, onClose }) => (
-      <TabModal<ApplicationKind>
-        onClose={onClose}
-        isOpen={isOpen}
+      <DeleteModal
         obj={obj}
-        onSubmit={onDelete}
-        headerText={'Delete Application?'}
-        submitBtnText={'Delete'}
-        submitBtnVariant={ButtonVariant.danger}
-      >
-        <ConfirmActionMessage obj={obj} action="delete" />
-      </TabModal>
+        isOpen={isOpen}
+        onClose={onClose}
+        headerText={t('Delete Application?')}
+        onDeleteSubmit={() =>
+          k8sDelete({
+            model: ApplicationModel,
+            resource: obj,
+          })
+        }
+      />
     ));
   };
 
