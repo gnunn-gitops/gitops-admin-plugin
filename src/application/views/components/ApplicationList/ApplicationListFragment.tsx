@@ -26,11 +26,13 @@ function filterApp(project: AppProjectKind, appset: K8sResourceCommon) {
 
         if (project != undefined) {
           return (app.spec.project == project.metadata.name)
-        } else if (appset != undefined && app.metadata.ownerReferences != undefined) {
+        } else if (appset != undefined) {
+          if (app.metadata.ownerReferences == undefined) return false;
           app.metadata.ownerReferences.forEach( (owner) => {
+            console.log(owner.kind + "," + owner.name + "=" + appset.metadata.name);
             if (owner.kind == appset.kind && owner.name == appset.metadata.name) return true;
-            return false;
           });
+          return false;
         }
         return true;
     }
@@ -51,16 +53,6 @@ const ApplicationListFragment: React.FC<ApplicationProps> = ({ namespace, projec
 
       // const { t } = useTranslation();
       const columns = useApplicationColumns(namespace);
-
-      // var staticFilters: { [key: string]: FilterValue; }
-      // if (project != undefined) {
-      //   staticFilters = { project: { selected: [project.metadata.name] }, }
-      // } else {
-      //   staticFilters = undefined;
-      // }
-      // const [data, filteredData, onFilterChange] = useListPageFilter(applications, filters, {
-      //   'image-nam' : { selected: ['cluster-config'] },
-      // });
 
       const [data, filteredData, onFilterChange] = useListPageFilter(applications, filters);
 
