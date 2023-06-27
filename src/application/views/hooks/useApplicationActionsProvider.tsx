@@ -115,6 +115,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
             resource={application}
             isOpen={isOpen}
             onClose={onClose}
+            pushHistory={true}
           />
         )),
         //   ,accessReview: asAccessReview(DataImportCronModel, application, 'delete'),

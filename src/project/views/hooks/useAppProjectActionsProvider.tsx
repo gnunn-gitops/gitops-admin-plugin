@@ -90,6 +90,7 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
               resource={appProject}
               isOpen={isOpen}
               onClose={onClose}
+              pushHistory={true}
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),

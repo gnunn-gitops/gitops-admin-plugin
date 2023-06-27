@@ -11,10 +11,11 @@ type ResourceDeleteModalProps = {
     resource: K8sResourceCommon;
     onClose: () => void;
     btnText?: string;
+    pushHistory?: boolean;
   };
 
 const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
-  const { resource, btnText, isOpen, onClose } = props;
+  const { resource, btnText, pushHistory, isOpen, onClose } = props;
   const [error, setError] = React.useState<string>(null);
 
   const [isChecked, setIsChecked] = React.useState(true);
@@ -37,7 +38,7 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
         const url = getResourceUrl({ model, activeNamespace: lastNamespace });
 
         onClose();
-        history.push(url);
+        if (pushHistory) history.push(url);
       })
       .catch((err) => {
         setError(err.message);
