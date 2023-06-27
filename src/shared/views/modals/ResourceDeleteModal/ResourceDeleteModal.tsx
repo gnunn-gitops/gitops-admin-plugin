@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 import { K8sModel, K8sResourceCommon, getGroupVersionKindForResource, k8sDelete, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import { useHistory } from 'react-router';
 import { useLastNamespace } from '@openshift-console/dynamic-plugin-sdk-internal';
+import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ResourceDeleteModalProps = {
     isOpen: boolean;
@@ -16,14 +17,22 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
   const { resource, btnText, isOpen, onClose } = props;
   const [error, setError] = React.useState<string>(null);
 
+  const [isChecked, setIsChecked] = React.useState(true);
+
   const [model] = useK8sModel(getGroupVersionKindForResource(resource));
 
   const [lastNamespace] = useLastNamespace();
   const history = useHistory();
+  const { t } = useGitOpsTranslation();
 
   const submit = (event) => {
     event.preventDefault();
-    k8sDelete({ model, resource })
+    const propagationPolicy = isChecked && model ? model.propagationPolicy : 'Orphan';
+    const json = propagationPolicy
+      ? { kind: 'DeleteOptions', apiVersion: 'v1', propagationPolicy }
+      : null;
+
+    k8sDelete({ model, resource, json })
       .then(() => {
         const url = getResourceUrl({ model, activeNamespace: lastNamespace });
 
@@ -56,6 +65,16 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
         Are you sure you want to delete{' '}
         <strong className="co-break-word">{ resource.metadata.name }</strong>?
       </Text>
+      <div className="checkbox">
+        <label className="control-label">
+          <input
+            type="checkbox"
+            onChange={() => setIsChecked(!isChecked)}
+            checked={!!isChecked}
+          />
+          {t('Delete dependent objects of this resource')}
+        </label>
+      </div>
       {error && (
         <Alert
           isInline
