@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { AppProjectKind, AppProjectModel, appProjectModelRef } from '@appproject-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { DEFAULT_NAMESPACE } from '@gitops-utils/constants';
-import { k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 import {
   Dropdown,
   DropdownItem,
@@ -14,8 +14,8 @@ import {
 
 import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
-import DeleteModal from '@shared/views/modals/DeleteModal/DeleteModal';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
 type AppProjectRowActionsProps = {
   obj?: AppProjectKind;
@@ -85,17 +85,10 @@ const AppProjectRowActions: React.FC<AppProjectRowActionsProps> = ({ obj }) => {
 
   const onDeleteModalToggle = () => {
     createModal(({ isOpen, onClose }) => (
-      <DeleteModal
-        obj={obj}
+      <ResourceDeleteModal
+        resource={obj}
         isOpen={isOpen}
         onClose={onClose}
-        headerText={t('Delete Application?')}
-        onDeleteSubmit={() =>
-          k8sDelete({
-            model: AppProjectModel,
-            resource: obj,
-          })
-        }
       />
     ));
   };
@@ -109,16 +102,16 @@ const AppProjectRowActions: React.FC<AppProjectRowActionsProps> = ({ obj }) => {
       isPlain
       dropdownItems={[
         <DropdownItem onClick={onEditLabelsModalToggle} key="appproject-delete">
-          {'Edit labels'}
+          {t('Edit labels')}
         </DropdownItem>,
         <DropdownItem onClick={onEditAnnotationsModalToggle} key="appproject-delete">
-          {'Edit annotations'}
+          {t('Edit annotations')}
         </DropdownItem>,
         <DropdownItem onClick={onEditAppProject} key="appproject-delete">
-          {'Edit Project'}
+          {t('Edit Project')}
         </DropdownItem>,
         <DropdownItem onClick={onDeleteModalToggle} key="appproject-delete">
-          {'Delete Project'}
+          {t('Delete Project')}
         </DropdownItem>,
       ]}
       position={DropdownPosition.right}

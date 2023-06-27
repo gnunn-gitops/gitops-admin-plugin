@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom';
 
 import { AppProjectKind, AppProjectModel, appProjectModelRef } from '@appproject-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
-import DeleteModal from '@shared/views/modals/DeleteModal/DeleteModal';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
+import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
 type UseAppProjectActionsProvider = (
   appProject: AppProjectKind,
@@ -86,17 +86,10 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
         label: t('Delete'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (
-            <DeleteModal
-              obj={appProject}
+            <ResourceDeleteModal
+              resource={appProject}
               isOpen={isOpen}
               onClose={onClose}
-              headerText={t('Delete Project?')}
-              onDeleteSubmit={() =>
-                k8sDelete({
-                  model: AppProjectModel,
-                  resource: appProject,
-                })
-              }
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),

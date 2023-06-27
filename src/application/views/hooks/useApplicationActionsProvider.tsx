@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
-import DeleteModal from '../../../shared/views/modals/DeleteModal/DeleteModal';
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
 import { refreshApp, syncApp } from 'src/services/argocd';
+import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -111,19 +111,12 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Delete'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (
-            <DeleteModal
-              obj={application}
-              isOpen={isOpen}
-              onClose={onClose}
-              headerText={t('Delete Application?')}
-              onDeleteSubmit={() =>
-                k8sDelete({
-                  model: ApplicationModel,
-                  resource: application,
-                })
-              }
-            />
-          )),
+            <ResourceDeleteModal
+            resource={application}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
+        )),
         //   ,accessReview: asAccessReview(DataImportCronModel, application, 'delete'),
       }
 

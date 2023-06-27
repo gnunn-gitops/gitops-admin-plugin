@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { DEFAULT_NAMESPACE } from '@gitops-utils/constants';
-import { k8sDelete, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 import {
   Dropdown,
   DropdownItem,
@@ -15,8 +15,8 @@ import {
 import { AnnotationsModal } from '../../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsModal';
 import { refreshApp, syncApp } from 'src/services/argocd';
-import DeleteModal from '@shared/views/modals/DeleteModal/DeleteModal';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
 type ApplicationRowActionsProps = {
   obj?: ApplicationKind;
@@ -86,17 +86,10 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
 
   const onDeleteModalToggle = () => {
     createModal(({ isOpen, onClose }) => (
-      <DeleteModal
-        obj={obj}
+      <ResourceDeleteModal
+        resource={obj}
         isOpen={isOpen}
         onClose={onClose}
-        headerText={t('Delete Application?')}
-        onDeleteSubmit={() =>
-          k8sDelete({
-            model: ApplicationModel,
-            resource: obj,
-          })
-        }
       />
     ));
   };
@@ -122,25 +115,25 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       isPlain
       dropdownItems={[
         <DropdownItem onClick={onSyncApplication} key="application-sync">
-          {'Sync'}
+          {t('Sync')}
         </DropdownItem>,
         <DropdownItem onClick={onRefreshApplication} key="application-refresh">
-          {'Refresh'}
+          {t('Refresh')}
         </DropdownItem>,
         <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard">
-          {'Refresh (Hard)'}
+          {t('Refresh (Hard)')}
         </DropdownItem>,
         <DropdownItem onClick={onEditLabelsModalToggle} key="application-delete">
-          {'Edit labels'}
+          {t('Edit labels')}
         </DropdownItem>,
         <DropdownItem onClick={onEditAnnotationsModalToggle} key="application-delete">
-          {'Edit annotations'}
+          {t('Edit annotations')}
         </DropdownItem>,
         <DropdownItem onClick={onEditApplication} key="application-delete">
-          {'Edit Application'}
+          {t('Edit Application')}
         </DropdownItem>,
         <DropdownItem onClick={onDeleteModalToggle} key="application-delete">
-          {'Delete Application'}
+          {t('Delete Application')}
         </DropdownItem>,
       ]}
       position={DropdownPosition.right}
