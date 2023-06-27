@@ -23,7 +23,8 @@ export const OperationStateFragment: React.FC<OperationStateProps> = ({ app, qui
     }
 
     let targetIcon: React.ReactNode;
-    switch (appOperationState.phase) {
+    const phase = appOperationState == undefined ? PhaseStatus.RUNNING: appOperationState.phase;
+    switch (phase) {
         case PhaseStatus.FAILED:
             targetIcon = <PhaseFailedIcon />;
             break;
@@ -52,6 +53,7 @@ export const OperationStateFragment: React.FC<OperationStateProps> = ({ app, qui
 
 // https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
 export const getAppOperationState = (app: ApplicationKind): OperationState => {
+    if (!app.status || !app.status.operationState) return undefined;
 
     if (app.metadata.deletionTimestamp) {
         return {
@@ -61,7 +63,7 @@ export const getAppOperationState = (app: ApplicationKind): OperationState => {
     } else {
         return app.status.operationState;
     }
-};
+}
 
 // Adapted from Argo CD UI code here:
 // https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
@@ -79,23 +81,29 @@ export function getOperationType(application: ApplicationKind) {
 // Adapted from Argo CD UI code here:
 // https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
 const getOperationStateTitle = (app: ApplicationKind) => {
+    if (!app.status && !app.status.operationState) {
+        return 'Unknown';
+    }
+
     const operationState = getAppOperationState(app);
     const operationType = getOperationType(app);
     switch (operationType) {
         case 'Delete':
             return 'Deleting';
         case 'Sync':
-            switch (operationState.phase) {
-                case PhaseStatus.RUNNING:
-                    return 'Syncing';
-                case PhaseStatus.ERROR:
-                    return 'Sync error';
-                case PhaseStatus.FAILED:
-                    return 'Sync failed';
-                case PhaseStatus.SUCCEEDED:
-                    return 'Sync OK';
-                case PhaseStatus.TERMINATING:
-                    return 'Terminated';
+            if (operationState != undefined) {
+                switch (operationState.phase) {
+                    case PhaseStatus.RUNNING:
+                        return 'Syncing';
+                    case PhaseStatus.ERROR:
+                        return 'Sync error';
+                    case PhaseStatus.FAILED:
+                        return 'Sync failed';
+                    case PhaseStatus.SUCCEEDED:
+                        return 'Sync OK';
+                    case PhaseStatus.TERMINATING:
+                        return 'Terminated';
+                }
             }
     }
     return 'Unknown';
