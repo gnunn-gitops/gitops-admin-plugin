@@ -7,7 +7,7 @@ import { Action, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
-import { refreshApp, syncApp } from 'src/services/argocd';
+import { syncAppK8s, refreshAppk8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
 type UseApplicationActionsProvider = (
@@ -27,7 +27,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Sync'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
-          syncApp(application)
+          syncAppK8s(application)
       },
       {
         id: 'gitops-action-refresh-application',
@@ -35,7 +35,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Refresh'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
-         refreshApp(application, false)
+          refreshAppk8s(application, false)
       },
       {
         id: 'gitops-action-refresh-hard-application',
@@ -43,7 +43,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Refresh (Hard)'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
-          refreshApp(application, true)
+          refreshAppk8s(application, true)
       },
       {
         id: 'dataimportcron-action-edit-labels',

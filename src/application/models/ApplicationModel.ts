@@ -41,20 +41,23 @@ export type ApplicationSource = {
   targetRevision?: string
 }
 
+export type Retry = {
+  limit?: number,
+  backoff?: {
+    duration?: string,
+    factor?: number,
+    maxDuration?: string
+  }
+}
+
 export type SyncPolicy = {
   automated?: {
     selfHeal?: boolean,
     prune?: boolean,
     allowEmpty?: boolean,
   }
-  retry?: {
-    limit?: number,
-    backoff?: {
-      duration?: string,
-      factor?: number,
-      maxDuration?: string
-    }
-  }
+  retry?: Retry,
+  syncOptions: string[]
 }
 
 export type ApplicationSpec = {
@@ -76,14 +79,17 @@ export type ApplicationHistory = {
   source: ApplicationSource
 }
 
-export type ApplicationResourceStatus = {
+export type Resource = {
   kind: string,
-  group: string,
+  group?: string,
+  name: string,
+  namespace?: string,
+}
+
+export type ApplicationResourceStatus = Resource & {
   hookPhase?: string,
   hookType?: string,
   message?: string;
-  name: string,
-  namespace?: string,
   version?: string,
   syncWave?: number,
   status?: string
@@ -99,14 +105,16 @@ export type ApplicationCondition = {
   type?: string
 }
 
+export type InitiatedBy = {
+  username?: string,
+  automated?: boolean
+}
+
 export type OperationState = {
   finishedAt?: string,
   message?: string,
   operation?: {
-    initiatedBy: {
-      username?: string,
-      automated?: boolean
-    }
+    initiatedBy?: InitiatedBy,
     retry?: {
       limit?: number
     }
@@ -139,8 +147,32 @@ export type ApplicationStatus = {
   sourceType?: string
 }
 
+export type Info = {
+  name: string,
+  value: string
+}
+
+export type SyncOperation = {
+  dryRun?: boolean,
+  manifests?: string[],
+  prune?: boolean,
+  resources?: Resource[]
+  revisions?: string[],
+  source?: ApplicationSource,
+  sources?: ApplicationSource[],
+  syncOptions?: string[],
+}
+
+export type ApplicationOperation = {
+  info?: Info[],
+  initiatedBy?: InitiatedBy,
+  retry?: Retry,
+  sync?: SyncOperation
+}
+
 export type ApplicationKind = K8sResourceCommon & {
   spec?: ApplicationSpec,
+  operation? : ApplicationOperation,
   status?: ApplicationStatus
 };
 

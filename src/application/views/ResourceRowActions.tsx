@@ -6,7 +6,7 @@ import {
   KebabToggle,
 } from '@patternfly/react-core';
 import { ApplicationKind, ApplicationResourceStatus } from '@application-model';
-import { syncResource } from 'src/services/argocd';
+import { syncResourcek8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { k8sGet, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
@@ -38,7 +38,7 @@ const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, appli
   };
 
   const onSyncResource = () => {
-    syncResource(application, resource)
+    syncResourcek8s(application, [resource])
   };
 
   const onDeleteResource = async () => {

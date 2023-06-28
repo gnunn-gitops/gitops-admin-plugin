@@ -14,7 +14,7 @@ import {
 
 import { AnnotationsModal } from '../../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsModal';
-import { refreshApp, syncApp } from 'src/services/argocd';
+import { refreshAppk8s, syncAppK8s } from 'src/services/argocd';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 
@@ -95,15 +95,15 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
   };
 
   const onSyncApplication = () => {
-    syncApp(obj);
+    syncAppK8s(obj);
   };
 
   const onRefreshApplication = () => {
-    refreshApp(obj, false);
+    refreshAppk8s(obj, false);
   };
 
   const onRefreshHardApplication = () => {
-    refreshApp(obj, true);
+    refreshAppk8s(obj, true);
   };
 
   return (
