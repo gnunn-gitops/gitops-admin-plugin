@@ -13,12 +13,12 @@ spec:
       namespace: {{ .Release.Namespace }}
       port: {{ .Values.plugin.port }}
     type: Service
-  proxy:
-  - alias: proxy
-    authorization: UserToken
-    endpoint:
-      type: Service
-      service:
-        name: gitops-plugin-proxy
-        namespace: {{ .Release.Namespace }}
-        port: 8443
+  # proxy:
+  # - alias: proxy
+  #   authorization: UserToken
+  #   endpoint:
+  #     type: Service
+  #     service:
+  #       name: gitops-plugin-proxy
+  #       namespace: {{ .Release.Namespace }}
+  #       port: 8443
