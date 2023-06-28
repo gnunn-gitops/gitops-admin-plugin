@@ -1,7 +1,7 @@
 import { ApplicationKind, ApplicationModel, ApplicationOperation, ApplicationResourceStatus, Resource } from "@application-model";
-import { consoleFetchJSON, k8sPatch } from "@openshift-console/dynamic-plugin-sdk";
+import { k8sPatch } from "@openshift-console/dynamic-plugin-sdk";
 
-const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
+//const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
 
 const annotationRefreshKey = "argocd.argoproj.io~1refresh";
 
@@ -16,32 +16,32 @@ export const syncResourcek8s = async (app: ApplicationKind, resources: Applicati
     return syncAppK8s(app, syncResources);
 }
 
-export const syncResource = async (app: ApplicationKind, resource: ApplicationResourceStatus): Promise<boolean> => {
+// export const syncResource = async (app: ApplicationKind, resource: ApplicationResourceStatus): Promise<boolean> => {
 
-    const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json',
-            'namespace': app.metadata.namespace
-        },
-        body: JSON.stringify(
-            {
-                resources: [
-                    {
-                        group: resource.group,
-                        kind: resource.kind,
-                        name: resource.name,
-                        namespace: resource.namespace
-                    }
-                ]
-            }
-        )
-    });
+//     const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
+//         method: 'POST',
+//         headers: {
+//             'content-type': 'application/json;charset=UTF-8',
+//             'Accept': 'application/json',
+//             'namespace': app.metadata.namespace
+//         },
+//         body: JSON.stringify(
+//             {
+//                 resources: [
+//                     {
+//                         group: resource.group,
+//                         kind: resource.kind,
+//                         name: resource.name,
+//                         namespace: resource.namespace
+//                     }
+//                 ]
+//             }
+//         )
+//     });
 
-    // TODO - Look Ma, no error handling or logging
-    return (response.status == 200);
-}
+//     // TODO - Look Ma, no error handling or logging
+//     return (response.status == 200);
+// }
 
 /*
  * Synchronizes the application using k8s only, bypasses Argo CD RBAC and requires
@@ -119,31 +119,31 @@ export const refreshAppk8s = async (app: ApplicationKind, hard: boolean): Promis
  *  will be challenging because it could be located anywhere and parsing out the argocd cr to figure out
  *  isn't always going to be possible (i.e. App in Any Namespaces)
  */
-export const syncApp = async (app: ApplicationKind): Promise<boolean> => {
+// export const syncApp = async (app: ApplicationKind): Promise<boolean> => {
 
-    const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json',
-            'namespace': app.metadata.namespace
-        }
-    });
+//     const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "/sync", 'POST', {
+//         method: 'POST',
+//         headers: {
+//             'content-type': 'application/json;charset=UTF-8',
+//             'Accept': 'application/json',
+//             'namespace': app.metadata.namespace
+//         }
+//     });
 
-    // TODO - Look Ma, no error handling or logging
-    return (response.status == 200);
-}
+//     // TODO - Look Ma, no error handling or logging
+//     return (response.status == 200);
+// }
 
-export const refreshApp = async (app: ApplicationKind, hard: boolean): Promise<boolean> => {
+// export const refreshApp = async (app: ApplicationKind, hard: boolean): Promise<boolean> => {
 
-    const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "?refresh=" + (hard ? 'hard' : 'normal'), 'GET', {
-        headers: {
-            'content-type': 'application/json;charset=UTF-8',
-            'Accept': 'application/json',
-            'namespace': app.metadata.namespace
-        }
-    });
+//     const response = await consoleFetchJSON(proxyPath + "/api/v1/applications/" + app.metadata.name + "?refresh=" + (hard ? 'hard' : 'normal'), 'GET', {
+//         headers: {
+//             'content-type': 'application/json;charset=UTF-8',
+//             'Accept': 'application/json',
+//             'namespace': app.metadata.namespace
+//         }
+//     });
 
-    // TODO - Look Ma, no error handling or logging
-    return (response.status == 200);
-}
+//     // TODO - Look Ma, no error handling or logging
+//     return (response.status == 200);
+// }
