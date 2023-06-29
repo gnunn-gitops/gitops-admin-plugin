@@ -3,13 +3,12 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
 import { syncAppK8s, refreshAppk8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
-import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -20,38 +19,58 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
   const { createModal } = useModal();
   const history = useHistory();
 
-  const [canPatch, canUpdate, canDelete] = getObjectModifyPermissions(application, ApplicationModel);
-
+  // TODO - Need to get namespace into accessReview, application is undefined so there needs to be a callback
+  // of some sort. React.useCallback didn't work
   const actions = React.useMemo(
     () => [
       {
         id: 'gitops-action-sync-application',
-        disabled: !canPatch,
+        disabled: false,
         label: t('Sync'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           syncAppK8s(application)
       },
       {
         id: 'gitops-action-refresh-application',
-        disabled: !canPatch,
+        disabled: false,
         label: t('Refresh'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           refreshAppk8s(application, false)
       },
       {
         id: 'gitops-action-refresh-hard-application',
-        disabled: !canPatch,
+        disabled: false,
         label: t('Refresh (Hard)'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           refreshAppk8s(application, true)
       },
       {
         id: 'dataimportcron-action-edit-labels',
-        disabled: !canPatch,
+        disabled: false,
         label: t('Edit labels'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <LabelsModal
@@ -76,7 +95,12 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'application-action-edit-annotations',
-        disabled: !canPatch,
+        disabled: false,
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         label: t('Edit annotations'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (
@@ -102,8 +126,13 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'gitops-action-edit-application',
-        disabled: !canUpdate,
+        disabled: false,
         label: t('Edit'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'edit' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           history.push(
             `/k8s/ns/${application.metadata.namespace}/${applicationModelRef}/${application.metadata.name}/yaml`,
@@ -111,8 +140,13 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'application-action-delete',
-        disabled: !canDelete,
+        disabled: false,
         label: t('Delete'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'delete' as K8sVerb,
+          resource: ApplicationModel.plural
+        },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <ResourceDeleteModal
@@ -121,10 +155,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
             onClose={onClose}
             pushHistory={true}
           />
-        )),
-        //   ,accessReview: asAccessReview(DataImportCronModel, application, 'delete'),
-      }
+        ))
 
+      }
     ],
     [/*t, */ application, createModal /*, dataSource*/, history],
   );
