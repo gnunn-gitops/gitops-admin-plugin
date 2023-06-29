@@ -9,6 +9,7 @@ import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
 import { syncAppK8s, refreshAppk8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -19,11 +20,13 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
   const { createModal } = useModal();
   const history = useHistory();
 
+  const [canPatch, canUpdate, canDelete] = getObjectModifyPermissions(application, ApplicationModel);
+
   const actions = React.useMemo(
     () => [
       {
         id: 'gitops-action-sync-application',
-        disabled: false,
+        disabled: !canPatch,
         label: t('Sync'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -31,7 +34,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'gitops-action-refresh-application',
-        disabled: false,
+        disabled: !canPatch,
         label: t('Refresh'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -39,7 +42,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'gitops-action-refresh-hard-application',
-        disabled: false,
+        disabled: !canPatch,
         label: t('Refresh (Hard)'),
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -47,7 +50,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'dataimportcron-action-edit-labels',
-        disabled: false,
+        disabled: !canPatch,
         label: t('Edit labels'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (
@@ -73,7 +76,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'application-action-edit-annotations',
-        disabled: false,
+        disabled: !canPatch,
         label: t('Edit annotations'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (
@@ -99,7 +102,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'gitops-action-edit-application',
-        disabled: false,
+        disabled: !canUpdate,
         label: t('Edit'),
         cta: () =>
           history.push(
@@ -108,6 +111,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
       },
       {
         id: 'application-action-delete',
+        disabled: !canDelete,
         label: t('Delete'),
         cta: () =>
           createModal(({ isOpen, onClose }) => (

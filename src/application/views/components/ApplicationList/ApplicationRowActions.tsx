@@ -17,6 +17,7 @@ import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsM
 import { refreshAppk8s, syncAppK8s } from 'src/services/argocd';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type ApplicationRowActionsProps = {
   obj?: ApplicationKind;
@@ -28,6 +29,8 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
 
   const { t } = useGitOpsTranslation();
+
+  const [canPatch, canUpdate, canDelete] = getObjectModifyPermissions(obj, ApplicationModel);
 
   const onEditLabelsModalToggle = () => {
     createModal(({ isOpen, onClose }) => (
@@ -114,27 +117,27 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onSyncApplication} key="application-sync">
-          {t('Sync')}
-        </DropdownItem>,
-        <DropdownItem onClick={onRefreshApplication} key="application-refresh">
-          {t('Refresh')}
-        </DropdownItem>,
-        <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard">
-          {t('Refresh (Hard)')}
-        </DropdownItem>,
-        <DropdownItem onClick={onEditLabelsModalToggle} key="application-delete">
-          {t('Edit labels')}
-        </DropdownItem>,
-        <DropdownItem onClick={onEditAnnotationsModalToggle} key="application-delete">
-          {t('Edit annotations')}
-        </DropdownItem>,
-        <DropdownItem onClick={onEditApplication} key="application-delete">
-          {t('Edit Application')}
-        </DropdownItem>,
-        <DropdownItem onClick={onDeleteModalToggle} key="application-delete">
-          {t('Delete Application')}
-        </DropdownItem>,
+        <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch}>
+        {t('Sync')}
+      </DropdownItem>,
+        <DropdownItem onClick={onRefreshApplication} key="application-refresh" isDisabled={!canPatch}>
+        {t('Refresh')}
+      </DropdownItem>,
+      <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard" isDisabled={!canPatch}>
+        {t('Refresh (Hard)')}
+      </DropdownItem>,
+        <DropdownItem onClick={onEditLabelsModalToggle} key="application-edit-labels" isDisabled={!canPatch}>
+        {t('Edit labels')}
+      </DropdownItem>,
+      <DropdownItem onClick={onEditAnnotationsModalToggle} key="application-edit annotations" isDisabled={!canPatch}>
+        {t('Edit annotations')}
+      </DropdownItem>,
+      <DropdownItem onClick={onEditApplication} key="application-edit" isDisabled={!canUpdate}>
+        {t('Edit Application')}
+      </DropdownItem>,
+      <DropdownItem onClick={onDeleteModalToggle} key="application-delete"  isDisabled={!canDelete}>
+        {t('Delete Application')}
+      </DropdownItem>
       ]}
       position={DropdownPosition.right}
     />
