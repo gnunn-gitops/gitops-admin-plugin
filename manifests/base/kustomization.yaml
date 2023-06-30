@@ -1,0 +1,12 @@
+namespace: gitops-admin-plugin
+
+commonLabels:
+  app.kubernetes.io/app: gitops-admin-plugin
+  app.kubernetes.io/part-of: gitops-admin-plugin
+  app.kubernetes.io/name: gitops-admin-plugin
+
+resources:
+- namespace.yaml
+- configmap.yaml
+- plugin-deploy.yaml
+- plugin-svc.yaml

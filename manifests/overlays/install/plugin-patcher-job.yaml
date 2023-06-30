@@ -1,0 +1,52 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    app: gitops-admin-plugin
+    app.kubernetes.io/instance: gitops-admin-plugin-job
+    app.kubernetes.io/part-of: gitops-admin-plugin
+  name: gitops-admin-plugin-patcher
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: gitops-admin-plugin
+        app.kubernetes.io/instance: gitops-admin-plugin
+        app.kubernetes.io/name: gitops-admin-plugin
+        app.kubernetes.io/part-of: gitops-admin-plugin
+        job-name: gitops-admin-plugin-patcher
+    spec:
+      containers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          existingPlugins=$(oc get consoles.operator.openshift.io cluster -o json | jq -c '.spec.plugins // []')
+          mergedPlugins=$(jq --argjson existingPlugins "${existingPlugins}" --argjson consolePlugin '["gitops-admin-plugin"]' -c  -n '$existingPlugins + $consolePlugin | unique')
+          patchedPlugins=$(jq --argjson mergedPlugins $mergedPlugins -n -c  '{ "spec": { "plugins": $mergedPlugins } }')
+          oc patch consoles.operator.openshift.io cluster --patch $patchedPlugins  --type=merge
+        image: registry.redhat.io/openshift4/ose-tools-rhel8@sha256:e44074f21e0cca6464e50cb6ff934747e0bd11162ea01d522433a1a1ae116103
+        imagePullPolicy: IfNotPresent
+        name: gitops-admin-plugin-patcher
+        resources:
+          requests:
+            cpu: 10m
+            memory: 50Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      serviceAccount: gitops-admin-plugin-patcher
+      serviceAccountName: gitops-admin-plugin-patcher
+      terminationGracePeriodSeconds: 400

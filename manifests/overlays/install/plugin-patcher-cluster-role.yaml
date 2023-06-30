@@ -1,0 +1,19 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: gitops-admin-plugin
+    app.kubernetes.io/instance: gitops-admin-plugin
+    app.kubernetes.io/name: gitops-admin-plugin
+    app.kubernetes.io/part-of: gitops-admin-plugin
+  name: gitops-admin-plugin-patcher
+rules:
+- apiGroups:
+  - operator.openshift.io
+  resources:
+  - consoles
+  verbs:
+  - get
+  - list
+  - patch
+  - update
