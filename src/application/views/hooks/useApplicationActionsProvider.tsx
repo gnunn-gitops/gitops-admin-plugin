@@ -29,8 +29,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Sync'),
         accessReview: {
           group: ApplicationModel.apiGroup,
-          verb: 'patch' as K8sVerb,
-          resource: ApplicationModel.plural
+          verb: 'update' as K8sVerb,
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -42,8 +43,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Refresh'),
         accessReview: {
           group: ApplicationModel.apiGroup,
-          verb: 'patch' as K8sVerb,
-          resource: ApplicationModel.plural
+          verb: 'update' as K8sVerb,
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -55,8 +57,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Refresh (Hard)'),
         accessReview: {
           group: ApplicationModel.apiGroup,
-          verb: 'patch' as K8sVerb,
-          resource: ApplicationModel.plural
+          verb: 'update' as K8sVerb,
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
@@ -69,7 +72,8 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         accessReview: {
           group: ApplicationModel.apiGroup,
           verb: 'patch' as K8sVerb,
-          resource: ApplicationModel.plural
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
@@ -99,7 +103,8 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         accessReview: {
           group: ApplicationModel.apiGroup,
           verb: 'patch' as K8sVerb,
-          resource: ApplicationModel.plural
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         label: t('Edit annotations'),
         cta: () =>
@@ -130,8 +135,9 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         label: t('Edit'),
         accessReview: {
           group: ApplicationModel.apiGroup,
-          verb: 'edit' as K8sVerb,
-          resource: ApplicationModel.plural
+          verb: 'update' as K8sVerb,
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
         },
         cta: () =>
           history.push(
