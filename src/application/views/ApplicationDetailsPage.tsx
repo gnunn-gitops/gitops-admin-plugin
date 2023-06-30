@@ -14,11 +14,13 @@ import {
   Label,
   PageSection,
   Popover,
-  Title
+  Title,
+  ToggleGroup,
+  ToggleGroupItem
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
-import { k8sPatch, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sPatch, k8sUpdate, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
@@ -101,6 +103,41 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
       />
     ))
   }
+
+  const onChangeAutomated = (isSelected: boolean, event: React.MouseEvent<any> | React.KeyboardEvent | MouseEvent) => {
+    const id = event.currentTarget.id;
+
+    switch(id) {
+      case "automated": {
+        if (obj.spec.syncPolicy?.automated) {
+          obj.spec.syncPolicy = {}
+        } else {
+          obj.spec.syncPolicy = {automated: {}};
+        }
+        break;
+      }
+      case "self-heal": {
+        if (obj.spec.syncPolicy.automated.selfHeal) {
+          obj.spec.syncPolicy.automated.selfHeal = false;
+        } else {
+          obj.spec.syncPolicy.automated = {...obj.spec.syncPolicy.automated, ...{selfHeal:true}}
+        }
+        break;
+      }
+      case "prune": {
+        if (obj.spec.syncPolicy.automated.prune) {
+          obj.spec.syncPolicy.automated.prune = false;
+        } else {
+          obj.spec.syncPolicy.automated = {...obj.spec.syncPolicy.automated, ...{prune:true}}
+        }
+        break;
+      }
+    }
+    k8sUpdate({
+      model: ApplicationModel,
+      data: obj
+    });
+  };
 
   return (
     <div>
@@ -262,12 +299,11 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                  <Flex>
-                    {obj?.spec?.syncPolicy?.automated && <FlexItem><Label color="blue">{t('Automated')}</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated?.selfHeal && <FlexItem><Label color="blue">{t('Self Heal')}</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.automated?.prune && <FlexItem><Label color="blue">{t('Prune')}</Label></FlexItem>}
-                    {obj?.spec?.syncPolicy?.retry && <FlexItem><Label color="blue">{t('Retry')}</Label></FlexItem>}
-                  </Flex>
+                  <ToggleGroup isCompact>
+                    <ToggleGroupItem text={t('Automated')} buttonId="automated" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated?true:false}/>
+                    <ToggleGroupItem text={t('Self Heal')} buttonId="self-heal" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.selfHeal} isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
+                    <ToggleGroupItem text={t('Prune')} buttonId="prune" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.prune} isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
+                  </ToggleGroup>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 

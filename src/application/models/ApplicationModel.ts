@@ -57,7 +57,7 @@ export type SyncPolicy = {
     allowEmpty?: boolean,
   }
   retry?: Retry,
-  syncOptions: string[]
+  syncOptions?: string[]
 }
 
 export type ApplicationSpec = {
