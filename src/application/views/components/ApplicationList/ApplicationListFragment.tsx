@@ -3,7 +3,7 @@ import { K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPa
 import { modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
 import { ApplicationKind, ApplicationModel } from '@application-model';
 import { HealthStatus, SyncStatus } from '@gitops-utils/constants';
-import { Flex, FlexItem } from '@patternfly/react-core';
+import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
 import SyncStatusFragment from '../Statuses/SyncStatusFragment';
 import { OperationStateFragment } from '../Statuses/OperationStateFragment';
 import HealthStatusFragment from '../Statuses/HealthStatusFragment';
@@ -11,6 +11,7 @@ import RevisionFragment from '../Revision/RevisionFragment';
 import ApplicationRowActions from './ApplicationRowActions';
 import { sortable } from '@patternfly/react-table';
 import { AppProjectKind } from '@appproject-model';
+import { isApplicationRefreshing } from '@gitops-utils/gitops';
 
 interface ApplicationProps {
   namespace: string;
@@ -92,7 +93,10 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
             groupVersionKind={modelToGroupVersionKind(ApplicationModel)}
             name={obj.metadata.name}
             namespace={obj.metadata.namespace}
-          />
+            inline={true}
+          >
+            <span className="pf-u-pl-sm">{isApplicationRefreshing(obj) && <Spinner isSVG size='sm' />}</span>
+          </ResourceLink>
         </TableData>
         <TableData id="namespace" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
           <ResourceLink kind="Namespace" name={obj.metadata.namespace} />

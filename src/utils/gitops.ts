@@ -1,6 +1,15 @@
 import { ApplicationKind } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 
+export const annotationRefreshKey = "argocd.argoproj.io/refresh";
+
+export function isApplicationRefreshing(app: ApplicationKind):boolean {
+  // if (app == undefined) return false;
+  // if (app.metadata.annotations == undefined) return false;
+  // return app.metadata.annotations[annotationRefreshKey] == "refreshing";
+  return (app && app.metadata && app.metadata.annotations && app.metadata.annotations !=undefined && app.metadata.annotations[annotationRefreshKey] == "refreshing");
+}
+
 export function createRevisionURL(repo: string, revision: string) {
   if (!repo || !revision) return undefined;
 

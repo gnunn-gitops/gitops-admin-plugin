@@ -1,9 +1,8 @@
 import { ApplicationKind, ApplicationModel, ApplicationOperation, ApplicationResourceStatus, Resource } from "@application-model";
+import { annotationRefreshKey } from "@gitops-utils/gitops";
 import { k8sUpdate } from "@openshift-console/dynamic-plugin-sdk";
 
 //const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
-
-const annotationRefreshKey = "argocd.argoproj.io/refresh";
 
 export const syncResourcek8s = async (app: ApplicationKind, resources: ApplicationResourceStatus[]): Promise<ApplicationKind> => {
 
