@@ -36,6 +36,7 @@ import HistoryListFragment from './components/History/HistoryFragment';
 import ExternalLink from './components/ExternalLink/ExternalLink';
 import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -48,6 +49,8 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
   const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
+
+  const [canPatch, canUpdate] = getObjectModifyPermissions(obj, ApplicationModel);
 
   const [argoServer, setArgoServer] = React.useState<ArgoServer>({host: "", protocol: ""})
 
@@ -187,7 +190,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <div>
-                    <Button variant="link" isInline icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
+                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
                   </div>
                   <MetadataLabels labels={obj?.metadata?.labels} />
                 </DescriptionListDescription>
@@ -299,14 +302,27 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                  <ToggleGroup isCompact>
-                    <ToggleGroupItem text={t('Automated')} buttonId="automated" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated?true:false}/>
-                    <ToggleGroupItem text={t('Self Heal')} buttonId="self-heal" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.selfHeal} isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
-                    <ToggleGroupItem text={t('Prune')} buttonId="prune" onChange={onChangeAutomated} isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.prune} isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
+                  <ToggleGroup isCompact areAllGroupsDisabled={!canUpdate}>
+                    <ToggleGroupItem
+                      text={t('Automated')}
+                      buttonId="automated"
+                      onChange={onChangeAutomated}
+                      isSelected={obj?.spec?.syncPolicy?.automated?true:false}/>
+                    <ToggleGroupItem
+                      text={t('Self Heal')}
+                      buttonId="self-heal"
+                      onChange={onChangeAutomated}
+                      isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.selfHeal}
+                      isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
+                    <ToggleGroupItem
+                      text={t('Prune')}
+                      buttonId="prune"
+                      onChange={onChangeAutomated}
+                      isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.prune}
+                      isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
                   </ToggleGroup>
                 </DescriptionListDescription>
               </DescriptionListGroup>
-
             </DescriptionList>
           </GridItem>
         </Grid>
