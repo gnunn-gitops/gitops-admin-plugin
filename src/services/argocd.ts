@@ -1,9 +1,9 @@
 import { ApplicationKind, ApplicationModel, ApplicationOperation, ApplicationResourceStatus, Resource } from "@application-model";
-import { k8sPatch } from "@openshift-console/dynamic-plugin-sdk";
+import { k8sUpdate } from "@openshift-console/dynamic-plugin-sdk";
 
 //const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
 
-const annotationRefreshKey = "argocd.argoproj.io~1refresh";
+const annotationRefreshKey = "argocd.argoproj.io/refresh";
 
 export const syncResourcek8s = async (app: ApplicationKind, resources: ApplicationResourceStatus[]): Promise<ApplicationKind> => {
 
@@ -71,18 +71,11 @@ export const syncAppK8s = async (app: ApplicationKind, resources?: Resource[]): 
         operation.sync.resources = resources;
     }
 
-    console.log(operation);
+    app.operation = operation;
 
-    return k8sPatch({
+    return k8sUpdate({
         model: ApplicationModel,
-        resource: app,
-        data: [
-          {
-            op: 'add',
-            path: '/operation',
-            value: operation,
-          },
-        ],
+        data: app,
       })
 }
 
@@ -91,22 +84,15 @@ export const syncAppK8s = async (app: ApplicationKind, resources?: Resource[]): 
  */
 export const refreshAppk8s = async (app: ApplicationKind, hard: boolean): Promise<ApplicationKind> => {
     // Note we need to add the annotations first in case it doesn't exist already
-    return k8sPatch({
+
+
+    if (!app.metadata.annotations) app.metadata.annotations = {};
+    app.metadata.annotations[annotationRefreshKey]=(hard? "hard":"refreshing");
+
+    return k8sUpdate({
         model: ApplicationModel,
-        resource: app,
-        data: [
-        {
-            op: 'add',
-            path: '/metadata/annotations',
-            value: {},
-        },
-        {
-            op: 'add',
-            path: '/metadata/annotations/' + annotationRefreshKey,
-            value: (hard? "hard":"normal"),
-        },
-        ],
-    })
+        data: app,
+    });
 }
 
 /*
