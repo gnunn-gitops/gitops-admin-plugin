@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { AppProjectKind, AppProjectModel, appProjectModelRef } from '@appproject-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { Action, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 
 import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
@@ -24,6 +24,12 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
         id: 'dataimportcron-action-edit-labels',
         disabled: false,
         label: t('Edit labels'),
+        accessReview: {
+          group: AppProjectModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: AppProjectModel.plural,
+          namespace: appProject?.metadata?.namespace
+        },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <LabelsModal
@@ -50,6 +56,12 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
         id: 'crontab-action-edit-annotations',
         disabled: false,
         label: t('Edit annotations'),
+        accessReview: {
+          group: AppProjectModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: AppProjectModel.plural,
+          namespace: appProject?.metadata?.namespace
+        },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <AnnotationsModal
@@ -76,6 +88,12 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
         id: 'crontab-action-edit-crontab',
         disabled: false,
         label: t('Edit'),
+        accessReview: {
+          group: AppProjectModel.apiGroup,
+          verb: 'update' as K8sVerb,
+          resource: AppProjectModel.plural,
+          namespace: appProject?.metadata?.namespace
+        },
         cta: () =>
           history.push(
             `/k8s/ns/${appProject.metadata.namespace}/${appProjectModelRef}/${appProject.metadata.name}/yaml`,
@@ -84,6 +102,12 @@ export const useAppProjectActionsProvider: UseAppProjectActionsProvider = (appPr
       {
         id: 'crontab-action-delete',
         label: t('Delete'),
+        accessReview: {
+          group: AppProjectModel.apiGroup,
+          verb: 'delete' as K8sVerb,
+          resource: AppProjectModel.plural,
+          namespace: appProject?.metadata?.namespace
+        },
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <ResourceDeleteModal

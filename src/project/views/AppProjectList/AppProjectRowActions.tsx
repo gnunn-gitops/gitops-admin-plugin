@@ -16,6 +16,7 @@ import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/Annotati
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type AppProjectRowActionsProps = {
   obj?: AppProjectKind;
@@ -25,6 +26,8 @@ const AppProjectRowActions: React.FC<AppProjectRowActionsProps> = ({ obj }) => {
   const { createModal } = useModal();
   const history = useHistory();
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+
+  const [canPatch, canUpdate, canDelete] = getObjectModifyPermissions(obj, AppProjectModel);
 
   const { t } = useGitOpsTranslation();
 
@@ -101,16 +104,16 @@ const AppProjectRowActions: React.FC<AppProjectRowActionsProps> = ({ obj }) => {
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onEditLabelsModalToggle} key="appproject-delete">
+        <DropdownItem onClick={onEditLabelsModalToggle} key="appproject-edit-labels" isDisabled={!canPatch}>
           {t('Edit labels')}
         </DropdownItem>,
-        <DropdownItem onClick={onEditAnnotationsModalToggle} key="appproject-delete">
+        <DropdownItem onClick={onEditAnnotationsModalToggle} key="appproject-edit-annotations" isDisabled={!canPatch}>
           {t('Edit annotations')}
         </DropdownItem>,
-        <DropdownItem onClick={onEditAppProject} key="appproject-delete">
+        <DropdownItem onClick={onEditAppProject} key="appproject-edit" isDisabled={!canUpdate}>
           {t('Edit Project')}
         </DropdownItem>,
-        <DropdownItem onClick={onDeleteModalToggle} key="appproject-delete">
+        <DropdownItem onClick={onDeleteModalToggle} key="appproject-delete" isDisabled={!canDelete}>
           {t('Delete Project')}
         </DropdownItem>,
       ]}
