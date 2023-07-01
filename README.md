@@ -28,7 +28,7 @@ If the user has Kubernetes RBAC permissions to view Application objects then it 
 
 As a result this plugin is not particularly suitable for users working with Argo CD in multi-tenant deployments. This is because in a multi-tenant scenario Argo RBAC must be used to enforce separation between tenants and tenants cannot be allowed direct access to the namespace where Argo CD and the Applications are deployed. Otherwise the user will be able to view secrets they should not have access to, potentially modify Application objects to bypass Argo CD RBAC, etc.
 
-I am very optimistic that when Applications in Any Namespace becomes GA this will become the preferred way to manage tenancy in Argo CD and the plugins resource based philosphy is well suited for this.
+I am very optimistic that when [Applications in Any Namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace) becomes GA this will become the preferred way to manage tenancy in Argo CD and the plugins resource based philosphy is well suited for this.
 
 However at this time the plugin is most suited for cluster and Argo CD administrators who will typically have elevated permissions.
 
