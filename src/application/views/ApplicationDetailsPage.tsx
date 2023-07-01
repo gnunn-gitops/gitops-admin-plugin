@@ -19,7 +19,7 @@ import {
   ToggleGroupItem
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
+import PencilAltIcon from '@patternfly/react-icons/dist/esm/icons/pencil-alt-icon';
 import { k8sPatch, k8sUpdate, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
@@ -37,6 +37,7 @@ import ExternalLink from './components/ExternalLink/ExternalLink';
 import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
+import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -99,6 +100,29 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 op: 'replace',
                 path: '/metadata/labels',
                 value: labels,
+              },
+            ],
+          })
+        }
+      />
+    ))
+  }
+
+  const onEditAnnotations = () => {
+    createModal(({ isOpen, onClose }) => (
+      <AnnotationsModal
+        obj={obj}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={(annotations) =>
+          k8sPatch({
+            model: ApplicationModel,
+            resource: obj,
+            data: [
+              {
+                op: 'replace',
+                path: '/metadata/annotations',
+                value: annotations,
               },
             ],
           })
@@ -190,9 +214,24 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <div>
-                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
+                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={onEditLabels}>{t(' Edit')}</Button>
                   </div>
                   <MetadataLabels labels={obj?.metadata?.labels} />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Annotations')}</div>} bodyContent={<div>{t('Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.')}</div>}>
+                    <DescriptionListTermHelpTextButton>
+                      {t('Annotations')}
+                    </DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <div>
+                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={onEditAnnotations}>{(obj.metadata?.annotations ? Object.keys(obj.metadata.annotations).length: 0) + t(' Annotations')}</Button>
+                  </div>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 

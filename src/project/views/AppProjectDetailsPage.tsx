@@ -16,7 +16,7 @@ import {
   Title
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import PlusCircleIcon from '@patternfly/react-icons/dist/esm/icons/plus-circle-icon';
+import PencilAltIcon from '@patternfly/react-icons/dist/esm/icons/pencil-alt-icon';
 import { k8sPatch, ResourceLink, Timestamp } from '@openshift-console/dynamic-plugin-sdk';
 import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
 import { AppProjectModel } from '@appproject-model/AppProjectModel';
@@ -24,6 +24,8 @@ import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import DestinationsListFragment from './components/Destinations/DestinationFragment';
 import ResourceAllowDenyListFragment from './components/ResourceAllowDenyList/ResourceAllowDenyFragment';
+import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 
 type AppProjectDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -50,6 +52,8 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
   const { t } = useGitOpsTranslation();
   const { createModal } = useModal();
 
+  const [canPatch] = getObjectModifyPermissions(obj, AppProjectModel);
+
   const onEditLabels = () => {
     createModal(({ isOpen, onClose }) => (
       <LabelsModal
@@ -72,6 +76,30 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
       />
     ))
   }
+
+  const onEditAnnotations = () => {
+    createModal(({ isOpen, onClose }) => (
+      <AnnotationsModal
+        obj={obj}
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={(annotations) =>
+          k8sPatch({
+            model: AppProjectModel,
+            resource: obj,
+            data: [
+              {
+                op: 'replace',
+                path: '/metadata/annotations',
+                value: annotations,
+              },
+            ],
+          })
+        }
+      />
+    ))
+  }
+
   return (
     <div>
       <PageSection>
@@ -112,9 +140,24 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
                   <div>
-                    <Button variant="link" isInline icon={<PlusCircleIcon />} onClick={onEditLabels}>{t(' Edit')}</Button>
+                    <Button variant="link" isInline icon={<PencilAltIcon />} iconPosition={'right'} isDisabled={!canPatch} onClick={onEditLabels}>{t(' Edit')}</Button>
                   </div>
                   <MetadataLabels labels={obj?.metadata?.labels} />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
+              <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Annotations')}</div>} bodyContent={<div>{t('Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.')}</div>}>
+                    <DescriptionListTermHelpTextButton>
+                      {t('Annotations')}
+                    </DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  <div>
+                    <Button variant="link" isInline icon={<PencilAltIcon />} iconPosition={'right'} isDisabled={!canPatch} onClick={onEditAnnotations}>{(obj.metadata?.annotations ? Object.keys(obj.metadata.annotations).length: 0) + t(' Annotations')}</Button>
+                  </div>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
