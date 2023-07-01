@@ -9,6 +9,10 @@ Note that this plugin is community supported and is not part of the OpenShift Gi
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-list.png)
 
+More screenshots:
+
+[Application Details Screenshot](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-details.png)
+
 # Current Status
 
 The following table shows the current status of development.
