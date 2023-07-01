@@ -13,6 +13,7 @@ spec:
   selector:
     matchLabels:
       app: gitops-admin-plugin
+      app.kubernetes.io/instance: gitops-admin-plugin
   strategy:
     rollingUpdate:
       maxSurge: 25%
