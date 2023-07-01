@@ -14,6 +14,8 @@ import {
   Label,
   PageSection,
   Popover,
+  Split,
+  SplitItem,
   Title,
   ToggleGroup,
   ToggleGroupItem
@@ -205,17 +207,21 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
               </DescriptionListGroup>
 
               <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
-                    <DescriptionListTermHelpTextButton>
-                      {t('Labels')}
-                    </DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <div>
+                <Split>
+                  <SplitItem isFilled>
+                    <DescriptionListTermHelpText>
+                      <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
+                        <DescriptionListTermHelpTextButton>
+                          {t('Labels')}
+                        </DescriptionListTermHelpTextButton>
+                      </Popover>
+                    </DescriptionListTermHelpText>
+                  </SplitItem>
+                  <SplitItem>
                     <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={onEditLabels}>{t(' Edit')}</Button>
-                  </div>
+                  </SplitItem>
+                </Split>
+                <DescriptionListDescription>
                   <MetadataLabels labels={obj?.metadata?.labels} />
                 </DescriptionListDescription>
               </DescriptionListGroup>
