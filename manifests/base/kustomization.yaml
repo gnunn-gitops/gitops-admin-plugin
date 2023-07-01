@@ -6,6 +6,7 @@ commonLabels:
   app.kubernetes.io/name: gitops-admin-plugin
 
 resources:
+- console-plugin.yaml
 - namespace.yaml
 - configmap.yaml
 - plugin-deploy.yaml
