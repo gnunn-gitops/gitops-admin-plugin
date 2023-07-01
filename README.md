@@ -1,58 +1,55 @@
 # Introduction
 
-This is intended as a POC to understand the feasibility of building a in the OpenShift console to manage OpenShift GitOps. Goals of the POC were:
+This project is intended as a POC to understand the feasibility of using a [console dynamic plugin](https://docs.openshift.com/container-platform/4.13/web_console/dynamic-plugin/overview-dynamic-plugin.html) in OpenShift to manage OpenShift GitOps, aka Argo CD. The original goals of the POC were:
 
 1. Provide a basic view of Application objects in the OpenShift console
 2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
 
-This is not intended as a general replacement for the Argo CD UI since it operates under a different philosphy. Specifically the OpenShift Console is a Kubernetes resource driven view of the cluster and this plugin adheres to that philosphy.
-
-If the console user has the necessary Kubernetes RBAC to see the object then it will be shown to them, Argo CD RBAC is not used at all to evaluate object visibility. Having said that, any interaction with the Argo CD API does use the identity of the console user and thus will respect Argo CD RBAC.
+Note that this plugin is community supported and is not part of the OpenShift GitOps product nor supported by Red Hat. I assume no responsibility for anything that goes wrong so caveat emptor.
 
 ![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-list.png)
 
-# Prerequisites
+# Current Status
 
-In order for this plugin to interact with the Argo CD API it performs a token exchange with Dex. At the moment the only features that depend on this ability are triggering a Sync and Refresh in Application objects.
+The following table shows the current status of development.
 
-To replace the default Dex provided by OpenShift Gitops with an image that supports token exchange modify the following in your Argo CD CR under `spec.sso.dex`:
+| Custom Resource  | Goal Status          | Comments        |
+| ------------- | -------------      | -------------- |
+| Application  | 100%  | Feature complete |
+| AppProject  | 80%  | Mostly feature complete but UI needs improvement for readability |
+| ApplicationSet | 10% | Default OpenShift view with an additional tab to view list of associated applications. |
+| Rollout | 5% | Placeholder menu item backed by Default OpenShift view |
 
-```
-   sso:
-      dex:
-         image: quay.io/gnunn/dex
-         version: token-exchange-1.8
-```
+# Philosphy
 
-Note the above is not supported by Red Hat and not recommended in production environments.
+This plugin is not intended as a general replacement for the Argo CD UI since it operates under a different philosphy. Specifically the OpenShift Console is a Kubernetes resource driven view of the cluster and this plugin adheres to that philosphy.
+
+If the user has Kubernetes RBAC permissions to view Application objects then it will appear in this plugin. If the user has permissions to update and patch the Application objects then they will be able to sync and refresh the application. Argo RBAC is not used at all in the plugin.
+
+As a result this plugin is not particularly suitable for users working with Argo CD in multi-tenant deployments. This is because in a multi-tenant scenario Argo RBAC must be used to enforce separation between tenants and tenants cannot be allowed direct access to the namespace where Argo CD and the Applications are deployed. Otherwise the user will be able to view secrets they should not have access to, potentially modify Application objects to bypass Argo CD RBAC, etc.
+
+I am very optimistic that when Applications in Any Namespace becomes GA this will become the preferred way to manage tenancy in Argo CD and the plugins resource based philosphy is well suited for this.
+
+However at this time the plugin is most suited for cluster and Argo CD administrators who will typically have elevated permissions.
 
 # Limitations
 
-There are a few limitations in this POC level implementation:
+There are some limitations in this current implementation:
 
-- Little to no error handling, if things don't work use the browser's Developer Tools to view the console log
 - Limited testing across the wide swath of Argo CD features, for example Helm apps have only been lightly tested.
-- No edit capabilities beyond editing the yaml
-- No useability testing but suggestions for UI improvements definitely welcome!
+- Limited error handling, if something does not work as expected check the browser console logs
+- No general editing capabilities beyond editing the yaml
+- Limited useability testing but suggestions for UI improvements definitely welcome!
 
 ## Deployment on cluster
 
+The plugin can be installed from the manifests included in the `/manifests` folder using kustomize.
 
-### Installing the Helm Chart
-A [Helm](https://helm.sh) chart is available to deploy the plugin to an OpenShift environment.
-
-To deploy the plugin on a cluster using a Helm chart:
-```shell
-helm upgrade -i gitops-admin-plugin charts/openshift-console-plugin -n gitops-admin-plugin --create-namespace --set plugin.image=quay.io/gnunn/gitops-admin-plugin:latest
+```
+oc apply -k ./manifests/overlays/install
 ```
 
-`-i gitops-admin-plugin`: specifies installation of a release named `gitops-admin-plugin`
-
-`-n gitops-admin-plugin --create-namespace`: creates a new namespace for the helm chart
-
-`plugin.image`: Specifies the location of the image containing the plugin, to be deployed
-
-Additional parameters can be specified if desired. Consult the chart [values](charts/openshift-console-plugin/values.yaml) file for the full set of supported parameters.
+Note the `install` overally include a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
 
 ## Local development
 
@@ -67,38 +64,17 @@ In another terminal window, run:
 1. `oc login`
 2. `yarn run start-console` (requires [Docker](https://www.docker.com) or [podman](https://podman.io))
 
-## Docker image
+You will then be able to access the console with the plugin at `http://localhost:9000` in a browser.
 
-Before you can deploy your plugin on a cluster, you must build an image and
-push it to an image registry.
+## Container image
 
-1. Build the image:
+You can build the plugin as a container image using podman (or docker if you prefer) with the following command:
 
-   NOTE: If you have a Mac with Apple silicon, you will need to add the flag
-   `--platform=linux/amd64` when building the image to target the correct platform
-   to run in-cluster.
+```
+podman build . -t <your-image-name>
+```
 
-   ```sh
-   docker build -f Dockerfile -t $NAME/gitops-plugin:latest . --no-cache
-   ```
-
-3. Push the image:
-
-   ```sh
-   docker push $NAME/gitops-plugin:latest
-   ```
-
-## Token Architecture
-
-OpenShift dynamic plugins run in the browser as part of the OpenShift console, they inherit the identity of the current logged in user. We need to use the current identity to interact with Argo so that the proper Argo RBAC can be applied for any features outside the scope of Kubernetes resouce RBAC. Looking up and using the admin secret for Argo would bypass the Argo RBAC plus for cases where Applications in Any Namespace is in place the currently logged in user may not have access to that secret either.
-
-The challenge with using the current identity is that in OpenShift GitOps access to Argo is protected by Dex and requires a Dex OIDC token, not an OpenShift OAuth token, to interact with Argo APIs. This involves overcoming two obstacles: Getting an OpenShift session token for the current user and exchanging it for a Dex token.
-
-Taking the second part first, while Token Exchange is not currently supported in Dex there is a [PR](https://github.com/dexidp/dex/pull/2806) available for it. I tested the PR and wrote a bit of [Go code](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L202) plus a horrific [hack](https://github.com/gnunn1/dex/blob/dex-token-exchange/connector/openshift/openshift.go#L69) and was able to get the token exchange to work.
-
-For the first part, the only way to get the OAuth token from the token is to have a proxy service in the console as per this [documentation](https://github.com/openshift/enhancements/blob/master/enhancements/console/dynamic-plugins.md#delivering-plugins). The [gitops-plugin-proxy](https://github.com/gnunn-gitops/gitops-plugin-proxy) is a small Go application that will accept requests from the plugin in the console, extract the OAuth token and perform a token exchange with Dex before calling the requested Argo CD API.
-
-![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-architecture.png)
+The image used by the manifests is hosted at [quay.io/gnunn/gitops-admin-plugin](quay.io/gnunn/gitops-admin-plugin).
 
 ## Acknowledgements
 
@@ -107,4 +83,4 @@ Thanks to the following individuals:
 * Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
 * Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
 * Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
-* Argo CD UI where I leveraged the existing code for determining Operation State
+* Argo CD UI where I leveraged the existing code for determining Operation State plus doing A/B testing against

@@ -1,5 +1,0 @@
-apiVersion: v2
-name: gitops-admin-plugin
-description: GitOps Plugin for the OpenShift Console
-type: application
-version: 0.1.0
