@@ -1,9 +1,7 @@
 import React from 'react';
 import { getContentScrollableElement } from 'src/application/views/components/ApplicationList/ApplicationRowActions';
-import { useApplicationActionsProvider } from 'src/application/views/hooks/useApplicationActionsProvider';
 
-import { ApplicationKind } from '@application-model';
-import { Action } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sResourceCommon } from '@openshift-console/dynamic-plugin-sdk';
 import {
   Dropdown,
   DropdownItem,
@@ -12,18 +10,18 @@ import {
   KebabToggle,
 } from '@patternfly/react-core';
 
-import './ApplicationActions.scss';
+import './PageResourceActions.scss';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
-type ApplicationActionProps = {
-  application: ApplicationKind;
+type PageResourceActionProps = {
+  obj: K8sResourceCommon;
+  actions: Action[];
   isKebabToggle?: boolean;
 };
 
-export const ApplicationActions: React.FC<ApplicationActionProps> = ({ application, isKebabToggle }) => {
+export const PageResourceAction: React.FC<PageResourceActionProps> = ({ obj, actions, isKebabToggle }) => {
   const { t } = useGitOpsTranslation();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
-  const [actions /*, onLazyOpen*/] = useApplicationActionsProvider(application);
 
   const handleClick = (action: Action) => {
     if (typeof action?.cta === 'function') {

@@ -7,13 +7,15 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 import { Bullseye, Spinner } from '@patternfly/react-core';
 
-import AppProjectPageTitle from './AppProjectDetails/AppProjectPageTitle';
 import AppProjectDetailsPage from './AppProjectDetailsPage';
 import AppProjectYAMLPage from './AppProjectYAMLPage';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import AppProjectRolesPage from './AppProjectRolesPage';
 import AppProjectWindowsPage from './AppProjectWindowsPage';
 import AppProjectAppsPage from './AppProjectAppsPage';
+import PageTitle from '@shared/views/components/PageTitle/PageTitle';
+import { AppProjectModel } from '@appproject-model';
+import { useAppProjectActionsProvider } from './hooks/useAppProjectActionsProvider';
 
 type AppProjectPageProps = {
   name: string;
@@ -33,6 +35,8 @@ const AppProjectNavPage: React.FC<AppProjectPageProps> = ({ name, namespace, kin
     name,
     namespace,
   });
+
+  const [actions /*, onLazyOpen*/] = useAppProjectActionsProvider(appProject);
 
   const pages = React.useMemo(
     () => [
@@ -67,7 +71,7 @@ const AppProjectNavPage: React.FC<AppProjectPageProps> = ({ name, namespace, kin
 
   return (
     <>
-      <AppProjectPageTitle appProject={appProject} namespace={namespace} name={name} />
+      <PageTitle obj={appProject} namespace={namespace} name={name} model={AppProjectModel} actions={actions} />
       {loaded ? (
         <HorizontalNav pages={pages} resource={appProject} />
       ) : (

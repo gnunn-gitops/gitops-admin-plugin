@@ -3,7 +3,7 @@ import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plug
 
 export const annotationRefreshKey = "argocd.argoproj.io/refresh";
 
-export function isApplicationRefreshing(app: ApplicationKind):boolean {
+export function isApplicationRefreshing(app: K8sResourceCommon):boolean {
   // if (app == undefined) return false;
   // if (app.metadata.annotations == undefined) return false;
   // return app.metadata.annotations[annotationRefreshKey] == "refreshing";
