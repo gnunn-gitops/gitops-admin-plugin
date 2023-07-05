@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
-  Button,
   DescriptionList,
   DescriptionListDescription,
   DescriptionListGroup,
@@ -14,19 +13,13 @@ import {
   Label,
   PageSection,
   Popover,
-  Split,
-  SplitItem,
   Title,
   ToggleGroup,
   ToggleGroupItem
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import PencilAltIcon from '@patternfly/react-icons/dist/esm/icons/pencil-alt-icon';
-import { k8sPatch, k8sUpdate, ResourceLink, Timestamp, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
-import MetadataLabels from './utils/MetadataLabels/MetadataLabels';
+import { k8sUpdate, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
-import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { LabelsModal } from '../../shared/views/modals/LabelsModal/LabelsModal';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
 import RevisionFragment from './components/Revision/RevisionFragment';
@@ -39,7 +32,7 @@ import ExternalLink from './components/ExternalLink/ExternalLink';
 import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
-import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
+import StandardDetailsGroup, { Details } from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -50,7 +43,6 @@ type ApplicationDetailsPageProps = RouteComponentProps<{
 
 const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
-  const { createModal } = useModal();
   const [model] = useK8sModel({ group: 'route.openshift.io', version: 'v1', kind: 'Route' });
 
   const [canPatch, canUpdate] = getObjectModifyPermissions(obj, ApplicationModel);
@@ -85,52 +77,6 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
     history = obj?.status?.history;
   } else {
     history = [];
-  }
-
-  const onEditLabels = () => {
-    createModal(({ isOpen, onClose }) => (
-      <LabelsModal
-        obj={obj}
-        isOpen={isOpen}
-        onClose={onClose}
-        onLabelsSubmit={(labels) =>
-          k8sPatch({
-            model: ApplicationModel,
-            resource: obj,
-            data: [
-              {
-                op: 'replace',
-                path: '/metadata/labels',
-                value: labels,
-              },
-            ],
-          })
-        }
-      />
-    ))
-  }
-
-  const onEditAnnotations = () => {
-    createModal(({ isOpen, onClose }) => (
-      <AnnotationsModal
-        obj={obj}
-        isOpen={isOpen}
-        onClose={onClose}
-        onSubmit={(annotations) =>
-          k8sPatch({
-            model: ApplicationModel,
-            resource: obj,
-            data: [
-              {
-                op: 'replace',
-                path: '/metadata/annotations',
-                value: annotations,
-              },
-            ],
-          })
-        }
-      />
-    ))
   }
 
   const onChangeAutomated = (isSelected: boolean, event: React.MouseEvent<any> | React.KeyboardEvent | MouseEvent) => {
@@ -195,62 +141,13 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Namespace')}</div>} bodyContent={<div>{t('Namespace defines the space within which each name must be unique.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Namespace')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <ResourceLink kind="Namespace" name={obj?.metadata?.namespace} />
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              <StandardDetailsGroup
+                obj={obj}
+                model={ApplicationModel}
+                canPatch={canPatch}
+                exclude={[Details.Name]}
+              />
 
-              <DescriptionListGroup>
-                <Split>
-                  <SplitItem isFilled>
-                    <DescriptionListTermHelpText>
-                      <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
-                        <DescriptionListTermHelpTextButton>
-                          {t('Labels')}
-                        </DescriptionListTermHelpTextButton>
-                      </Popover>
-                    </DescriptionListTermHelpText>
-                  </SplitItem>
-                  <SplitItem>
-                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={onEditLabels}>{t(' Edit')}</Button>
-                  </SplitItem>
-                </Split>
-                <DescriptionListDescription>
-                  <MetadataLabels labels={obj?.metadata?.labels} />
-                </DescriptionListDescription>
-              </DescriptionListGroup>
-
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Annotations')}</div>} bodyContent={<div>{t('Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.')}</div>}>
-                    <DescriptionListTermHelpTextButton>
-                      {t('Annotations')}
-                    </DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <div>
-                    <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={onEditAnnotations}>{(obj.metadata?.annotations ? Object.keys(obj.metadata.annotations).length: 0) + t(' Annotations')}</Button>
-                  </div>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
-
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Created at')}</div>} bodyContent={<div>{t('Time is a wrapper around time. Time which supports correct marshaling to YAML and JSON.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Created at')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  {<Timestamp timestamp={obj?.metadata?.creationTimestamp} />}
-                </DescriptionListDescription>
-              </DescriptionListGroup>
             </DescriptionList>
           </GridItem>
 
