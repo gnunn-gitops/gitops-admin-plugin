@@ -18,7 +18,7 @@ import {
   ToggleGroupItem
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import { k8sUpdate, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { ResourceLink, k8sUpdate, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import { ApplicationHistory, ApplicationKind, ApplicationModel } from '@application-model/ApplicationModel';
 import HealthStatusFragment from './components/Statuses/HealthStatusFragment';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
@@ -222,7 +222,8 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                   </Popover>
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>
-                  {obj?.spec?.project}
+                  {/* TODO - Update to handle App in Any Namespace when controller namespace is in status */}
+                  <ResourceLink groupVersionKind={{ group: 'argoproj.io', version: 'v1alpha1', kind: 'AppProject' }} name={obj?.spec?.project}/>
                 </DescriptionListDescription>
               </DescriptionListGroup>
 
