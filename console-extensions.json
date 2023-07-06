@@ -58,21 +58,6 @@
   {
     "type": "console.navigation/resource-ns",
     "properties": {
-      "id": "rollout",
-      "name": "%plugin__gitops-admin-plugin~Rollouts%",
-      "perspective": "admin",
-      "section": "workloads",
-      "insertAfter": "statefulsets",
-      "model": {
-        "group": "argoproj.io",
-        "kind": "Rollout",
-        "version": "v1alpha1"
-      }
-    }
-  },
-  {
-    "type": "console.navigation/resource-ns",
-    "properties": {
       "id": "application",
       "name": "%plugin__gitops-admin-plugin~Applications%",
       "perspective": "admin",
@@ -135,6 +120,7 @@
       }
     }
   },
+
   {
     "type": "console.flag/model",
     "properties": {
@@ -210,5 +196,84 @@
         "$codeRef": "useAppProjectActionsProvider.useAppProjectActionsProvider"
       }
     }
+  },
+
+  {
+    "type": "console.flag/model",
+    "properties": {
+      "flag": "ROLLOUT",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.navigation/resource-ns",
+    "properties": {
+      "id": "rollout",
+      "name": "%plugin__gitops-admin-plugin~Rollouts%",
+      "perspective": "admin",
+      "section": "workloads",
+      "insertAfter": "statefulsets",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/list",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      },
+      "component": {
+        "$codeRef": "RolloutList"
+      }
+    }
+  },
+  {
+    "type": "console.page/resource/details",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      },
+      "component": { "$codeRef": "RolloutDetails" }
+    }
+  },
+  {
+    "type": "console.yaml-template",
+    "properties": {
+      "name": "default",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      },
+      "template": {
+        "$codeRef": "yamlRolloutTemplates.defaultRolloutYamlTemplate"
+      }
+    }
+  },
+  {
+    "type": "console.action/resource-provider",
+    "properties": {
+      "model": {
+        "group": "argoproj.io",
+        "kind": "Rollout",
+        "version": "v1alpha1"
+      },
+      "provider": {
+        "$codeRef": "useRolloutActionsProvider.useRolloutActionsProvider"
+      }
+    }
   }
+
 ]

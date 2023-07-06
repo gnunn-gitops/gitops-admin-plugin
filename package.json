@@ -67,12 +67,21 @@
       "ApplicationDetails": "./application/views/ApplicationDetails.tsx",
       "useApplicationActionsProvider": "./application/views/hooks/useApplicationActionsProvider.tsx",
       "yamlApplicationTemplates": "src/application/templates/index.ts",
+
       "AppProjectList": "./project/views/AppProjectList/AppProjectList.tsx",
       "AppProjectDetails": "./project/views/AppProjectDetails.tsx",
       "useAppProjectActionsProvider": "./project/views/hooks/useAppProjectActionsProvider.tsx",
       "yamlAppProjectTemplates": "src/project/templates/index.ts",
+
+      "RolloutList": "./rollout/views/RolloutList/RolloutList.tsx",
+      "RolloutDetails": "./rollout/views/RolloutDetails.tsx",
+      "useRolloutActionsProvider": "./rollout/views/hooks/useRolloutActionsProvider.tsx",
+      "yamlRolloutTemplates": "src/rollout/templates/index.ts",
+
       "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx",
+
       "AppSetAppsPage": "./applicationset/views/ApplicationSetAppsPage.tsx"
+
     },
     "dependencies": {
       "@console/pluginAPI": "^4.11"
