@@ -35,7 +35,7 @@ const AppProjectList: React.FC<AppProjectListProps> = ({ namespace }) => {
     namespace,
   });
   // const { t } = useTranslation();
-  const columns = useAppProjectColumns();
+  const columns = useAppProjectColumns(namespace);
   const [data, filteredData, onFilterChange] = useListPageFilter(appProjects);
 
   return (
@@ -85,40 +85,51 @@ const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColu
   );
 };
 
-const useAppProjectColumns = () => {
-  const columns: TableColumn<K8sResourceCommon>[] = React.useMemo(
-    () => [
-      {
-        title: 'Name',
-        id: 'name',
-        transforms: [sortable],
-        sort: 'metadata.name',
-        props: { className: 'pf-m-width-15' },
-      },
+const useAppProjectColumns = (namespace) => {
+
+  const columns: TableColumn<K8sResourceCommon>[] = [];
+
+  columns.push(
+    {
+      title: 'Name',
+      id: 'name',
+      transforms: [sortable],
+      sort: 'metadata.name',
+      props: { className: 'pf-m-width-15' },
+    }
+  );
+  // Only show namespace column when defined
+  // Note this change removes useMemo which from what I understand
+  // helps performance by not recalculating this on each render. There
+  // may be a better way to do this, original code commented out below
+  if (!namespace) {
+    columns.push(
       {
         title: 'Namespace',
         id: 'namespace',
         transforms: [sortable],
         sort: 'metadata.namespace',
         props: { className: 'pf-m-width-15' },
-      },
-      {
-        title: 'Description',
-        id: 'description',
-        transforms: [sortable],
-        sort: 'spec.description',
-        props: { className: 'pf-m-width-15' },
-      },
-      {
-        title: '',
-        id: 'actions',
-        props: { className: 'dropdown-kebab-pf pf-c-table__action' },
-      },
-    ],
-    [],
-  );
+      }
+    )
+  }
 
-  return columns;
+  columns.push(
+    {
+      title: 'Description',
+      id: 'description',
+      transforms: [sortable],
+      sort: 'spec.description',
+      props: { className: 'pf-m-width-15' },
+    },
+    {
+      title: '',
+      id: 'actions',
+      props: { className: 'dropdown-kebab-pf pf-c-table__action' },
+    }
+  )
+
+  return React.useMemo(() => columns, [namespace]);
 };
 
 export default AppProjectList;

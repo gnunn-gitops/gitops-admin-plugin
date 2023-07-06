@@ -34,7 +34,7 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
     namespace,
   });
   // const { t } = useTranslation();
-  const columns = useRolloutColumns();
+  const columns = useRolloutColumns(namespace);
   const [data, filteredData, onFilterChange] = useListPageFilter(rollouts);
 
   return (
@@ -87,47 +87,58 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
   );
 };
 
-const useRolloutColumns = () => {
-  const columns: TableColumn<K8sResourceCommon>[] = React.useMemo(
-    () => [
-      {
-        title: 'Name',
-        id: 'name',
-        transforms: [sortable],
-        sort: 'metadata.name',
-        props: { className: 'pf-m-width-15' },
-      },
+const useRolloutColumns = (namespace) => {
+
+  const columns: TableColumn<K8sResourceCommon>[] = [];
+
+  columns.push(
+    {
+      title: 'Name',
+      id: 'name',
+      transforms: [sortable],
+      sort: 'metadata.name',
+      props: { className: 'pf-m-width-15' },
+    }
+  );
+  // Only show namespace column when defined
+  // Note this change removes useMemo which from what I understand
+  // helps performance by not recalculating this on each render. There
+  // may be a better way to do this, original code commented out below
+  if (!namespace) {
+    columns.push(
       {
         title: 'Namespace',
         id: 'namespace',
         transforms: [sortable],
         sort: 'metadata.namespace',
         props: { className: 'pf-m-width-15' },
-      },
-      {
-        title: 'Status',
-        id: 'status',
-        transforms: [sortable],
-        sort: 'status.readyReplicas',
-        props: { className: 'pf-m-width-15' },
-      },
-      {
-        title: 'Selector',
-        id: 'selector',
-        transforms: [sortable],
-        sort: 'status.selector',
-        props: { className: 'pf-m-width-15' },
-      },
-      {
-        title: '',
-        id: 'actions',
-        props: { className: 'dropdown-kebab-pf pf-c-table__action' },
-      },
-    ],
-    [],
-  );
+      }
+    )
+  }
 
-  return columns;
+  columns.push(
+    {
+      title: 'Status',
+      id: 'status',
+      transforms: [sortable],
+      sort: 'status.readyReplicas',
+      props: { className: 'pf-m-width-15' },
+    },
+    {
+      title: 'Selector',
+      id: 'selector',
+      transforms: [sortable],
+      sort: 'status.selector',
+      props: { className: 'pf-m-width-15' },
+    },
+    {
+      title: '',
+      id: 'actions',
+      props: { className: 'dropdown-kebab-pf pf-c-table__action' },
+    }
+  )
+
+  return React.useMemo(() => columns, [namespace]);
 };
 
 export default RolloutList;
