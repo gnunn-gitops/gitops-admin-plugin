@@ -20,6 +20,7 @@ import DestinationsListFragment from './components/Destinations/DestinationFragm
 import ResourceAllowDenyListFragment from './components/ResourceAllowDenyList/ResourceAllowDenyFragment';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
+import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
 
 type AppProjectDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -66,14 +67,11 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
           </GridItem>
           <GridItem>
             <DescriptionList>
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Description')}</div>} bodyContent={<div>{t('Description of Project.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Description')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>{obj?.spec?.description}</DescriptionListDescription>
-              </DescriptionListGroup>
+
+              <DetailsDescriptionGroup title={t('Description')} help={t('Description of Project.')}>
+                {obj?.spec?.description}
+              </DetailsDescriptionGroup>
+
             </DescriptionList>
           </GridItem>
         </Grid>

@@ -33,6 +33,7 @@ import { ConditionsPopover } from './components/Conditions/ConditionsPopover';
 import { OperationStateFragment } from './components/Statuses/OperationStateFragment';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import StandardDetailsGroup, { Details } from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
+import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
 
 type ApplicationDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -154,51 +155,32 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
 
           <GridItem>
             <DescriptionList>
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Health Status')}</div>} bodyContent={<div>{t('Health status represents the overall health of the application.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Health Status')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <HealthStatusFragment
-                    status={obj.status?.health?.status || ''}
-                  />
-                </DescriptionListDescription>
-              </DescriptionListGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Current Sync Status')}</div>} bodyContent={<div>{t('Sync status represents the current synchronized state for the application.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Current Sync Status')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <Flex>
-                    <FlexItem>
-                      <SyncStatusFragment status={obj.status?.sync?.status || ''} />
-                    </FlexItem>
-                    <FlexItem>
-                      <Label>
-                        <RevisionFragment
-                           revision={obj.status?.sync?.revision || ''}
-                           repoURL={obj.spec.source.repoURL}
-                           helm={obj.status?.sourceType == "helm"}
-                           />
-                      </Label>
-                    </FlexItem>
-                  </Flex>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              <DetailsDescriptionGroup title={t('Health Status')} help={t('Health status represents the overall health of the application.')}>
+                <HealthStatusFragment
+                      status={obj.status?.health?.status || ''}
+                    />
+              </DetailsDescriptionGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Last Sync Result')}</div>} bodyContent={<div>{t('The result of the last sync status.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Last Sync Result')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <Flex>
+              <DetailsDescriptionGroup title={t('Current Sync Status')} help={t('Sync status represents the current synchronized state for the application.')}>
+                <Flex>
+                      <FlexItem>
+                        <SyncStatusFragment status={obj.status?.sync?.status || ''} />
+                      </FlexItem>
+                      <FlexItem>
+                        <Label>
+                          <RevisionFragment
+                            revision={obj.status?.sync?.revision || ''}
+                            repoURL={obj.spec.source.repoURL}
+                            helm={obj.status?.sourceType == "helm"}
+                            />
+                        </Label>
+                      </FlexItem>
+                    </Flex>
+              </DetailsDescriptionGroup>
+
+              <DetailsDescriptionGroup title={t('Last Sync Result')} help={t('The result of the last sync status.')}>
+                <Flex>
                     {obj?.status?.operationState &&
                         <FlexItem>
                            <OperationStateFragment app={obj}/>
@@ -212,40 +194,19 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                       </FlexItem>
                     }
                   </Flex>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              </DetailsDescriptionGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Project')}</div>} bodyContent={<div>{t('The Argo CD Project that this application belongs to.')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Project')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
+              <DetailsDescriptionGroup title={t('Project')} help={t('The Argo CD Project that this application belongs to.')}>
                   {/* TODO - Update to handle App in Any Namespace when controller namespace is in status */}
                   <ResourceLink groupVersionKind={{ group: 'argoproj.io', version: 'v1alpha1', kind: 'AppProject' }} name={obj?.spec?.project}/>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              </DetailsDescriptionGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Destination')}</div>} bodyContent={<div>{t('The cluster and namespace where the application is targeted')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Destination')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  {getFriendlyClusterName(obj?.spec?.destination.server)}/{obj?.spec?.destination.namespace}
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              <DetailsDescriptionGroup title={t('Destination')} help={t('The cluster and namespace where the application is targeted')}>
+                {getFriendlyClusterName(obj?.spec?.destination.server)}/{obj?.spec?.destination.namespace}
+              </DetailsDescriptionGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Sync Policy')}</div>} bodyContent={<div>{t('Provides options to determine application syncrhonization behavior')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Sync Policy')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
-                  <ToggleGroup isCompact areAllGroupsDisabled={!canUpdate}>
+              <DetailsDescriptionGroup title={t('Sync Policy')} help={t('Provides options to determine application synchronization behavior')}>
+                <ToggleGroup isCompact areAllGroupsDisabled={!canUpdate}>
                     <ToggleGroupItem
                       text={t('Automated')}
                       buttonId="automated"
@@ -264,8 +225,8 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                       isSelected={obj?.spec?.syncPolicy?.automated && obj?.spec?.syncPolicy?.automated.prune}
                       isDisabled={obj?.spec?.syncPolicy?.automated?false:true}/>
                   </ToggleGroup>
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              </DetailsDescriptionGroup>
+
             </DescriptionList>
           </GridItem>
         </Grid>

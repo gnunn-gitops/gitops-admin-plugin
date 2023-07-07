@@ -7,6 +7,7 @@ import MetadataLabels from './MetadataLabels';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/AnnotationsModal';
+import { DetailsDescriptionGroup } from '../DetailsDescriptionGroup/DetailsDescriptionGroup';
 
 export enum Details {
     Name,
@@ -77,29 +78,17 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
     return (
         <>
         {!(Details.Name in exclude) &&
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Name')}</div>} bodyContent={<div>{t('Name must be unique within a namespace.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Name')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-                {obj?.metadata?.name}
-            </DescriptionListDescription>
-          </DescriptionListGroup>
+
+          <DetailsDescriptionGroup title={t('Name')} help={t('Name must be unique within a namespace.')}>
+            {obj?.metadata?.name}
+          </DetailsDescriptionGroup>
         }
 
         {!(Details.Namespace in exclude) &&
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Namespace')}</div>} bodyContent={<div>{t('Namespace defines the space within which each name must be unique.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Namespace')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-              <ResourceLink kind="Namespace" name={obj?.metadata?.namespace} />
-            </DescriptionListDescription>
-          </DescriptionListGroup>
+
+          <DetailsDescriptionGroup title={t('Namespace')} help={t('Namespace defines the space within which each name must be unique.')}>
+            <ResourceLink kind="Namespace" name={obj?.metadata?.namespace} />
+          </DetailsDescriptionGroup>
         }
 
         {!(Details.Labels in exclude) &&
@@ -142,16 +131,9 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
         }
 
         {!(Details.Created in exclude) &&
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
-              <Popover headerContent={<div>{t('Created at')}</div>} bodyContent={<div>{t('Time is a wrapper around time. Time which supports correct marshaling to YAML and JSON.')}</div>}>
-                <DescriptionListTermHelpTextButton>{t('Created at')}</DescriptionListTermHelpTextButton>
-              </Popover>
-            </DescriptionListTermHelpText>
-            <DescriptionListDescription>
-              {<Timestamp timestamp={obj?.metadata?.creationTimestamp} />}
-            </DescriptionListDescription>
-          </DescriptionListGroup>
+          <DetailsDescriptionGroup title={t('Created at')} help={t('Time is a wrapper around time. Time which supports correct marshaling to YAML and JSON.')}>
+            <Timestamp timestamp={obj?.metadata?.creationTimestamp} />
+          </DetailsDescriptionGroup>
         }
       </>
     )

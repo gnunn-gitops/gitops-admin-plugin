@@ -16,6 +16,8 @@ import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
 import { RolloutModel } from '@rollout-model/RolloutModel';
+import BlueGreenServices from './components/services/BlueGreenServices';
+import CanaryServices from './components/services/CanaryServices';
 
 type RolloutDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -58,6 +60,13 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
                 </DescriptionListTermHelpText>
                 <DescriptionListDescription>{obj?.spec?.strategy?.blueGreen ? "Blue-Green" : "Canary"}</DescriptionListDescription>
               </DescriptionListGroup>
+
+              {obj?.spec?.strategy?.blueGreen ?
+                <BlueGreenServices rollout={obj}/>
+              :
+                <CanaryServices rollout={obj}/>
+              }
+
             </DescriptionList>
           </GridItem>
         </Grid>
