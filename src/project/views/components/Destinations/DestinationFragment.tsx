@@ -13,16 +13,14 @@ const DestinationsListFragment: React.FC<DestinationListProps> = ({ destinations
     if (!destinations) destinations=[]
 
     return (
-        <>
-            <VirtualizedTable
-                data={destinations}
-                unfilteredData={destinations}
-                loaded={true}
-                loadError={null}
-                columns={useDestinationsColumns()}
-                Row={destinationsListRow}
-            />
-        </>
+        <VirtualizedTable
+            data={destinations}
+            unfilteredData={destinations}
+            loaded={true}
+            loadError={null}
+            columns={useDestinationsColumns()}
+            Row={destinationsListRow}
+        />
     )
 }
 
