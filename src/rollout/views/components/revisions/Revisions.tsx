@@ -42,14 +42,14 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
             <TableData id="name" activeColumnIDs={activeColumnIDs}>
                 <ResourceLink name={obj.name} namespace={obj.namespace} kind='ReplicaSet'/>
             </TableData>
-            <TableData id="images" activeColumnIDs={activeColumnIDs}>
-                {getImages(obj.images)}
-            </TableData>
             <TableData id="pods" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__pods-column">
                 {obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"}
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
                 {getStatusSection(obj.statuses)}
+            </TableData>
+            <TableData id="images" activeColumnIDs={activeColumnIDs}>
+                {getImages(obj.images)}
             </TableData>
         </>
     );
@@ -73,12 +73,6 @@ export const useReplicaSetInfoColumns = () => {
                 sort: 'name',
             },
             {
-                title: 'Images',
-                id: 'images',
-                transforms: [sortable],
-                sort: 'images',
-            },
-            {
                 title: 'Pods',
                 id: 'pods',
                 transforms: [sortable],
@@ -90,6 +84,12 @@ export const useReplicaSetInfoColumns = () => {
                 id: 'status',
                 transforms: [sortable],
                 sort: 'status',
+            },
+            {
+                title: 'Images',
+                id: 'images',
+                transforms: [sortable],
+                sort: 'images',
             }
         ],
         [],
