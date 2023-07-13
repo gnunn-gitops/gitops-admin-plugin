@@ -18,6 +18,8 @@ import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/
 import { RolloutModel } from '@rollout-model/RolloutModel';
 import BlueGreenServices from './components/services/BlueGreenServices';
 import CanaryServices from './components/services/CanaryServices';
+import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
+import { Revisions } from './components/revisions/Revisions';
 
 type RolloutDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -29,9 +31,15 @@ type RolloutDetailsPageProps = RouteComponentProps<{
 const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
 
-  console.log(obj);
-
   const [canPatch] = getObjectModifyPermissions(obj, RolloutModel);
+
+  const [replicaSets] = useK8sWatchResource({
+    groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
+    isList: true,
+    namespaced: true,
+    namespace: obj.metadata?.namespace,
+    selector: obj.spec.selector
+  });
 
   return (
     <div>
@@ -70,6 +78,12 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
             </DescriptionList>
           </GridItem>
         </Grid>
+      </PageSection>
+      <PageSection hasShadowTop={true}>
+        <Title headingLevel="h2" className="co-section-heading">
+          {t('Revisions')}
+        </Title>
+        <Revisions rollout={obj} replicaSets={replicaSets}/>
       </PageSection>
 
     </div>
