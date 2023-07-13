@@ -16,12 +16,18 @@ export type ImageInfo = {
     image: string
 }
 
+export type PodInfo = {
+    readyReplicas: number,
+    replicas: number
+}
+
 export type ReplicaSetInfo = {
     revision: number,
     name: string,
     namespace: string,
     statuses: ReplicaSetStatus[],
-    images: ImageInfo[]
+    images: ImageInfo[],
+    pods: PodInfo
 }
 
 function getReplicaSetStatus(rollout: RolloutKind, replicaSet: K8sResourceCommon): ReplicaSetStatus[] {
@@ -50,7 +56,7 @@ function getImages(replicaSet: any): ImageInfo[] {
     return images;
 }
 
-export const getReplicaSetInfo = (rollout: RolloutKind, replicaSets:K8sResourceCommon[]): ReplicaSetInfo[] => {
+export const getReplicaSetInfo = (rollout: RolloutKind, replicaSets:any[]): ReplicaSetInfo[] => {
     const result:ReplicaSetInfo[] = [];
 
     replicaSets.forEach(item => {
@@ -59,7 +65,8 @@ export const getReplicaSetInfo = (rollout: RolloutKind, replicaSets:K8sResourceC
             namespace: item.metadata.namespace,
             revision: +item.metadata.annotations[annotationRevisionKey],
             statuses: getReplicaSetStatus(rollout, item),
-            images: getImages(item)
+            images: getImages(item),
+            pods: {readyReplicas: item.status?.readyReplicas, replicas: item.status?.replicas}
         });
     })
     return result;

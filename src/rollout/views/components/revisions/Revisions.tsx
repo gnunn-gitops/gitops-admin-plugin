@@ -9,6 +9,8 @@ import { RunningIcon } from '@patternfly/react-icons/dist/esm/icons/running-icon
 import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
 import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
 
+import './Revision.scss';
+
 interface RevisionsProps {
     rollout: RolloutKind,
     replicaSets: K8sResourceCommon | K8sResourceCommon[]
@@ -16,7 +18,7 @@ interface RevisionsProps {
 
 export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets }) => {
 
-    const replicaSetInfo:ReplicaSetInfo[] = React.useMemo(() => getReplicaSetInfo(rollout, Array.isArray(replicaSets)?replicaSets:[replicaSets]), [replicaSets]);
+    const replicaSetInfo:ReplicaSetInfo[] = React.useMemo(() => getReplicaSetInfo(rollout, Array.isArray(replicaSets)?replicaSets:[replicaSets]), [replicaSets]).sort((a,b) => b.revision - a.revision);
 
     return (
         <VirtualizedTable
@@ -34,7 +36,7 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
 
     return (
         <>
-            <TableData id="revision" activeColumnIDs={activeColumnIDs}>
+            <TableData id="revision" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__revision-column">
                 {obj.revision}
             </TableData>
             <TableData id="name" activeColumnIDs={activeColumnIDs}>
@@ -42,6 +44,9 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
             </TableData>
             <TableData id="images" activeColumnIDs={activeColumnIDs}>
                 {getImages(obj.images)}
+            </TableData>
+            <TableData id="pods" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__pods-column">
+                {obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"}
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
                 {getStatusSection(obj.statuses)}
@@ -59,6 +64,7 @@ export const useReplicaSetInfoColumns = () => {
                 id: 'revision',
                 transforms: [sortable],
                 sort: 'revision',
+                props: { className: 'gitops-admin-plugin__revision-column' }
             },
             {
                 title: 'Name',
@@ -71,6 +77,13 @@ export const useReplicaSetInfoColumns = () => {
                 id: 'images',
                 transforms: [sortable],
                 sort: 'images',
+            },
+            {
+                title: 'Pods',
+                id: 'pods',
+                transforms: [sortable],
+                sort: 'pods',
+                props: { className: 'gitops-admin-plugin__pods-column' }
             },
             {
                 title: 'Status',
