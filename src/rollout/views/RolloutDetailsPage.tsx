@@ -8,6 +8,7 @@ import {
   DescriptionListTermHelpTextButton,
   Grid,
   GridItem,
+  NumberInput,
   PageSection,
   Popover,
   Title
@@ -18,7 +19,7 @@ import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/
 import { RolloutModel } from '@rollout-model/RolloutModel';
 import BlueGreenServices from './components/services/BlueGreenServices';
 import CanaryServices from './components/services/CanaryServices';
-import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sUpdate, useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 import { Revisions } from './components/revisions/Revisions';
 
 type RolloutDetailsPageProps = RouteComponentProps<{
@@ -31,7 +32,7 @@ type RolloutDetailsPageProps = RouteComponentProps<{
 const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
 
-  const [canPatch] = getObjectModifyPermissions(obj, RolloutModel);
+  const [canPatch, canUpdate] = getObjectModifyPermissions(obj, RolloutModel);
 
   const [replicaSets] = useK8sWatchResource({
     groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
@@ -40,6 +41,32 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
     namespace: obj.metadata?.namespace,
     selector: obj.spec.selector
   });
+
+  const onReplicaChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const value = (event.target as HTMLInputElement).value;
+    if (obj.spec.replicas == value) return;
+    obj.spec.replicas = value;
+    k8sUpdate({
+      model: RolloutModel,
+      data: obj
+    });
+  };
+
+  const onReplicaPlus = () => {
+    obj.spec.replicas =(obj.spec.replicas || 0) + 1;
+    k8sUpdate({
+      model: RolloutModel,
+      data: obj
+    });
+  };
+
+  const onReplicaMinus = () => {
+    obj.spec.replicas =(obj.spec.replicas || 0) - 1;
+    k8sUpdate({
+      model: RolloutModel,
+      data: obj
+    });
+  };
 
   return (
     <div>
@@ -60,6 +87,28 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
           </GridItem>
           <GridItem>
             <DescriptionList>
+            <DescriptionListGroup>
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Replicas')}</div>} bodyContent={<div>{t('The number of desired replicas for the rollout')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Replicas')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                <NumberInput
+                  value={obj.spec.replicas}
+                  onChange={onReplicaChange}
+                  onPlus={onReplicaPlus}
+                  onMinus={onReplicaMinus}
+                  inputName="replicas"
+                  inputAriaLabel="replicas"
+                  minusBtnAriaLabel="minus"
+                  plusBtnAriaLabel="plus"
+                  min={0}
+                  isDisabled={!canUpdate}
+                />
+                </DescriptionListDescription>
+              </DescriptionListGroup>
+
               <DescriptionListGroup>
                 <DescriptionListTermHelpText>
                   <Popover headerContent={<div>{t('Strategy')}</div>} bodyContent={<div>{t('Whether the rollout is using a blue-green or canary strategy')}</div>}>

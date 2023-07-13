@@ -1,8 +1,42 @@
 import { ApplicationKind, ApplicationModel, ApplicationOperation, ApplicationResourceStatus, Resource } from "@application-model";
 import { annotationRefreshKey } from "@gitops-utils/gitops";
-import { k8sUpdate } from "@openshift-console/dynamic-plugin-sdk";
+import { Patch, k8sPatch, k8sUpdate } from "@openshift-console/dynamic-plugin-sdk";
+import { RolloutKind, RolloutModel } from "@rollout-model/RolloutModel";
 
 //const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
+
+export const promoteRollout = async (rollout: RolloutKind, promoteFull: boolean): Promise<RolloutKind> => {
+
+    // console.log("Update rollout");
+    // rollout.status.pauseConditions=null;
+    // return k8sUpdate({
+    //     data: rollout,
+    //     model: RolloutModel
+    // })
+
+    const patch:Patch[] = [];
+    if (promoteFull) {
+        patch.push({
+            op: 'add',
+            path: '/status/promoteFull',
+            value: true
+        })
+    }
+    patch.push({
+        op: 'replace',
+        path: '/status/pauseConditions',
+        value: null
+    })
+
+    console.log("Patching rollout");
+    console.log(patch);
+    return k8sPatch({
+        model: RolloutModel,
+        resource: rollout,
+        data: patch,
+        path: "status"
+      })
+}
 
 export const syncResourcek8s = async (app: ApplicationKind, resources: ApplicationResourceStatus[]): Promise<ApplicationKind> => {
 

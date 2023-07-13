@@ -8,6 +8,7 @@ import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/Annotati
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
+import { promoteRollout } from 'src/services/argocd';
 
 type UseRolloutActionsProvider = (
   rollout: RolloutKind,
@@ -21,7 +22,35 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
   const actions = React.useMemo(
     () => [
       {
-        id: 'dataimportcron-action-edit-labels',
+        id: 'gitops-action-promote',
+        disabled: false,
+        label: t('Promote'),
+        accessReview: {
+          group: RolloutModel.apiGroup,
+          verb: 'update' as K8sVerb,
+          resource: RolloutModel.plural,
+          namespace: rollout?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          promoteRollout(rollout, false)
+      },
+      {
+        id: 'gitops-action-promote-full',
+        disabled: false,
+        label: t('Full Promote'),
+        accessReview: {
+          group: RolloutModel.apiGroup,
+          verb: 'update' as K8sVerb,
+          resource: RolloutModel.plural,
+          namespace: rollout?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          promoteRollout(rollout, true)
+      },
+      {
+        id: 'rollout-action-edit-labels',
         disabled: false,
         label: t('Edit labels'),
         accessReview: {
@@ -53,7 +82,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
           )),
       },
       {
-        id: 'crontab-action-edit-annotations',
+        id: 'rollout-action-edit-annotations',
         disabled: false,
         label: t('Edit annotations'),
         accessReview: {
@@ -85,7 +114,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
           )),
       },
       {
-        id: 'crontab-action-edit-crontab',
+        id: 'rollout-action-edit-crontab',
         disabled: false,
         label: t('Edit'),
         accessReview: {
@@ -100,7 +129,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
           ),
       },
       {
-        id: 'crontab-action-delete',
+        id: 'rollout-action-delete',
         label: t('Delete'),
         accessReview: {
           group: RolloutModel.apiGroup,

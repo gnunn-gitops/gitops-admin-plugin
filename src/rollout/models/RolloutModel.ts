@@ -42,6 +42,11 @@ export type AnalysisRunStatus = {
     status: string
 }
 
+export type PauseConditions = {
+    reason: string,
+    startTime: string
+}
+
 export type RolloutStatus = {
     blueGreen?: {
         activeSelector?: string,
@@ -53,9 +58,11 @@ export type RolloutStatus = {
     currentPodHash?: string,
     currentStepHash?: string,
     currentStepIndex?: number,
-    message: string,
+    message?: string,
     observedGeneration?: string,
+    pauseConditions? : PauseConditions[],
     phase?: string,
+    promoteFull: boolean,
     readyReplicas?: number,
     replicas?: number,
     selector?: string,
