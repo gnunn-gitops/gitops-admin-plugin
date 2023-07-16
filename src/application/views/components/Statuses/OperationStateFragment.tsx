@@ -3,7 +3,7 @@
 import { ApplicationKind, OperationState } from "@application-model";
 import { PhaseStatus } from "@gitops-utils/constants";
 import React from "react";
-import { PhaseErrorIcon, PhaseFailedIcon, PhaseRunningIcon, PhaseSucceededIcon, PhaseTerminatingIcon } from "../../utils/Icons/icons";
+import { PhaseErrorIcon, PhaseFailedIcon, PhaseRunningIcon, PhaseSucceededIcon, PhaseTerminatingIcon } from "../../../../shared/views/icons/icons";
 
 interface OperationStateProps {
     app: ApplicationKind;

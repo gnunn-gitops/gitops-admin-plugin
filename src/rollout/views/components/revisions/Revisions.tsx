@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { K8sResourceCommon, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable } from "@openshift-console/dynamic-plugin-sdk"
 import { sortable } from '@patternfly/react-table';
-import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
+import { AnalysisRunInfo, ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
 import { DescriptionList, DescriptionListGroup, DescriptionListTerm, DescriptionListDescription, Label, LabelGroup } from '@patternfly/react-core';
 import ArrowCircleUpIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-up-icon';
@@ -13,14 +13,21 @@ import './Revision.scss';
 
 interface RevisionsProps {
     rollout: RolloutKind,
-    replicaSets: K8sResourceCommon | K8sResourceCommon[]
+    replicaSets: K8sResourceCommon[]
 }
 
-export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets }) => {
+export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => {
 
-    const replicaSetInfo:ReplicaSetInfo[] = React.useMemo(() => getReplicaSetInfo(rollout, Array.isArray(replicaSets)?replicaSets:[replicaSets]), [replicaSets]).sort((a,b) => b.revision - a.revision);
+    const [replicaSetInfo, setReplicaSetInfo] = React.useState<ReplicaSetInfo[]>([]);
+
+    React.useEffect(() => {
+        getReplicaSetInfo(rollout, replicaSets).then((result) => {
+            setReplicaSetInfo(result);
+        });
+    }, [replicaSets]);
 
     return (
+        <>
         <VirtualizedTable
             data={replicaSetInfo}
             unfilteredData={replicaSetInfo}
@@ -29,6 +36,7 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets }) =>
             columns={useReplicaSetInfoColumns()}
             Row={replicaSetInfoListRow}
         />
+        </>
     )
 }
 
@@ -40,10 +48,21 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
                 {obj.revision}
             </TableData>
             <TableData id="name" activeColumnIDs={activeColumnIDs}>
-                <ResourceLink name={obj.name} namespace={obj.namespace} kind='ReplicaSet'/>
+                {obj.name ?
+                    <ResourceLink name={obj.name} namespace={obj.namespace} kind='ReplicaSet'/>
+                :
+                  "None"
+                }
+            </TableData>
+            <TableData id="analysisruns" activeColumnIDs={activeColumnIDs}>
+                {getAnalysisRuns(obj.analysisRuns)}
             </TableData>
             <TableData id="pods" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__pods-column">
-                {obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"}
+                {obj.pods ?
+                    obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"
+                :
+                    "-"
+                }
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
                 {getStatusSection(obj.statuses)}
@@ -70,7 +89,13 @@ export const useReplicaSetInfoColumns = () => {
                 title: 'Name',
                 id: 'name',
                 transforms: [sortable],
-                sort: 'name',
+                sort: 'name'
+            },
+            {
+                title: 'Analysis Runs',
+                id: 'analysisruns',
+                transforms: [sortable],
+                sort: 'analysisRuns',
             },
             {
                 title: 'Pods',
@@ -83,13 +108,13 @@ export const useReplicaSetInfoColumns = () => {
                 title: 'Status',
                 id: 'status',
                 transforms: [sortable],
-                sort: 'status',
+                sort: 'status'
             },
             {
                 title: 'Images',
                 id: 'images',
                 transforms: [sortable],
-                sort: 'images',
+                sort: 'images'
             }
         ],
         [],
@@ -105,6 +130,16 @@ const getImages = (images: ImageInfo[]) => {
             return <DescriptionListGroup><DescriptionListTerm>{image.name}</DescriptionListTerm><DescriptionListDescription>{image.image}</DescriptionListDescription></DescriptionListGroup>;
           })}
         </DescriptionList>
+    )
+}
+
+const getAnalysisRuns = (analysisRuns: AnalysisRunInfo[]) => {
+    return (
+        <LabelGroup>
+            {analysisRuns.map(function(ar, index){
+                return <Label variant="outline">{ar.shortName}</Label>;
+            })}
+        </LabelGroup>
     )
 }
 

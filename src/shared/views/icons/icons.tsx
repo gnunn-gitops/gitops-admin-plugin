@@ -13,7 +13,8 @@ import {
   HeartBrokenIcon,
   GhostIcon,
   BanIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
+  PausedIcon
 } from '@patternfly/react-icons';
 import { global_danger_color_100 as dangerColor } from '@patternfly/react-tokens/dist/js/global_danger_color_100';
 import { global_default_color_200 as blueDefaultColor } from '@patternfly/react-tokens/dist/js/global_default_color_200';
@@ -88,3 +89,12 @@ export const PhaseSucceededIcon = HealthHealthyIcon;
 export const PhaseTerminatingIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
   <BanIcon color={disabledColor.value} className={className} title={title} />
 );
+
+export const RolloutStatusProgressingIcon = HealthProgressingIcon;
+export const RolloutStatusDegradedIcon = HealthDegradedIcon;
+export const RolloutStatusHealthyIcon = HealthHealthyIcon;
+export const RolloutStatusPausedIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
+  <PausedIcon color={blueDefaultColor.value} className={className} title={title} />
+);
+// Should never see this one but if rollouts introduces a new status before this is updated good to show something
+export const RolloutStatusUnknownIcon = SyncUnknownIcon;

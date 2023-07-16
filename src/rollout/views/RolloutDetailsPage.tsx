@@ -2,15 +2,10 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
   DescriptionList,
-  DescriptionListDescription,
-  DescriptionListGroup,
-  DescriptionListTermHelpText,
-  DescriptionListTermHelpTextButton,
   Grid,
   GridItem,
   NumberInput,
   PageSection,
-  Popover,
   Title
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
@@ -21,6 +16,8 @@ import BlueGreenServices from './components/services/BlueGreenServices';
 import CanaryServices from './components/services/CanaryServices';
 import { k8sUpdate, useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 import { Revisions } from './components/revisions/Revisions';
+import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
+import { RolloutStatusFragment } from './components/rolloutstatus/RolloutStatus';
 
 type RolloutDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -53,7 +50,7 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
   };
 
   const onReplicaPlus = () => {
-    obj.spec.replicas =(obj.spec.replicas || 0) + 1;
+    obj.spec.replicas = (obj.spec.replicas || 0) + 1;
     k8sUpdate({
       model: RolloutModel,
       data: obj
@@ -61,7 +58,7 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
   };
 
   const onReplicaMinus = () => {
-    obj.spec.replicas =(obj.spec.replicas || 0) - 1;
+    obj.spec.replicas = (obj.spec.replicas || 0) - 1;
     k8sUpdate({
       model: RolloutModel,
       data: obj
@@ -87,13 +84,8 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
           </GridItem>
           <GridItem>
             <DescriptionList>
-            <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Replicas')}</div>} bodyContent={<div>{t('The number of desired replicas for the rollout')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Replicas')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>
+
+              <DetailsDescriptionGroup title={t('Replicas')} help={t('The number of desired replicas for the rollout')}>
                 <NumberInput
                   value={obj.spec.replicas}
                   onChange={onReplicaChange}
@@ -106,22 +98,20 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
                   min={0}
                   isDisabled={!canUpdate}
                 />
-                </DescriptionListDescription>
-              </DescriptionListGroup>
+              </DetailsDescriptionGroup>
 
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
-                  <Popover headerContent={<div>{t('Strategy')}</div>} bodyContent={<div>{t('Whether the rollout is using a blue-green or canary strategy')}</div>}>
-                    <DescriptionListTermHelpTextButton>{t('Strategy')}</DescriptionListTermHelpTextButton>
-                  </Popover>
-                </DescriptionListTermHelpText>
-                <DescriptionListDescription>{obj?.spec?.strategy?.blueGreen ? "Blue-Green" : "Canary"}</DescriptionListDescription>
-              </DescriptionListGroup>
+              <DetailsDescriptionGroup title={t('Status')} help={t('The current status of the rollout')}>
+                <RolloutStatusFragment status={obj?.status?.phase}/>
+              </DetailsDescriptionGroup>
+
+              <DetailsDescriptionGroup title={t('Strategy')} help={t('Whether the rollout is using a blue-green or canary strategy')}>
+                {obj?.spec?.strategy?.blueGreen ? "Blue-Green" : "Canary"}
+              </DetailsDescriptionGroup>
 
               {obj?.spec?.strategy?.blueGreen ?
-                <BlueGreenServices rollout={obj}/>
-              :
-                <CanaryServices rollout={obj}/>
+                <BlueGreenServices rollout={obj} />
+                :
+                <CanaryServices rollout={obj} />
               }
 
             </DescriptionList>
@@ -132,9 +122,8 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
         <Title headingLevel="h2" className="co-section-heading">
           {t('Revisions')}
         </Title>
-        <Revisions rollout={obj} replicaSets={replicaSets}/>
+        <Revisions rollout={obj} replicaSets={Array.isArray(replicaSets) ? replicaSets : [replicaSets]} />
       </PageSection>
-
     </div>
   );
 };
