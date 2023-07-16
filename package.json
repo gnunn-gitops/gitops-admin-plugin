@@ -94,6 +94,7 @@
   "dependencies": {
     "i18next-conv": "^13.1.1",
     "i18next-parser": "^7.6.0",
-    "react-tagsinput": "^3.20.0"
+    "react-tagsinput": "^3.20.0",
+    "git-url-parse": "^13.1.0"
   }
 }

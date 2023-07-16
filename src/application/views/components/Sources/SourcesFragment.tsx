@@ -6,6 +6,7 @@ import { sortable } from '@patternfly/react-table';
 import ExternalLink from '../ExternalLink/ExternalLink';
 
 import './SourcesFragment.scss';
+import { repoUrl, revisionUrl } from '@gitops-utils/urls';
 
 //import * as  gitIcon from '../../../../images/git.png';
 //import * as  helmIcon from '../../../../images/helm.png';
@@ -39,14 +40,20 @@ const sourceListRow: React.FC<RowProps<ApplicationSource>> = ({ obj, activeColum
             </TableData>
             <TableData id="repository" activeColumnIDs={activeColumnIDs}>
                 <ExternalLink href={obj.repoURL}>
-                    {obj.repoURL}
+                    {repoUrl(obj.repoURL)}
                 </ExternalLink>
             </TableData>
             <TableData id="chart" activeColumnIDs={activeColumnIDs}>
                 {obj.chart || '-'}
             </TableData>
             <TableData id="path" activeColumnIDs={activeColumnIDs}>
-                {obj.path}
+                {obj.chart ?
+                  obj.path
+                :
+                <ExternalLink href={revisionUrl(obj.repoURL, obj.targetRevision, true) + "/" + obj.path }>
+                    {obj.path}
+                </ExternalLink>
+                }
             </TableData>
             <TableData id="targetRevision" activeColumnIDs={activeColumnIDs}>
                 {obj.targetRevision}

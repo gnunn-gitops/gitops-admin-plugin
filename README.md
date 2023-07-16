@@ -87,4 +87,6 @@ Thanks to the following individuals:
 * Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
 * Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
 * Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
-* Argo CD UI where I leveraged the existing code for determining Operation State plus doing A/B testing against
+* Argo CD UI where I leveraged it for A/B testing plus re-used some of the existing code there instead of re-inventing the wheel. All rights remain with original authors, code I specifically use:
+  - code for determining Operation State
+  - code for calculating URLs for git repos and paths
