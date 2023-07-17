@@ -35,6 +35,7 @@ export function repoUrl(url: string): string {
 }
 
 export function revisionUrl(url: string, revision: string, forPath: boolean): string {
+    if (!revision) revision = "HEAD";
     let parsed;
     try {
         parsed = GitUrlParse(url);
