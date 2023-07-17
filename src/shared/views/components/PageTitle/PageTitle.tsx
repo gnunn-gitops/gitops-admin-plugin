@@ -23,7 +23,7 @@ const ApplicationPageTitle: React.FC<ApplicationPageTitleProps> = ({ obj, model,
       <div className="pf-c-page__main-breadcrumb">
         <Breadcrumb className="pf-c-breadcrumb co-breadcrumb">
           <BreadcrumbItem>
-            <Link to={`/k8s/ns/${namespace || DEFAULT_NAMESPACE}/${model}`}>
+            <Link to={`/k8s/ns/${namespace || DEFAULT_NAMESPACE}/${model.apiGroup+"~"+model.apiVersion+"~"+model.kind}`}>
               {t(model.labelPlural)}
             </Link>
           </BreadcrumbItem>
