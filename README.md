@@ -22,7 +22,7 @@ The following table shows the current status of development.
 | Application  | 100%  | Feature complete |
 | AppProject  | 80%  | Mostly feature complete but UI needs improvement for readability |
 | ApplicationSet | 10% | Default OpenShift view with an additional tab to view list of associated applications. |
-| Rollout | 5% | Placeholder menu item backed by Default OpenShift view |
+| Rollout | 20% | Basic implementation with support for Promote, only tested with Blue-Green |
 
 # Philosphy
 
