@@ -45,6 +45,13 @@ There are some limitations in this current implementation:
 - No general editing capabilities beyond editing the yaml
 - Limited useability testing but suggestions for UI improvements definitely welcome!
 
+# Prequisites
+
+The following prerequisites are required to use this plugin:
+
+* OpenShift 4.12+
+* OpenShift GitOps 1.8+ or Argo CD 2.6+ (tested with OpenShift GitOps 1.9/Argo CD 2.7)
+
 ## Deployment on cluster
 
 The plugin can be installed from the manifests included in the `/manifests` folder using kustomize.
