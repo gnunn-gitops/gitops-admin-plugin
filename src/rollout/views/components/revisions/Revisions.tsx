@@ -25,7 +25,7 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => 
         getReplicaSetInfo(rollout, replicaSets).then((result) => {
             setReplicaSetInfo(result);
         });
-    }, [replicaSets]);
+    }, [rollout, replicaSets]);
 
     return (
         <>
