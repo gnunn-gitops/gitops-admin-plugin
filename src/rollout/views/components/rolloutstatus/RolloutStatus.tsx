@@ -8,8 +8,6 @@ interface RolloutStatusProps {
 
 export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status }) => {
 
-    console.log(status);
-
     let icon: React.ReactNode;
     switch (status) {
         case RolloutStatus.Progressing: {

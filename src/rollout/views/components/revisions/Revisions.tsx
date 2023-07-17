@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { K8sResourceCommon, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable } from "@openshift-console/dynamic-plugin-sdk"
 import { sortable } from '@patternfly/react-table';
-import { AnalysisRunInfo, ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
+import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
 import { DescriptionList, DescriptionListGroup, DescriptionListTerm, DescriptionListDescription, Label, LabelGroup } from '@patternfly/react-core';
 import ArrowCircleUpIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-up-icon';
@@ -10,6 +10,7 @@ import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
 import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
 
 import './Revision.scss';
+import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
 
 interface RevisionsProps {
     rollout: RolloutKind,
@@ -55,7 +56,7 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
                 }
             </TableData>
             <TableData id="analysisruns" activeColumnIDs={activeColumnIDs}>
-                {getAnalysisRuns(obj.analysisRuns)}
+                {getAnalysisRuns(obj)}
             </TableData>
             <TableData id="pods" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__pods-column">
                 {obj.pods ?
@@ -133,11 +134,12 @@ const getImages = (images: ImageInfo[]) => {
     )
 }
 
-const getAnalysisRuns = (analysisRuns: AnalysisRunInfo[]) => {
+const getAnalysisRuns = (rsInfo: ReplicaSetInfo) => {
+
     return (
         <LabelGroup>
-            {analysisRuns.map(function(ar, index){
-                return <Label variant="outline">{ar.shortName}</Label>;
+            {rsInfo.analysisRuns.map(function(ar, index){
+                return <AnalysisRunStatusFragment replicaSetInfo={rsInfo} analysisRunInfo={ar} />
             })}
         </LabelGroup>
     )

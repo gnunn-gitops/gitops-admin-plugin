@@ -4,3 +4,10 @@ export enum RolloutStatus {
     Paused = 'Paused',
     Healthy = 'Healthy',
 }
+
+export enum AnalysisRunStatus {
+    Successful = 'Successful',
+    Inconclusive = 'Inconclusive',
+    Failed = 'Failed',
+    Error = 'Error'
+}
