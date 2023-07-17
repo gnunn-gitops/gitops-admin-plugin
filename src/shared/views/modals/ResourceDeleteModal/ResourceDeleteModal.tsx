@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Alert, Button, Modal, ModalVariant, Text } from '@patternfly/react-core';
 import * as _ from 'lodash';
-import { K8sModel, K8sResourceCommon, getGroupVersionKindForResource, k8sDelete, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sResourceCommon, getGroupVersionKindForResource, k8sDelete, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
 import { useHistory } from 'react-router';
 import { useLastNamespace } from '@openshift-console/dynamic-plugin-sdk-internal';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
+import { getResourceUrl } from '@gitops-utils/utils';
 
 type ResourceDeleteModalProps = {
     isOpen: boolean;
@@ -88,36 +89,6 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
       )}
     </Modal>
   );
-};
-
-type ResourceUrlProps = {
-    model: K8sModel;
-    resource?: K8sResourceCommon;
-    activeNamespace?: string;
-  };
-
-export const ALL_NAMESPACES_SESSION_KEY = '#ALL_NS#';
-
-/**
- * function for getting a resource URL
- * @param {ResourceUrlProps} urlProps - object with model, resource to get the URL from (optional) and active namespace/project name (optional)
- * @returns {string} the URL for the resource
- */
-export const getResourceUrl = (urlProps: ResourceUrlProps): string => {
-const { model, resource, activeNamespace } = urlProps;
-
-if (!model) return null;
-const { crd, namespaced, plural } = model;
-
-const namespace =
-    resource?.metadata?.namespace ||
-    (activeNamespace !== ALL_NAMESPACES_SESSION_KEY && activeNamespace);
-const namespaceUrl = namespace ? `ns/${namespace}` : 'all-namespaces';
-
-const ref = crd ? `${model.apiGroup || 'core'}~${model.apiVersion}~${model.kind}` : plural || '';
-const name = resource?.metadata?.name || '';
-
-return `/k8s/${namespaced ? namespaceUrl : 'cluster'}/${ref}/${name}`;
 };
 
 export default ResourceDeleteModal;

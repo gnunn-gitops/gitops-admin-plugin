@@ -1,4 +1,6 @@
+import { getResourceUrl } from '@gitops-utils/utils';
 import { Label } from '@patternfly/react-core';
+import { AnalysisRunModel } from '@rollout-model/AnalysisRunModel';
 import { AnalysisRunStatusFailureIcon, AnalysisRunStatusSuccessfulIcon, AnalysisRunStatusUnknownIcon} from '@shared/views/icons/icons';
 import * as React from 'react';
 import { AnalysisRunInfo, ReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
@@ -11,6 +13,7 @@ interface AnalysisRunStatusProps {
 
 export const AnalysisRunStatusFragment: React.FC<AnalysisRunStatusProps> = ({ analysisRunInfo, replicaSetInfo }) => {
 
+    const url = getResourceUrl({ model: AnalysisRunModel, name: analysisRunInfo.name, activeNamespace: replicaSetInfo.namespace });
     let color: any;
     let icon: React.ReactNode;
     switch (analysisRunInfo.status) {
@@ -34,6 +37,6 @@ export const AnalysisRunStatusFragment: React.FC<AnalysisRunStatusProps> = ({ an
             color = "grey";
     }
     return (
-        <Label variant="outline" icon={icon} color={color}>{analysisRunInfo.shortName}</Label>
+        <Label variant="outline" href={url} icon={icon} color={color}>{analysisRunInfo.shortName}</Label>
     )
 }
