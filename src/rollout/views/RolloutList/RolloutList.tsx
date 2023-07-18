@@ -6,6 +6,7 @@ import {
   ListPageCreate,
   ListPageFilter,
   ListPageHeader,
+  RowFilter,
   useK8sWatchResource,
   useListPageFilter,
   VirtualizedTable,
@@ -37,7 +38,7 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
   });
   // const { t } = useTranslation();
   const columns = useRolloutColumns(namespace);
-  const [data, filteredData, onFilterChange] = useListPageFilter(rollouts);
+  const [data, filteredData, onFilterChange] = useListPageFilter(rollouts, filters);
 
   return (
     <>
@@ -45,7 +46,12 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
         <ListPageCreate groupVersionKind={modelToRef(RolloutModel)}>Create Rollout</ListPageCreate>
       </ListPageHeader>
       <ListPageBody>
-        <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+        <ListPageFilter
+              data={data}
+              loaded={loaded}
+              rowFilters={filters}
+              onFilterChange={onFilterChange}
+        />
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
           unfilteredData={rollouts}
@@ -152,5 +158,25 @@ const useRolloutColumns = (namespace) => {
 
   return React.useMemo(() => columns, [namespace]);
 };
+
+const filters: RowFilter[] = [
+  {
+    filterGroupName: 'Rollout Status',
+    type: 'rollout-status',
+    reducer: (rollout) => (rollout.status?.phase),
+    filter: (input, rollout) => {
+      if (input.selected?.length && rollout?.status?.phase) {
+        return input.selected.includes(rollout.status.phase);
+      } else {
+        return true;
+      }
+    },
+    items: [
+      { id: RolloutStatus.Healthy, title: RolloutStatus.Healthy },
+      { id: RolloutStatus.Paused, title: RolloutStatus.Paused },
+      { id: RolloutStatus.Progressing, title: RolloutStatus.Progressing },
+      { id: RolloutStatus.Degraded, title: RolloutStatus.Degraded }
+    ],
+  }];
 
 export default RolloutList;
