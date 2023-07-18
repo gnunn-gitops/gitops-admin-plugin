@@ -16,6 +16,8 @@ import { sortable } from '@patternfly/react-table';
 
 import RolloutRowActions from './RolloutRowActions';
 import { RolloutKind, RolloutModel } from 'src/rollout/models/RolloutModel';
+import { RolloutStatus } from 'src/rollout/utils/rollout-utils';
+import { RolloutStatusFragment } from '../components/rolloutstatus/RolloutStatus';
 
 
 type RolloutListProps = {
@@ -71,6 +73,9 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
       <TableData id="status" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+        <RolloutStatusFragment status={obj.status?.phase as RolloutStatus}  />
+      </TableData>
+      <TableData id="pods" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
         {obj.status ? obj.status.readyReplicas + " of " + obj.status.replicas : "-"}
       </TableData>
       <TableData id="selector" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
@@ -120,6 +125,13 @@ const useRolloutColumns = (namespace) => {
     {
       title: 'Status',
       id: 'status',
+      transforms: [sortable],
+      sort: 'status.phase',
+      props: { className: 'pf-m-width-15' },
+    },
+    {
+      title: 'Pods',
+      id: 'pods',
       transforms: [sortable],
       sort: 'status.readyReplicas',
       props: { className: 'pf-m-width-15' },
