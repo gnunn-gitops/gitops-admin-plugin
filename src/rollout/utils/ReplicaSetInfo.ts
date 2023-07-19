@@ -37,7 +37,8 @@ export type ReplicaSetInfo = {
     images: ImageInfo[],
     pods: PodInfo,
     podTemplateHash: string,
-    analysisRuns: AnalysisRunInfo[]
+    analysisRuns: AnalysisRunInfo[],
+    replicaSet?: K8sResourceCommon
 }
 
 function getReplicaSetStatus(rollout: RolloutKind, replicaSet: K8sResourceCommon): ReplicaSetStatus[] {
@@ -136,7 +137,8 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
             images: getImages(rs),
             pods: { readyReplicas: rs.status?.readyReplicas, replicas: rs.status?.replicas },
             podTemplateHash: podTemplateHash,
-            analysisRuns: getAnalysisRunInfo(analysisRuns, podTemplateHash, revision)
+            analysisRuns: getAnalysisRunInfo(analysisRuns, podTemplateHash, revision),
+            replicaSet: rs
         });
     })
 

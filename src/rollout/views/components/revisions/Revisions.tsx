@@ -9,8 +9,9 @@ import { RunningIcon } from '@patternfly/react-icons/dist/esm/icons/running-icon
 import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
 import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
 
-import './Revision.scss';
+import './Revisions.scss';
 import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
+import { RevisionsRowActions } from './RevisionsRowActions';
 
 interface RevisionsProps {
     rollout: RolloutKind,
@@ -36,12 +37,13 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => 
             loadError={null}
             columns={useReplicaSetInfoColumns()}
             Row={replicaSetInfoListRow}
+            rowData={{ rollout: rollout}}
         />
         </>
     )
 }
 
-const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, activeColumnIDs }) => {
+const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo, {rollout: RolloutKind}>> = ({ obj, activeColumnIDs, rowData: {rollout} }) => {
 
     return (
         <>
@@ -70,6 +72,13 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo>> = ({ obj, active
             </TableData>
             <TableData id="images" activeColumnIDs={activeColumnIDs}>
                 {getImages(obj.images)}
+            </TableData>
+            <TableData
+                id="actions"
+                activeColumnIDs={activeColumnIDs}
+                className="dropdown-kebab-pf pf-c-table__action"
+            >
+                <RevisionsRowActions rollout={rollout} rsInfo={obj} />
             </TableData>
         </>
     );
@@ -116,6 +125,11 @@ export const useReplicaSetInfoColumns = () => {
                 id: 'images',
                 transforms: [sortable],
                 sort: 'images'
+            },
+            {
+              title: '',
+              id: 'actions',
+              props: { className: 'dropdown-kebab-pf pf-c-table__action' },
             }
         ],
         [],

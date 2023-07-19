@@ -5,16 +5,37 @@ import { RolloutKind, RolloutModel } from "@rollout-model/RolloutModel";
 
 //const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
 
+export const restartRollout = async (rollout: RolloutKind): Promise<RolloutKind> => {
+    const now = new Date().toISOString();
+
+    return k8sPatch({
+        model: RolloutModel,
+        resource: rollout,
+        data: [{
+            op: 'replace',
+            path: '/spec/restartAt',
+            value: now
+        }]
+    })
+}
+
+
+export const rollbackRollout = async (rollout: RolloutKind, rs: any): Promise<RolloutKind> => {
+
+    return k8sPatch({
+        model: RolloutModel,
+        resource: rollout,
+        data: [{
+            op: 'replace',
+            path: '/spec/template',
+            value: rs.spec.template
+        }]
+    })
+}
+
 export const promoteRollout = async (rollout: RolloutKind, promoteFull: boolean): Promise<RolloutKind> => {
 
-    // console.log("Update rollout");
-    // rollout.status.pauseConditions=null;
-    // return k8sUpdate({
-    //     data: rollout,
-    //     model: RolloutModel
-    // })
-
-    const patch:Patch[] = [];
+    const patch: Patch[] = [];
     if (promoteFull) {
         patch.push({
             op: 'add',
@@ -28,21 +49,19 @@ export const promoteRollout = async (rollout: RolloutKind, promoteFull: boolean)
         value: null
     })
 
-    console.log("Patching rollout");
-    console.log(patch);
     return k8sPatch({
         model: RolloutModel,
         resource: rollout,
         data: patch,
         path: "status"
-      })
+    })
 }
 
 export const syncResourcek8s = async (app: ApplicationKind, resources: ApplicationResourceStatus[]): Promise<ApplicationKind> => {
 
     var syncResources: Resource[] = [];
     resources.forEach(item => {
-        const res:Resource = {name: item.name, kind: item.kind, group: item.group, namespace: item.namespace}
+        const res: Resource = { name: item.name, kind: item.kind, group: item.group, namespace: item.namespace }
         syncResources.push(res);
     });
 
@@ -109,7 +128,7 @@ export const syncAppK8s = async (app: ApplicationKind, resources?: Resource[]): 
     return k8sUpdate({
         model: ApplicationModel,
         data: app,
-      })
+    })
 }
 
 /*
@@ -120,7 +139,7 @@ export const refreshAppk8s = async (app: ApplicationKind, hard: boolean): Promis
 
 
     if (!app.metadata.annotations) app.metadata.annotations = {};
-    app.metadata.annotations[annotationRefreshKey]=(hard? "hard":"refreshing");
+    app.metadata.annotations[annotationRefreshKey] = (hard ? "hard" : "refreshing");
 
     return k8sUpdate({
         model: ApplicationModel,

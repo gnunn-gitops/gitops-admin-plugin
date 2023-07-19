@@ -8,7 +8,7 @@ import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/Annotati
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
-import { promoteRollout } from 'src/services/argocd';
+import { promoteRollout, restartRollout } from 'src/services/argocd';
 
 type UseRolloutActionsProvider = (
   rollout: RolloutKind,
@@ -27,7 +27,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
         label: t('Promote'),
         accessReview: {
           group: RolloutModel.apiGroup,
-          verb: 'update' as K8sVerb,
+          verb: 'patch' as K8sVerb,
           resource: RolloutModel.plural,
           namespace: rollout?.metadata?.namespace
         },
@@ -41,13 +41,27 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
         label: t('Full Promote'),
         accessReview: {
           group: RolloutModel.apiGroup,
-          verb: 'update' as K8sVerb,
+          verb: 'patch' as K8sVerb,
           resource: RolloutModel.plural,
           namespace: rollout?.metadata?.namespace
         },
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           promoteRollout(rollout, true)
+      },
+      {
+        id: 'gitops-action-restart',
+        disabled: false,
+        label: t('Restart'),
+        accessReview: {
+          group: RolloutModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: RolloutModel.plural,
+          namespace: rollout?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          restartRollout(rollout)
       },
       {
         id: 'rollout-action-edit-labels',

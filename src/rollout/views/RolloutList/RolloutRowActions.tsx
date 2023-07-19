@@ -17,6 +17,7 @@ import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
+import { promoteRollout } from 'src/services/argocd';
 
 type RolloutRowActionsProps = {
   obj?: RolloutKind;
@@ -77,6 +78,18 @@ const RolloutRowActions: React.FC<RolloutRowActionsProps> = ({ obj }) => {
     ));
   };
 
+  const onPromote = () => {
+    promoteRollout(obj, false);
+  };
+
+  const onFullPromote = () => {
+    promoteRollout(obj, true);
+  };
+
+  const onRestart = () => {
+    promoteRollout(obj, true);
+  };
+
   const onEditRollout = () => {
     const cta = {
       href: `/k8s/ns/${obj.metadata.namespace || DEFAULT_NAMESPACE}/${rolloutModelRef}/${
@@ -104,6 +117,15 @@ const RolloutRowActions: React.FC<RolloutRowActionsProps> = ({ obj }) => {
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
+        <DropdownItem onClick={onPromote} key="rollout-promote" isDisabled={!canPatch}>
+          {t('Promote')}
+        </DropdownItem>,
+        <DropdownItem onClick={onFullPromote} key="rollout-full-promote" isDisabled={!canPatch}>
+        {t('Full Promote')}
+        </DropdownItem>,
+        <DropdownItem onClick={onRestart} key="rollout-restart" isDisabled={!canPatch}>
+        {t('Restart')}
+        </DropdownItem>,
         <DropdownItem onClick={onEditLabelsModalToggle} key="rollout-edit-labels" isDisabled={!canPatch}>
           {t('Edit labels')}
         </DropdownItem>,
