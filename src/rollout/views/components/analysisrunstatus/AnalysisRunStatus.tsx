@@ -1,10 +1,11 @@
 import { ResourceLink } from '@openshift-console/dynamic-plugin-sdk';
 import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
 import { Measurement } from '@rollout-model/AnalysisRunModel';
-import { AnalysisRunStatusFailureIcon, AnalysisRunStatusSuccessfulIcon, AnalysisRunStatusUnknownIcon, MeasurementFailedIcon, MeasurementRunningIcon, MeasurementSuccessfulIcon, MeasurementUnknownIcon } from '@shared/views/icons/icons';
+import { AnalysisRunStatusFailureIcon, AnalysisRunStatusPendingIcon, AnalysisRunStatusRunningIcon, AnalysisRunStatusSuccessfulIcon, AnalysisRunStatusUnknownIcon, MeasurementFailedIcon, MeasurementSuccessfulIcon } from '@shared/views/icons/icons';
 import * as React from 'react';
 import { AnalysisRunInfo, ReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { AnalysisRunStatus } from "src/rollout/utils/rollout-utils";
+import { InfoCircleIcon} from '@patternfly/react-icons';
 
 import './AnalysisRunStatus.scss';
 
@@ -32,6 +33,16 @@ export const AnalysisRunStatusFragment: React.FC<AnalysisRunStatusProps> = ({ an
         case AnalysisRunStatus.Inconclusive: {
             icon = <AnalysisRunStatusFailureIcon />;
             color = "orange";
+            break;
+        }
+        case AnalysisRunStatus.Running: {
+            icon = <AnalysisRunStatusRunningIcon />;
+            color = "blue";
+            break;
+        }
+        case AnalysisRunStatus.Pending: {
+            icon = <AnalysisRunStatusPendingIcon />;
+            color = "blue";
             break;
         }
         default:
@@ -63,7 +74,7 @@ const Metrics: React.FC<MetricsProps> = ({ arInfo }) => {
         {arInfo.analysisRun?.status?.metricResults?.map(function (mr, index) {
         return (
             <DescriptionListGroup>
-                <DescriptionListTerm>{index + " - " + mr.name}</DescriptionListTerm>
+                <DescriptionListTerm><span style={{ display:'inline-flex', alignItems: 'center' }}>{mr.name}  <InfoCircleIcon style={{paddingLeft: '4px'}} size='sm'/></span></DescriptionListTerm>
                 <DescriptionListDescription>
                     <Flex>
                         {mr.measurements?.map(function (m, index) {
@@ -90,20 +101,24 @@ const Measurement: React.FC<MeasurementProps> = ({ measurement }) => {
 
     let icon;
     switch (measurement.phase) {
-        case "Successful": {
+        case AnalysisRunStatus.Successful: {
             icon = <MeasurementSuccessfulIcon/>
             break;
         }
-        case "Failed": {
+        case AnalysisRunStatus.Failed, AnalysisRunStatus.Error: {
             icon = <MeasurementFailedIcon/>
             break;
         }
-        case "Running": {
-            icon = <MeasurementRunningIcon/>
+        case AnalysisRunStatus.Running: {
+            icon = <AnalysisRunStatusRunningIcon/>
+            break;
+        }
+        case AnalysisRunStatus.Pending: {
+            icon = <AnalysisRunStatusPendingIcon/>
             break;
         }
         default: {
-            icon = <MeasurementUnknownIcon/>
+            icon = <AnalysisRunStatusUnknownIcon/>
         }
     }
 

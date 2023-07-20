@@ -9,5 +9,7 @@ export enum AnalysisRunStatus {
     Successful = 'Successful',
     Inconclusive = 'Inconclusive',
     Failed = 'Failed',
-    Error = 'Error'
+    Error = 'Error',
+    Pending = 'Pending',
+    Running = 'Running'
 }
