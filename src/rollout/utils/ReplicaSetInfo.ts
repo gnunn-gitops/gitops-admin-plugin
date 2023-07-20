@@ -21,7 +21,8 @@ export type AnalysisRunInfo = {
     name: string,
     shortName: string,
     status: string,
-    startedAt: string
+    startedAt: string,
+    analysisRun: AnalysisRunKind
 }
 
 export type PodInfo = {
@@ -73,7 +74,7 @@ function getAnalysisRunInfo(analysisRuns: AnalysisRunKind[], podTemplateHash: st
         if (ar.metadata.labels[labelPodTemplateHashKey] == podTemplateHash && ar.metadata.annotations[annotationRevisionKey] == revision) {
             const name = ar.metadata.name.split("-");
             const shortName = name[name.length - 2] + "-" + name[name.length - 1]
-            info.push({ name: ar.metadata.name, shortName: shortName, status: ar.status.phase, startedAt: ar.status.startedAt });
+            info.push({ name: ar.metadata.name, shortName: shortName, status: ar.status.phase, startedAt: ar.status.startedAt, analysisRun: ar });
         }
     });
     console.log("AnalysisRunInfo" + info.length)

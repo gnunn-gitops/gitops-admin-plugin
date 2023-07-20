@@ -14,7 +14,16 @@ export const AnalysisRunModel: K8sModel = {
     crd: true,
 };
 
-export type Measurements = {
+export type Metrics = {
+    count?: number,
+    failureLimit?: number,
+    interval?: string,
+    name: string,
+    provider: any,
+    successCondition?: string
+}
+
+export type Measurement = {
     finishedAt?: string,
     message?: string,
     phase: string,
@@ -30,20 +39,25 @@ export type MetricResults = {
     error?: number,
     failed?: number,
     inconclusive?: number,
-    measurements?: Measurements[],
+    measurements?: Measurement[],
     message?: string,
     name: string,
     phase: string,
     successful?: number
 }
 
+export type AnalysisRunSpec = {
+  metrics?: Metrics[]
+}
+
 export type AnaylsisRunStatus = {
-    metricResults?: MetricResults,
+    metricResults?: MetricResults[],
     phase?: string,
     startedAt?: string
 }
 
 export type AnalysisRunKind = K8sResourceCommon & {
+    spec: AnalysisRunSpec,
     status?: AnaylsisRunStatus
 }
 

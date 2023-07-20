@@ -15,7 +15,8 @@ import {
   BanIcon,
   ExclamationCircleIcon,
   PausedIcon,
-  CheckIcon
+  CheckIcon,
+  MonitoringIcon
 } from '@patternfly/react-icons';
 import { global_danger_color_100 as dangerColor } from '@patternfly/react-tokens/dist/js/global_danger_color_100';
 import { global_default_color_200 as blueDefaultColor } from '@patternfly/react-tokens/dist/js/global_default_color_200';
@@ -107,3 +108,14 @@ export const AnalysisRunStatusFailureIcon = HealthDegradedIcon;
 export const AnalysisRunStatusErrorIcon = HealthDegradedIcon;
 export const AnalysisRunInconclusiveErrorIcon = SyncUnknownIcon;
 export const AnalysisRunStatusUnknownIcon = SyncUnknownIcon;
+
+export const MeasurementSuccessfulIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
+  <MonitoringIcon color={successColor.value} className={className} title={title} />
+);
+
+export const MeasurementFailedIcon: React.FC<ColoredIconProps> = ({ className, title }) => (
+  <MonitoringIcon color={dangerColor.value} className={className} title={title} />
+);
+
+export const MeasurementRunningIcon = HealthProgressingIcon;
+export const MeasurementUnknownIcon = SyncUnknownIcon;
