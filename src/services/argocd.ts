@@ -5,6 +5,31 @@ import { RolloutKind, RolloutModel } from "@rollout-model/RolloutModel";
 
 //const proxyPath = "/api/proxy/plugin/gitops-admin-plugin/proxy";
 
+export const retryRollout = async (rollout: RolloutKind): Promise<RolloutKind> => {
+    return k8sPatch({
+        model: RolloutModel,
+        resource: rollout,
+        data: [{
+            op: 'add',
+            path: '/status/abort',
+            value: false
+        }]
+    })
+}
+
+export const abortRollout = async (rollout: RolloutKind): Promise<RolloutKind> => {
+    return k8sPatch({
+        model: RolloutModel,
+        resource: rollout,
+        data: [{
+            op: 'add',
+            path: '/status/abort',
+            value: true
+        }],
+        path: "abort"
+    })
+}
+
 export const restartRollout = async (rollout: RolloutKind): Promise<RolloutKind> => {
     const now = new Date().toISOString();
 
@@ -18,7 +43,6 @@ export const restartRollout = async (rollout: RolloutKind): Promise<RolloutKind>
         }]
     })
 }
-
 
 export const rollbackRollout = async (rollout: RolloutKind, rs: any): Promise<RolloutKind> => {
 

@@ -17,7 +17,8 @@ import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
-import { promoteRollout } from 'src/services/argocd';
+import { abortRollout, promoteRollout, retryRollout } from 'src/services/argocd';
+import { RolloutStatus, isDeploying } from 'src/rollout/utils/rollout-utils';
 
 type RolloutRowActionsProps = {
   obj?: RolloutKind;
@@ -90,6 +91,14 @@ const RolloutRowActions: React.FC<RolloutRowActionsProps> = ({ obj }) => {
     promoteRollout(obj, true);
   };
 
+  const onAbort = () => {
+    abortRollout(obj);
+  };
+
+  const onRetry = () => {
+    retryRollout(obj);
+  };
+
   const onEditRollout = () => {
     const cta = {
       href: `/k8s/ns/${obj.metadata.namespace || DEFAULT_NAMESPACE}/${rolloutModelRef}/${
@@ -117,11 +126,17 @@ const RolloutRowActions: React.FC<RolloutRowActionsProps> = ({ obj }) => {
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onPromote} key="rollout-promote" isDisabled={!canPatch}>
+        <DropdownItem onClick={onPromote} key="rollout-promote" isDisabled={!canPatch || !isDeploying(obj)}>
           {t('Promote')}
         </DropdownItem>,
-        <DropdownItem onClick={onFullPromote} key="rollout-full-promote" isDisabled={!canPatch}>
+        <DropdownItem onClick={onFullPromote} key="rollout-full-promote" isDisabled={!canPatch || !isDeploying(obj)}>
         {t('Full Promote')}
+        </DropdownItem>,
+        <DropdownItem onClick={onAbort} key="rollout-abort" isDisabled={!canPatch || !isDeploying(obj)}>
+        {t('Abort')}
+        </DropdownItem>,
+        <DropdownItem onClick={onRetry} key="rollout-retry" isDisabled={!canPatch || obj.status?.phase !== RolloutStatus.Degraded}>
+        {t('Retry')}
         </DropdownItem>,
         <DropdownItem onClick={onRestart} key="rollout-restart" isDisabled={!canPatch}>
         {t('Restart')}

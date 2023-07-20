@@ -8,7 +8,8 @@ import { AnnotationsModal } from '@shared/views/modals/AnnotationsModal/Annotati
 import { LabelsModal } from '@shared/views/modals/LabelsModal/LabelsModal';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
-import { promoteRollout, restartRollout } from 'src/services/argocd';
+import { abortRollout, promoteRollout, restartRollout, retryRollout } from 'src/services/argocd';
+import { RolloutStatus, isDeploying } from 'src/rollout/utils/rollout-utils';
 
 type UseRolloutActionsProvider = (
   rollout: RolloutKind,
@@ -23,7 +24,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
     () => [
       {
         id: 'gitops-action-promote',
-        disabled: false,
+        disabled: !isDeploying(rollout),
         label: t('Promote'),
         accessReview: {
           group: RolloutModel.apiGroup,
@@ -37,7 +38,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
       },
       {
         id: 'gitops-action-promote-full',
-        disabled: false,
+        disabled: !isDeploying(rollout),
         label: t('Full Promote'),
         accessReview: {
           group: RolloutModel.apiGroup,
@@ -48,6 +49,34 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           promoteRollout(rollout, true)
+      },
+      {
+        id: 'gitops-action-abort',
+        disabled: !isDeploying(rollout),
+        label: t('Abort'),
+        accessReview: {
+          group: RolloutModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: RolloutModel.plural,
+          namespace: rollout?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          abortRollout(rollout)
+      },
+      {
+        id: 'gitops-action-retry',
+        disabled: rollout?.status?.phase !== RolloutStatus.Degraded,
+        label: t('Retry'),
+        accessReview: {
+          group: RolloutModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: RolloutModel.plural,
+          namespace: rollout?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          retryRollout(rollout)
       },
       {
         id: 'gitops-action-restart',
