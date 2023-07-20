@@ -44,7 +44,7 @@ export const AnalysisRunStatusFragment: React.FC<AnalysisRunStatusProps> = ({ an
             bodyContent={<Metrics arInfo={analysisRunInfo}/>}
             minWidth={"25.25rem"}
         >
-            <Label variant="outline" icon={icon} color={color}>{analysisRunInfo.shortName}</Label>
+            <Label variant="outline" href="javascript:void(0);" icon={icon} color={color}>{analysisRunInfo.shortName}</Label>
         </Popover>
     )
 }
