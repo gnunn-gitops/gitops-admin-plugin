@@ -1,4 +1,4 @@
-import { ResourceLink } from '@openshift-console/dynamic-plugin-sdk';
+import { ResourceLink, Timestamp } from '@openshift-console/dynamic-plugin-sdk';
 import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm, Flex, FlexItem, Label, Popover, Tooltip } from '@patternfly/react-core';
 import { AnalysisRunKind, Measurement, Metric, MetricResult } from '@rollout-model/AnalysisRunModel';
 import { AnalysisRunStatusFailureIcon, AnalysisRunStatusPendingIcon, AnalysisRunStatusRunningIcon, AnalysisRunStatusSuccessfulIcon, AnalysisRunStatusUnknownIcon, MeasurementFailedIcon, MeasurementSuccessfulIcon } from '@shared/views/icons/icons';
@@ -70,7 +70,20 @@ const Metrics: React.FC<MetricsProps> = ({ arInfo }) => {
         return (<div>No AnalysisRun Found</div>)
     }
     return (
-        <DescriptionList>
+        <>
+        <DescriptionList isHorizontal isCompact className='gitops_admin_plugin__tight_description_list'>
+            <DescriptionListGroup>
+                <DescriptionListTerm>Started At:</DescriptionListTerm>
+                <DescriptionListDescription><Timestamp simple timestamp={arInfo.startedAt}/></DescriptionListDescription>
+            </DescriptionListGroup>
+            <DescriptionListGroup>
+                <DescriptionListTerm>Status:</DescriptionListTerm>
+                <DescriptionListDescription>{arInfo.status}</DescriptionListDescription>
+            </DescriptionListGroup>
+        </DescriptionList>
+        <br/>
+
+        <DescriptionList isCompact>
         {arInfo.analysisRun?.status?.metricResults?.map(function (mr, index) {
         return (
             <DescriptionListGroup>
@@ -99,6 +112,7 @@ const Metrics: React.FC<MetricsProps> = ({ arInfo }) => {
             )
         })}
         </DescriptionList>
+        </>
     );
 }
 
@@ -112,28 +126,19 @@ function getMetric(ar: AnalysisRunKind, name: string): Metric {
     return result;
 }
 
-function getProvider(metric: Metric): string {
-    if (metric.provider.job) return "Job";
-    else if (metric.provider.cloudWatch) return "CloudWatch";
-    else if (metric.provider.datadog) return "DataDog";
-    else if (metric.provider.graphite) return "Graphite";
-    else if (metric.provider.influxdb) return "InfluxDB";
-    else if (metric.provider.kayenta) return "Kayenta";
-    else if (metric.provider.newRelic) return "New Relic";
-    else if (metric.provider.prometheus) return "Prometheus";
-    else if (metric.provider.skywalking) return "Skywalking";
-    else if (metric.provider.wavefront) return "Wavefront";
-    else if (metric.provider.web) return "Web";
-    else return "Other";
-}
-
 function getMetricTooltip(arInfo: AnalysisRunInfo, mr: MetricResult) {
     const metric: Metric = getMetric(arInfo.analysisRun, mr.name);
     return (
         <table style={{borderSpacing: "8px 4px", borderCollapse: "separate"}}>
             <tr><th>Metric Name: </th><td>{mr.name}</td></tr>
-            <tr><th>Provider: </th><td>{getProvider(metric)}</td></tr>
+            <tr><th>Provider: </th><td>{Object.keys(metric.provider)[0]}</td></tr>
             <tr><th>Status: </th><td>{mr.phase}</td></tr>
+            {metric && metric.successCondition &&
+                <tr><th>SuccessCondition: </th><td>{metric.successCondition}</td></tr>
+            }
+            {metric && metric.count &&
+                <tr><th>Count: </th><td>{metric.count}</td></tr>
+            }
         </table>
     )
 }
@@ -166,8 +171,25 @@ const Measurement: React.FC<MeasurementProps> = ({ measurement }) => {
             icon = <AnalysisRunStatusUnknownIcon/>
         }
     }
-
     return (
-        icon
+        <Tooltip  content={getMeasurementTooltip(measurement)}>
+            {icon}
+        </Tooltip>
+    )
+}
+
+function getMeasurementTooltip(measurement: Measurement) {
+    return (
+        <table style={{borderSpacing: "8px 4px", borderCollapse: "separate"}}>
+            <tr><th>Status: </th><td>{measurement.phase}</td></tr>
+            {measurement.metadata && measurement.metadata["job-name"] &&
+                <tr><th style={{whiteSpace:"nowrap"}}>Job Name: </th><td>{measurement.metadata["job-name"]}</td></tr>
+            }
+            <tr><th style={{whiteSpace:"nowrap"}}>Started At: </th><td><Timestamp simple timestamp={measurement.startedAt}/></td></tr>
+            <tr><th style={{whiteSpace:"nowrap"}}>Finished At: </th><td><Timestamp simple timestamp={measurement.startedAt}/></td></tr>
+            {measurement.value &&
+                <tr><th>Value: </th><td><pre>{JSON.stringify(JSON.parse(measurement.value),null,2)}</pre></td></tr>
+            }
+        </table>
     )
 }

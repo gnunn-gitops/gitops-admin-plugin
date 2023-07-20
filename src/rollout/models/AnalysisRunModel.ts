@@ -39,6 +39,7 @@ export type Metric = {
 
 export type Measurement = {
     finishedAt?: string,
+    metadata?: any,
     message?: string,
     phase: string,
     resumeAt: string,
