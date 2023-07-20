@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { K8sResourceCommon, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel } from "@openshift-console/dynamic-plugin-sdk"
+import { ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel, useK8sWatchResource } from "@openshift-console/dynamic-plugin-sdk"
 import { sortable } from '@patternfly/react-table';
 import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
@@ -17,19 +17,30 @@ import { Link } from 'react-router-dom';
 import './Revisions.scss';
 
 interface RevisionsProps {
-    rollout: RolloutKind,
-    replicaSets: K8sResourceCommon[]
+    rollout: RolloutKind
 }
 
-export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => {
+export const Revisions: React.FC<RevisionsProps> = ({ rollout}) => {
 
     const [replicaSetInfo, setReplicaSetInfo] = React.useState<ReplicaSetInfo[]>([]);
 
+    const [replicaSets, loaded] = useK8sWatchResource({
+        groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
+        isList: true,
+        namespaced: true,
+        namespace: rollout.metadata?.namespace,
+        selector: rollout.spec.selector
+      });
+
     React.useEffect(() => {
-        getReplicaSetInfo(rollout, replicaSets).then((result) => {
-            setReplicaSetInfo(result);
-        });
-    }, [rollout, replicaSets]);
+        if (loaded) {
+            getReplicaSetInfo(rollout, Array.isArray(replicaSets)?replicaSets:[replicaSets]).then((result) => {
+                setReplicaSetInfo(result);
+            });
+        } else {
+            setReplicaSetInfo([]);
+        }
+    }, [replicaSets]);
 
     return (
         <>

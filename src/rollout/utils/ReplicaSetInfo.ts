@@ -90,6 +90,11 @@ function getAnalysisRunInfo(analysisRuns: AnalysisRunKind[], podTemplateHash: st
 
 export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]): Promise<ReplicaSetInfo[]> => {
     const result: ReplicaSetInfo[] = [];
+    console.log(rollout);
+    console.log(replicaSets);
+
+    if (!replicaSets || !rollout) return result;
+    if (!rollout.metadata || !Array.isArray(replicaSets)) return result;
 
     const podTemplateHash: string[] = [];
     replicaSets.forEach((rs) => {

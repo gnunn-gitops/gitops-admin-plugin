@@ -82,10 +82,10 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
         <RolloutStatusFragment status={obj.status?.phase as RolloutStatus}  />
       </TableData>
       <TableData id="pods" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
-        {obj.status ? obj.status.readyReplicas + " of " + obj.status.replicas : "-"}
+        {obj.status && obj.status.readyReplicas && obj.status.replicas ? obj.status.readyReplicas + " of " + obj.status.replicas : "-"}
       </TableData>
       <TableData id="selector" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
-        {obj.status ? obj.status.selector : "-"}
+        {obj.status && obj.status.selector ? obj.status.selector : "-"}
       </TableData>
       <TableData
         id="actions"
