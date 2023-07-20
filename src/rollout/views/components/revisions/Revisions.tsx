@@ -9,11 +9,12 @@ import { RunningIcon } from '@patternfly/react-icons/dist/esm/icons/running-icon
 import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
 import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
 
-import './Revisions.scss';
 import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
 import { RevisionsRowActions } from './RevisionsRowActions';
 import { getResourceUrl } from '@gitops-utils/utils';
 import { Link } from 'react-router-dom';
+
+import './Revisions.scss';
 
 interface RevisionsProps {
     rollout: RolloutKind,

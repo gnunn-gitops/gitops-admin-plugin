@@ -14,12 +14,26 @@ export const AnalysisRunModel: K8sModel = {
     crd: true,
 };
 
-export type Metrics = {
+export type Provider = {
+    job?: any,
+    prometheus?: any,
+    datadog?: any,
+    newRelic?: any,
+    wavefront?: any,
+    web?: any,
+    kayenta?: any,
+    cloudWatch?: any,
+    graphite?: any,
+    influxdb?: any,
+    skywalking?: any
+}
+
+export type Metric = {
     count?: number,
     failureLimit?: number,
     interval?: string,
     name: string,
-    provider: any,
+    provider: Provider,
     successCondition?: string
 }
 
@@ -32,7 +46,7 @@ export type Measurement = {
     value: string
 }
 
-export type MetricResults = {
+export type MetricResult = {
     consecutiveError?: number,
     count?: number,
     dryRun?: boolean,
@@ -47,11 +61,11 @@ export type MetricResults = {
 }
 
 export type AnalysisRunSpec = {
-  metrics?: Metrics[]
+  metrics?: Metric[]
 }
 
 export type AnaylsisRunStatus = {
-    metricResults?: MetricResults[],
+    metricResults?: MetricResult[],
     phase?: string,
     startedAt?: string
 }

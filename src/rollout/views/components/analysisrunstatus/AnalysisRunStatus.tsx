@@ -1,6 +1,6 @@
 import { ResourceLink } from '@openshift-console/dynamic-plugin-sdk';
-import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm, Flex, FlexItem, Label, Popover } from '@patternfly/react-core';
-import { Measurement } from '@rollout-model/AnalysisRunModel';
+import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm, Flex, FlexItem, Label, Popover, Tooltip } from '@patternfly/react-core';
+import { AnalysisRunKind, Measurement, Metric, MetricResult } from '@rollout-model/AnalysisRunModel';
 import { AnalysisRunStatusFailureIcon, AnalysisRunStatusPendingIcon, AnalysisRunStatusRunningIcon, AnalysisRunStatusSuccessfulIcon, AnalysisRunStatusUnknownIcon, MeasurementFailedIcon, MeasurementSuccessfulIcon } from '@shared/views/icons/icons';
 import * as React from 'react';
 import { AnalysisRunInfo, ReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
@@ -74,7 +74,16 @@ const Metrics: React.FC<MetricsProps> = ({ arInfo }) => {
         {arInfo.analysisRun?.status?.metricResults?.map(function (mr, index) {
         return (
             <DescriptionListGroup>
-                <DescriptionListTerm><span style={{ display:'inline-flex', alignItems: 'center' }}>{mr.name}  <InfoCircleIcon style={{paddingLeft: '4px'}} size='sm'/></span></DescriptionListTerm>
+                <DescriptionListTerm>
+                    <span style={{ display:'inline-flex', alignItems: 'center' }}>
+                        {mr.name}
+                        <Tooltip
+                            content={getMetricTooltip(arInfo, mr)}
+                        >
+                            <InfoCircleIcon style={{paddingLeft: '4px'}} size='sm'/>
+                        </Tooltip>
+                    </span>
+                </DescriptionListTerm>
                 <DescriptionListDescription>
                     <Flex>
                         {mr.measurements?.map(function (m, index) {
@@ -91,6 +100,42 @@ const Metrics: React.FC<MetricsProps> = ({ arInfo }) => {
         })}
         </DescriptionList>
     );
+}
+
+function getMetric(ar: AnalysisRunKind, name: string): Metric {
+    var result:Metric = undefined;
+    ar.spec.metrics?.forEach((metric) => {
+        if (metric.name == name) {
+            result = metric;
+        }
+    });
+    return result;
+}
+
+function getProvider(metric: Metric): string {
+    if (metric.provider.job) return "Job";
+    else if (metric.provider.cloudWatch) return "CloudWatch";
+    else if (metric.provider.datadog) return "DataDog";
+    else if (metric.provider.graphite) return "Graphite";
+    else if (metric.provider.influxdb) return "InfluxDB";
+    else if (metric.provider.kayenta) return "Kayenta";
+    else if (metric.provider.newRelic) return "New Relic";
+    else if (metric.provider.prometheus) return "Prometheus";
+    else if (metric.provider.skywalking) return "Skywalking";
+    else if (metric.provider.wavefront) return "Wavefront";
+    else if (metric.provider.web) return "Web";
+    else return "Other";
+}
+
+function getMetricTooltip(arInfo: AnalysisRunInfo, mr: MetricResult) {
+    const metric: Metric = getMetric(arInfo.analysisRun, mr.name);
+    return (
+        <table style={{borderSpacing: "8px 4px", borderCollapse: "separate"}}>
+            <tr><th>Metric Name: </th><td>{mr.name}</td></tr>
+            <tr><th>Provider: </th><td>{getProvider(metric)}</td></tr>
+            <tr><th>Status: </th><td>{mr.phase}</td></tr>
+        </table>
+    )
 }
 
 type MeasurementProps = {
