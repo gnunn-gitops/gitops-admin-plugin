@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { K8sResourceCommon, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable } from "@openshift-console/dynamic-plugin-sdk"
+import { K8sResourceCommon, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel } from "@openshift-console/dynamic-plugin-sdk"
 import { sortable } from '@patternfly/react-table';
 import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
@@ -12,6 +12,8 @@ import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-
 import './Revisions.scss';
 import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
 import { RevisionsRowActions } from './RevisionsRowActions';
+import { getResourceUrl } from '@gitops-utils/utils';
+import { Link } from 'react-router-dom';
 
 interface RevisionsProps {
     rollout: RolloutKind,
@@ -44,6 +46,7 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => 
 }
 
 const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo, {rollout: RolloutKind}>> = ({ obj, activeColumnIDs, rowData: {rollout} }) => {
+    const [rsModel] = useK8sModel({group: "apps", version: "v1", kind: "ReplicaSet"});
 
     return (
         <>
@@ -62,7 +65,9 @@ const replicaSetInfoListRow: React.FC<RowProps<ReplicaSetInfo, {rollout: Rollout
             </TableData>
             <TableData id="pods" activeColumnIDs={activeColumnIDs} className="gitops-admin-plugin__pods-column">
                 {obj.pods ?
-                    obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"
+                    <Link to={getResourceUrl({model: rsModel, resource: obj.replicaSet}) + "/pods"}>
+                      {obj.pods.readyReplicas ? obj.pods.readyReplicas + " of " + obj.pods.replicas: "-"}
+                    </Link>
                 :
                     "-"
                 }
