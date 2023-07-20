@@ -11,7 +11,7 @@ import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-
 
 import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
 import { RevisionsRowActions } from './RevisionsRowActions';
-import { getResourceUrl } from '@gitops-utils/utils';
+import { getResourceUrl, resourceAsArray } from '@gitops-utils/utils';
 import { Link } from 'react-router-dom';
 
 import './Revisions.scss';
@@ -32,15 +32,16 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout}) => {
         selector: rollout.spec.selector
       });
 
-    React.useEffect(() => {
+
+   React.useEffect(() => {
         if (loaded) {
-            getReplicaSetInfo(rollout, Array.isArray(replicaSets)?replicaSets:[replicaSets]).then((result) => {
+            getReplicaSetInfo(rollout, resourceAsArray(replicaSets)).then((result) => {
                 setReplicaSetInfo(result);
             });
         } else {
             setReplicaSetInfo([]);
         }
-    }, [replicaSets]);
+    }, [rollout, replicaSets]);
 
     return (
         <>

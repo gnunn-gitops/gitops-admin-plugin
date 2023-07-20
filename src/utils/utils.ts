@@ -69,3 +69,7 @@ export function getObjectModifyPermissions(obj: K8sResourceCommon, model: K8sMod
 
   return [canPatch, canUpdate, canDelete];
 }
+
+export function resourceAsArray(resource: K8sResourceCommon | K8sResourceCommon[]): K8sResourceCommon[] {
+  return Array.isArray(resource) ? resource: [resource];
+}

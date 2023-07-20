@@ -88,15 +88,9 @@ function getAnalysisRunInfo(analysisRuns: AnalysisRunKind[], podTemplateHash: st
     return info.sort((a,b) => a.startedAt > b.startedAt? 1:-1)
 }
 
-export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]): Promise<ReplicaSetInfo[]> => {
-    const result: ReplicaSetInfo[] = [];
-    console.log(rollout);
-    console.log(replicaSets);
-
-    if (!replicaSets || !rollout) return result;
-    if (!rollout.metadata || !Array.isArray(replicaSets)) return result;
-
+export function getAnalysisRunSelector(replicaSets: K8sResourceCommon[]):Selector {
     const podTemplateHash: string[] = [];
+
     replicaSets.forEach((rs) => {
         const value: string = rs.metadata.labels[labelPodTemplateHashKey];
         if (value) podTemplateHash.push(value);
@@ -111,6 +105,18 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
             }
         ]
     }
+    return selector;
+}
+
+export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]): Promise<ReplicaSetInfo[]> => {
+    const result: ReplicaSetInfo[] = [];
+    console.log(rollout);
+    console.log(replicaSets);
+
+    if (!replicaSets || !rollout) return result;
+    if (!rollout.metadata || !Array.isArray(replicaSets)) return result;
+
+    // const selector: Selector = getAnalysisRunSelector(replicaSets);
 
     // Note I don't think we need to watch analysisRuns since everytime a replicaset is generated
     // the analysis run should. Ideally the analysisrun would be labelled with the rollout
@@ -123,7 +129,7 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
         model: AnalysisRunModel,
         queryParams: {
             ns: rollout.metadata.namespace,
-            labelSelector: selector
+            labelSelector: getAnalysisRunSelector(replicaSets)
         },
     }) as AnalysisRunKind[];
 
