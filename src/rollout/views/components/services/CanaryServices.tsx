@@ -15,11 +15,19 @@ const CanaryServices: React.FC<CanaryServicesProps> = ({ rollout }) => {
     return (
         <>
             <DetailsDescriptionGroup title={t('Stable')} help={t('The stable service')}>
-                <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.canary.stableService} namespace={rollout.metadata.namespace} />
+                {rollout.spec.strategy.canary.stableService ?
+                    <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.canary.stableService} namespace={rollout.metadata.namespace} />
+                :
+                    "-"
+                }
             </DetailsDescriptionGroup>
 
             <DetailsDescriptionGroup title={t('Canary')} help={t('The canary service')}>
-                <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.canary.canaryService} namespace={rollout.metadata.namespace} />
+                {rollout.spec.strategy.canary.canaryService ?
+                    <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.canary.canaryService} namespace={rollout.metadata.namespace} />
+                :
+                    "-"
+                }
             </DetailsDescriptionGroup>
         </>
     )

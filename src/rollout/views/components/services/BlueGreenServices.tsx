@@ -15,11 +15,19 @@ const BlueGreenServices: React.FC<BlueGreenServicesProps> = ({ rollout }) => {
     return (
         <>
             <DetailsDescriptionGroup title={t("Active")} help={t("The active bluegreen service")}>
-                <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.blueGreen.activeService} namespace={rollout.metadata.namespace}/>
+                {rollout.spec.strategy.blueGreen.activeService ?
+                    <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.blueGreen.activeService} namespace={rollout.metadata.namespace}/>
+                :
+                    "-"
+                }
             </DetailsDescriptionGroup>
 
             <DetailsDescriptionGroup title={t('Preview')} help={t('The preview bluegreen service')}>
-                <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.blueGreen.previewService} namespace={rollout.metadata.namespace}/>
+                {rollout.spec.strategy.blueGreen.previewService ?
+                    <ResourceLink groupVersionKind={{ version: "v1", kind: "Service" }} name={rollout.spec.strategy.blueGreen.previewService} namespace={rollout.metadata.namespace}/>
+                :
+                    "-"
+                }
             </DetailsDescriptionGroup>
         </>
     )
