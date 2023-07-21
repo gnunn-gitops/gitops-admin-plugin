@@ -5,7 +5,7 @@ import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Ti
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatusFragment from './components/Statuses/SyncStatusFragment';
-import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Flex, FlexItem, Grid, GridItem, PageSection, Popover } from '@patternfly/react-core';
+import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Flex, FlexItem, Grid, GridItem, PageSection, Popover, Title } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import { ArgoServer, getArgoServer, getDuration } from '@gitops-utils/gitops';
 import ResourceRowActions from './ResourceRowActions';
@@ -158,7 +158,9 @@ const ApplicationSyncStatusPage: React.FC<ApplicationSyncStatusPageProps> = ({ o
                 </Grid>
             </PageSection>
             <PageSection>
-
+                <Title headingLevel="h2" className="co-section-heading">
+                    {t('Resources Last Synced')}
+                </Title>
                 <VirtualizedTable
                     data={resources}
                     unfilteredData={resources}
