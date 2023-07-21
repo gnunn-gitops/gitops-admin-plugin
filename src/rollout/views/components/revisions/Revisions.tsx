@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel, useK8sWatchResource } from "@openshift-console/dynamic-plugin-sdk"
-import { sortable } from '@patternfly/react-table';
+import { SortByDirection, sortable } from '@patternfly/react-table';
 import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
 import { Label, LabelGroup, Tooltip } from '@patternfly/react-core';
@@ -111,7 +111,8 @@ export const useReplicaSetInfoColumns = () => {
                 title: 'Revision',
                 id: 'revision',
                 transforms: [sortable],
-                sort: 'revision',
+                // Hack to get newer revisions to be shown first until VirtualizedTable gets option to specify default sort order
+                sort: (data, direction) => data.sort((r1, r2) => direction==SortByDirection.asc? (r2.revision - r1.revision) : (r1.revision - r2.revision)),
                 props: { className: 'gitops-admin-plugin__revision-column' }
             },
             {
@@ -123,27 +124,25 @@ export const useReplicaSetInfoColumns = () => {
             {
                 title: 'Analysis Runs',
                 id: 'analysisruns',
-                transforms: [sortable],
-                sort: 'analysisRuns',
+                transforms: []
             },
             {
                 title: 'Pods',
                 id: 'pods',
                 transforms: [sortable],
-                sort: 'pods',
+                sort: (data, direction) => data.sort((r1, r2) => direction==SortByDirection.desc? (r2.pods.readyReplicas - r1.pods.readyReplicas) : (r1.pods.readyReplicas - r2.pods.readyReplicas)),
                 props: { className: 'gitops-admin-plugin__pods-column' }
             },
             {
                 title: 'Status',
                 id: 'status',
                 transforms: [sortable],
-                sort: 'status'
+                sort: (data, direction) => data.sort((r1, r2) => direction==SortByDirection.desc? (r2.statuses.length - r1.statuses.length) : (r1.statuses.length - r2.statuses.length)),
             },
             {
                 title: 'Images',
                 id: 'images',
-                transforms: [sortable],
-                sort: 'images'
+                transforms: []
             },
             {
               title: '',
