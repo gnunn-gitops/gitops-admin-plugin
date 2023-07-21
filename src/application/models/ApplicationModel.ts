@@ -136,6 +136,8 @@ export type CurrentSyncStatus = {
 
 export type ApplicationStatus = {
   conditions?: ApplicationCondition[],
+  // Added in Argo CD 2.8
+  controllerNamespace?: string,
   sync?: CurrentSyncStatus,
   health?: {
       status?: HealthStatus
