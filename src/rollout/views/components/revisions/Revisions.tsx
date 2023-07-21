@@ -3,11 +3,12 @@ import { ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8
 import { sortable } from '@patternfly/react-table';
 import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
-import { DescriptionList, DescriptionListGroup, DescriptionListTerm, DescriptionListDescription, Label, LabelGroup } from '@patternfly/react-core';
+import { Label, LabelGroup, Tooltip } from '@patternfly/react-core';
 import ArrowCircleUpIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-up-icon';
 import { RunningIcon } from '@patternfly/react-icons/dist/esm/icons/running-icon';
 import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
 import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
+import { CubeIcon } from '@patternfly/react-icons/dist/esm/icons/cube-icon';
 
 import { AnalysisRunStatusFragment } from '../analysisrunstatus/AnalysisRunStatus';
 import { RevisionsRowActions } from './RevisionsRowActions';
@@ -158,11 +159,11 @@ export const useReplicaSetInfoColumns = () => {
 
 const getImages = (images: ImageInfo[]) => {
     return (
-        <DescriptionList isCompact isHorizontal>
+        <LabelGroup>
         {images.map(function(image, index){
-            return <DescriptionListGroup><DescriptionListTerm>{image.name}</DescriptionListTerm><DescriptionListDescription>{image.image}</DescriptionListDescription></DescriptionListGroup>;
+            return <Tooltip content={image.image}><Label variant="outline" icon={<CubeIcon/>}>{image.name}</Label></Tooltip>;
           })}
-        </DescriptionList>
+        </LabelGroup>
     )
 }
 
