@@ -75,8 +75,6 @@ export const getArgoServer = async (model, app: ApplicationKind): Promise<ArgoSe
     else return app.metadata.namespace;
   }
 
-  console.log("Argo CD Namespace is: " + ns);
-
   try {
     const [argoServerURL] = await k8sListItems<K8sResourceCommon>({
       model: model,
@@ -96,8 +94,6 @@ export const getArgoServer = async (model, app: ApplicationKind): Promise<ArgoSe
     } else {
       info.host = "argocd-server-" + ns() + location.host.substring(location.host.indexOf(".apps"))
     }
-
-    console.log("Argo Server is: " + argoServerURL["spec"]["host"]);
     return info;
   } catch (e) {
     console.warn('Error while fetching Argo CD Server url:', e);
