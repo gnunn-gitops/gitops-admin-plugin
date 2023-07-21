@@ -136,7 +136,7 @@
     "type": "console.navigation/resource-ns",
     "properties": {
       "id": "appproject",
-      "name": "%plugin__gitops-admin-plugin~Project%",
+      "name": "%plugin__gitops-admin-plugin~Projects%",
       "perspective": "admin",
       "section": "gitops",
       "model": {
