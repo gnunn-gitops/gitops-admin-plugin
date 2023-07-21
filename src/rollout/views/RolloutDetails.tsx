@@ -13,6 +13,7 @@ import { useRolloutActionsProvider } from './hooks/useRolloutActionsProvider';
 import { RolloutModel } from '../models/RolloutModel';
 import RolloutYAMLPage from './RolloutYAMLPage';
 import RolloutDetailsPage from './RolloutDetailsPage';
+import RolloutEventsPage from './RolloutEventsPage';
 
 type RolloutPageProps = {
   name: string;
@@ -46,6 +47,11 @@ const RolloutNavPage: React.FC<RolloutPageProps> = ({ name, namespace, kind }) =
         href: 'yaml',
         name: t('YAML'),
         component: RolloutYAMLPage,
+      },
+      {
+        href: 'events',
+        name: t('Events'),
+        component: RolloutEventsPage,
       }
     ],
     [],
