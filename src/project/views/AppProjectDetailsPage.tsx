@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import {
+  Card,
   DescriptionList,
   DescriptionListDescription,
-  DescriptionListGroup,
   DescriptionListTermHelpText,
   DescriptionListTermHelpTextButton,
   Grid,
@@ -11,6 +11,7 @@ import {
   List,
   ListItem,
   PageSection,
+  PageSectionVariants,
   Popover,
   Title
 } from '@patternfly/react-core';
@@ -21,6 +22,7 @@ import ResourceAllowDenyListFragment from './components/ResourceAllowDenyList/Re
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
 import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
+import { Overview } from '@openshift-console/dynamic-plugin-sdk';
 
 type AppProjectDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -78,33 +80,52 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
       </PageSection>
       <PageSection hasShadowTop={true}>
         <Title headingLevel="h2" className="co-section-heading">
-          {t('Source Repositories')}
+          {t('Source')}
         </Title>
-        {renderStringArray(obj.spec.sourceRepos)}
-      </PageSection>
-      <PageSection hasShadowTop={true}>
-        <Title headingLevel="h2" className="co-section-heading">
-          {t('Source Namespaces')}
-        </Title>
-        {renderStringArray(obj.spec.sourceNamespaces)}
+        <Overview>
+            <DescriptionList columnModifier={{ lg: '2Col' }}>
+              <Card component="div">
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Repositories')}</div>} bodyContent={<div>{t('Source repositories allowed in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Source repositories allowed in this project.')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {renderStringArray(obj.spec.sourceRepos)}
+                </DescriptionListDescription>
+              </Card>
+              <Card component="div">
+                <DescriptionListTermHelpText>
+                  <Popover headerContent={<div>{t('Namespaces')}</div>} bodyContent={<div>{t('Source namespaces allowed in this project.')}</div>}>
+                    <DescriptionListTermHelpTextButton>{t('Source namespaces allowed in this project.')}</DescriptionListTermHelpTextButton>
+                  </Popover>
+                </DescriptionListTermHelpText>
+                <DescriptionListDescription>
+                  {renderStringArray(obj.spec.sourceNamespaces)}
+                </DescriptionListDescription>
+              </Card>
+            </DescriptionList>
+          </Overview>
       </PageSection>
 
       <PageSection hasShadowTop={true}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Destinations')}
         </Title>
+        <Overview><Card component="div">
         <DestinationsListFragment
           destinations={obj.spec.destinations}
         />
+        </Card></Overview>
       </PageSection>
 
-      <PageSection hasShadowTop={true}>
+      <PageSection hasShadowTop={true} variant={PageSectionVariants.light} >
         <Title headingLevel="h2" className="co-section-heading">
           {t('Resource Allow/Deny Lists')}
         </Title>
-
-        <DescriptionList>
-          <DescriptionListGroup>
+        <Overview>
+        <DescriptionList columnModifier={{ lg: '2Col' }}>
+          <Card component="div">
             <DescriptionListTermHelpText>
               <Popover headerContent={<div>{t('Cluster Resource Allow List')}</div>} bodyContent={<div>{t('Cluster resources allowed in applications in this project.')}</div>}>
                 <DescriptionListTermHelpTextButton>{t('Cluster Resource Allow List')}</DescriptionListTermHelpTextButton>
@@ -120,9 +141,9 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
                 <div>The cluster resource allow list is empty</div>
               }
             </DescriptionListDescription>
-          </DescriptionListGroup>
+          </Card>
 
-          <DescriptionListGroup>
+          <Card component="div">
             <DescriptionListTermHelpText>
               <Popover headerContent={<div>{t('Cluster Resource Deny List')}</div>} bodyContent={<div>{t('Cluster resources denied in applications in this project.')}</div>}>
                 <DescriptionListTermHelpTextButton>{t('Cluster Resource Deny List')}</DescriptionListTermHelpTextButton>
@@ -138,9 +159,9 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
                 <div>The cluster resource deny list is empty</div>
               }
             </DescriptionListDescription>
-          </DescriptionListGroup>
+          </Card>
 
-          <DescriptionListGroup>
+          <Card component="div">
             <DescriptionListTermHelpText>
               <Popover headerContent={<div>{t('Namespace Resource Allow List')}</div>} bodyContent={<div>{t('Namespace resources allowed in applications in this project.')}</div>}>
                 <DescriptionListTermHelpTextButton>{t('Namespace Resource Allow List')}</DescriptionListTermHelpTextButton>
@@ -156,9 +177,9 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
                 <div>The namespace resource allow list is empty</div>
               }
             </DescriptionListDescription>
-          </DescriptionListGroup>
+          </Card>
 
-          <DescriptionListGroup>
+          <Card component="div">
             <DescriptionListTermHelpText>
               <Popover headerContent={<div>{t('Namespace Resource Deny List')}</div>} bodyContent={<div>{t('Namespace resources denied in applications in this project.')}</div>}>
                 <DescriptionListTermHelpTextButton>{t('Namespace Resource Deny List')}</DescriptionListTermHelpTextButton>
@@ -174,8 +195,9 @@ const AppProjectDetailsPage: React.FC<AppProjectDetailsPageProps> = ({ obj }) =>
                 <div>The namespace resource deny list is empty</div>
               }
             </DescriptionListDescription>
-          </DescriptionListGroup>
+          </Card>
         </DescriptionList>
+        </Overview>
       </PageSection>
 
     </div>
