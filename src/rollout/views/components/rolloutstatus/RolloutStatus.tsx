@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { RolloutStatusDegradedIcon, RolloutStatusHealthyIcon, RolloutStatusPausedIcon, RolloutStatusProgressingIcon, RolloutStatusUnknownIcon } from '@shared/views/icons/icons';
 import { RolloutStatus } from 'src/rollout/utils/rollout-utils';
+import { InfoCircleIcon} from '@patternfly/react-icons';
+import { Tooltip } from '@patternfly/react-core';
 
 interface RolloutStatusProps {
     status: RolloutStatus;
+    message?: string
 }
 
-export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status }) => {
+export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status, message }) => {
 
     let icon: React.ReactNode;
     switch (status) {
@@ -30,8 +33,14 @@ export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status }) 
             icon = <RolloutStatusUnknownIcon/>;
     }
     return (
-        <span>
-            {icon} {status}
+        <span style={{ display:'inline-flex', alignItems: 'center' }}>
+             {icon} {status} {message &&
+            <Tooltip
+                content={message}
+            >
+                <InfoCircleIcon style={{paddingLeft: '4px'}} size='sm'/>
+            </Tooltip>
+            }
         </span>
     )
 }

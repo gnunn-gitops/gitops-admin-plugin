@@ -95,7 +95,7 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
               </DetailsDescriptionGroup>
 
               <DetailsDescriptionGroup title={t('Status')} help={t('The current status of the rollout')}>
-                <RolloutStatusFragment status={obj?.status?.phase}/>
+                <RolloutStatusFragment status={obj?.status?.phase} message={obj?.status?.message}/>
               </DetailsDescriptionGroup>
 
               <DetailsDescriptionGroup title={t('Strategy')} help={t('Whether the rollout is using a blue-green or canary strategy')}>

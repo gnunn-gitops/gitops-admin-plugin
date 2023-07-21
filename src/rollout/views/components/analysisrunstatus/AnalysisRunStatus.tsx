@@ -182,6 +182,9 @@ function getMeasurementTooltip(measurement: Measurement) {
     return (
         <table style={{borderSpacing: "8px 4px", borderCollapse: "separate"}}>
             <tr><th>Status: </th><td>{measurement.phase}</td></tr>
+            {measurement.message &&
+                <tr><th>Message: </th><td>{measurement.message}</td></tr>
+            }
             {measurement.metadata && measurement.metadata["job-name"] &&
                 <tr><th style={{whiteSpace:"nowrap"}}>Job Name: </th><td>{measurement.metadata["job-name"]}</td></tr>
             }
