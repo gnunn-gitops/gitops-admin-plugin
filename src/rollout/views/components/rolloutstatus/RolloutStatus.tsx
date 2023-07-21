@@ -30,11 +30,11 @@ export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status, me
             break
         }
         default:
-            icon = <RolloutStatusUnknownIcon/>;
+            icon = <RolloutStatusUnknownIcon />;
     }
     return (
         <span style={{ display:'inline-flex', alignItems: 'center' }}>
-             {icon} {status} {message &&
+             {icon} <span style={{paddingLeft: '4px'}}>{status}</span> {message &&
             <Tooltip
                 content={message}
             >
