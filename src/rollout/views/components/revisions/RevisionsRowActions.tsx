@@ -28,7 +28,7 @@ export const RevisionsRowActions: React.FC<RevisionsRowActionsProps> = ({ rollou
           isOpen={isDropdownOpen}
           isPlain
           dropdownItems={[
-            <DropdownItem onClick={onRollback} key="rollout-rollback" isDisabled={!rsInfo.name}>
+            <DropdownItem onClick={onRollback} key="rollout-rollback" isDisabled={!rsInfo.name || rsInfo.statuses.length != 0}>
               {t('Rollback')}
             </DropdownItem>
           ]}
