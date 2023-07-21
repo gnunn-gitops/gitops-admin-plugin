@@ -40,7 +40,7 @@ function renderStringArray(items: string[]) {
     )
   } else {
     return (
-      <div className="pf-u-text-align-center">Not found</div>
+      <div className="pf-u-text-align-center pf-u-mt-xs">No Data</div>
     )
   }
 }
