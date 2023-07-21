@@ -20,9 +20,9 @@ The following table shows the current status of development.
 | Custom Resource  | Goal Status          | Comments        |
 | ------------- | -------------      | -------------- |
 | Application  | 100%  | Feature complete |
-| AppProject  | 80%  | Mostly feature complete but UI needs improvement for readability |
+| AppProject  | 100%  | Feature complete |
 | ApplicationSet | 10% | Default OpenShift view with an additional tab to view list of associated applications. |
-| Rollout | 20% | Basic implementation with support for Promote, only tested with Blue-Green |
+| Rollout | 90% | Feature complete implementation, needs more testing but everything is there in terms of goals. |
 
 # Philosphy
 
