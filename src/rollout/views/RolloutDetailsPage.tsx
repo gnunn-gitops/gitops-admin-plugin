@@ -9,12 +9,12 @@ import {
   Title
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import { getObjectModifyPermissions } from '@gitops-utils/utils';
+import { getObjectModifyPermissions, resourceAsArray } from '@gitops-utils/utils';
 import StandardDetailsGroup from '@shared/views/components/StandardDetailsGroup/StandardDetailsGroup';
 import { RolloutModel } from '@rollout-model/RolloutModel';
 import BlueGreenServices from './components/services/BlueGreenServices';
 import CanaryServices from './components/services/CanaryServices';
-import { k8sUpdate } from '@openshift-console/dynamic-plugin-sdk';
+import { k8sUpdate, useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 import { Revisions } from './components/revisions/Revisions';
 import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
 import { RolloutStatusFragment } from './components/rolloutstatus/RolloutStatus';
@@ -31,7 +31,13 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
 
   const [canPatch, canUpdate] = getObjectModifyPermissions(obj, RolloutModel);
 
-  console.log(obj.spec.selector);
+  const [replicaSets] = useK8sWatchResource({
+    groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
+    isList: true,
+    namespaced: true,
+    namespace: obj.metadata?.namespace,
+    selector: obj.spec.selector
+  });
 
   const onReplicaChange = (event: React.FormEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value;
@@ -116,7 +122,7 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
         <Title headingLevel="h2" className="co-section-heading">
           {t('Revisions')}
         </Title>
-        <Revisions rollout={obj} />
+        <Revisions rollout={obj} replicaSets={resourceAsArray(replicaSets)} />
       </PageSection>
     </div>
   );

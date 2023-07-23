@@ -1,5 +1,5 @@
-import { K8sResourceCommon, Selector, k8sList } from "@openshift-console/dynamic-plugin-sdk";
-import { AnalysisRunKind, AnalysisRunModel } from "@rollout-model/AnalysisRunModel";
+import { K8sResourceCommon, Operator, Selector } from "@openshift-console/dynamic-plugin-sdk";
+import { AnalysisRunKind } from "@rollout-model/AnalysisRunModel";
 import { RolloutKind } from "@rollout-model/RolloutModel";
 
 const annotationRevisionKey = "rollout.argoproj.io/revision";
@@ -89,6 +89,7 @@ function getAnalysisRunInfo(analysisRuns: AnalysisRunKind[], podTemplateHash: st
 }
 
 export function getAnalysisRunSelector(replicaSets: K8sResourceCommon[]):Selector {
+
     const podTemplateHash: string[] = [];
 
     replicaSets.forEach((rs) => {
@@ -96,42 +97,24 @@ export function getAnalysisRunSelector(replicaSets: K8sResourceCommon[]):Selecto
         if (value) podTemplateHash.push(value);
     });
 
-    const selector: Selector = {
+    return {
         matchExpressions: [
             {
                 key: labelPodTemplateHashKey,
-                operator: "in",
+                operator: Operator.In,
                 values: podTemplateHash
             }
         ]
     }
-    return selector;
 }
 
-export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]): Promise<ReplicaSetInfo[]> => {
+export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[], analysisRuns: AnalysisRunKind[]): Promise<ReplicaSetInfo[]> => {
     const result: ReplicaSetInfo[] = [];
     console.log(rollout);
     console.log(replicaSets);
 
     if (!replicaSets || !rollout) return result;
     if (!rollout.metadata || !Array.isArray(replicaSets)) return result;
-
-    // const selector: Selector = getAnalysisRunSelector(replicaSets);
-
-    // Note I don't think we need to watch analysisRuns since everytime a replicaset is generated
-    // the analysis run should. Ideally the analysisrun would be labelled with the rollout
-    // so we could just use a selector but unfortunately that's not the case. while the AR has
-    // the owner as the rollout there is no way to select based on that. So instead we build up
-    // the set of pod-templates and then do an "in" selection.
-    //
-    // TODO - See if this can be made more efficient, use Memo?
-    const analysisRuns:AnalysisRunKind[] = await k8sList<AnalysisRunKind>({
-        model: AnalysisRunModel,
-        queryParams: {
-            ns: rollout.metadata.namespace,
-            labelSelector: getAnalysisRunSelector(replicaSets)
-        },
-    }) as AnalysisRunKind[];
 
     // Used to track revisions which we need when hunting for orphan analysisruns (i.e. ones that don't have a ReplicaSet)
     type RevisionsMap = {

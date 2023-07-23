@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel, useK8sWatchResource } from "@openshift-console/dynamic-plugin-sdk"
+import { K8sResourceCommon, ResourceLink, RowProps, Selector, TableColumn, TableData, VirtualizedTable, useK8sModel, useK8sWatchResource } from "@openshift-console/dynamic-plugin-sdk"
 import { SortByDirection, sortable } from '@patternfly/react-table';
-import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
+import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getAnalysisRunSelector, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-model/RolloutModel';
 import { Label, LabelGroup, Tooltip } from '@patternfly/react-core';
 import ArrowCircleUpIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-up-icon';
@@ -16,33 +16,35 @@ import { getResourceUrl, resourceAsArray } from '@gitops-utils/utils';
 import { Link } from 'react-router-dom';
 
 import './Revisions.scss';
+import { AnalysisRunKind } from '@rollout-model/AnalysisRunModel';
 
 interface RevisionsProps {
     rollout: RolloutKind
+    replicaSets: K8sResourceCommon[]
 }
 
-export const Revisions: React.FC<RevisionsProps> = ({ rollout}) => {
-
+export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => {
     const [replicaSetInfo, setReplicaSetInfo] = React.useState<ReplicaSetInfo[]>([]);
 
-    const [replicaSets, loaded] = useK8sWatchResource({
-        groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
+    const selector:Selector = React.useMemo(() => getAnalysisRunSelector(resourceAsArray(replicaSets)),[replicaSets]);
+
+    const [analysisRuns, arLoaded] = useK8sWatchResource({
+        groupVersionKind: { group: 'argoproj.io', version: 'v1alpha1', kind: 'AnalysisRun' },
         isList: true,
         namespaced: true,
         namespace: rollout.metadata?.namespace,
-        selector: rollout.spec.selector
-      });
+        selector: selector
+    });
 
-
-   React.useEffect(() => {
-        if (loaded) {
-            getReplicaSetInfo(rollout, resourceAsArray(replicaSets)).then((result) => {
+    React.useEffect(() => {
+        if (arLoaded) {
+            getReplicaSetInfo(rollout, resourceAsArray(replicaSets), resourceAsArray(analysisRuns) as AnalysisRunKind[]).then((result) => {
                 setReplicaSetInfo(result);
             });
         } else {
             setReplicaSetInfo([]);
         }
-    }, [rollout, replicaSets]);
+    }, [rollout, replicaSets, analysisRuns]);
 
     return (
         <>
