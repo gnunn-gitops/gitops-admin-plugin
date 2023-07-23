@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
-import { DEFAULT_NAMESPACE } from '@gitops-utils/constants';
+import { DEFAULT_NAMESPACE, PhaseStatus } from '@gitops-utils/constants';
 import { k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
 import {
   Dropdown,
@@ -80,9 +80,8 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
 
   const onEditApplication = () => {
     const cta = {
-      href: `/k8s/ns/${obj.metadata.namespace || DEFAULT_NAMESPACE}/${applicationModelRef}/${
-        obj.metadata.name
-      }/yaml`,
+      href: `/k8s/ns/${obj.metadata.namespace || DEFAULT_NAMESPACE}/${applicationModelRef}/${obj.metadata.name
+        }/yaml`,
     };
     history.push(cta.href);
   };
@@ -117,27 +116,27 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch}>
-        {t('Sync')}
-      </DropdownItem>,
+        <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch || obj.status?.operationState?.phase == PhaseStatus.TERMINATING || obj.status?.operationState?.phase == PhaseStatus.RUNNING}>
+          {t('Sync')}
+        </DropdownItem>,
         <DropdownItem onClick={onRefreshApplication} key="application-refresh" isDisabled={!canPatch}>
-        {t('Refresh')}
-      </DropdownItem>,
-      <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard" isDisabled={!canPatch}>
-        {t('Refresh (Hard)')}
-      </DropdownItem>,
+          {t('Refresh')}
+        </DropdownItem>,
+        <DropdownItem onClick={onRefreshHardApplication} key="application-refresh-hard" isDisabled={!canPatch}>
+          {t('Refresh (Hard)')}
+        </DropdownItem>,
         <DropdownItem onClick={onEditLabelsModalToggle} key="application-edit-labels" isDisabled={!canPatch}>
-        {t('Edit labels')}
-      </DropdownItem>,
-      <DropdownItem onClick={onEditAnnotationsModalToggle} key="application-edit annotations" isDisabled={!canPatch}>
-        {t('Edit annotations')}
-      </DropdownItem>,
-      <DropdownItem onClick={onEditApplication} key="application-edit" isDisabled={!canUpdate}>
-        {t('Edit Application')}
-      </DropdownItem>,
-      <DropdownItem onClick={onDeleteModalToggle} key="application-delete"  isDisabled={!canDelete}>
-        {t('Delete Application')}
-      </DropdownItem>
+          {t('Edit labels')}
+        </DropdownItem>,
+        <DropdownItem onClick={onEditAnnotationsModalToggle} key="application-edit annotations" isDisabled={!canPatch}>
+          {t('Edit annotations')}
+        </DropdownItem>,
+        <DropdownItem onClick={onEditApplication} key="application-edit" isDisabled={!canUpdate}>
+          {t('Edit Application')}
+        </DropdownItem>,
+        <DropdownItem onClick={onDeleteModalToggle} key="application-delete" isDisabled={!canDelete}>
+          {t('Delete Application')}
+        </DropdownItem>
       ]}
       position={DropdownPosition.right}
     />

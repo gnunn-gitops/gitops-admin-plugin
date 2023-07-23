@@ -9,6 +9,7 @@ import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
 import { syncAppK8s, refreshAppk8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
+import { PhaseStatus } from '@gitops-utils/constants';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -25,7 +26,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
     () => [
       {
         id: 'gitops-action-sync-application',
-        disabled: false,
+        disabled: (application.status?.operationState?.phase == PhaseStatus.TERMINATING || application.status?.operationState?.phase == PhaseStatus.RUNNING),
         label: t('Sync'),
         accessReview: {
           group: ApplicationModel.apiGroup,
@@ -156,12 +157,12 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         cta: () =>
           createModal(({ isOpen, onClose }) => (
             <ResourceDeleteModal
-            resource={application}
-            isOpen={isOpen}
-            onClose={onClose}
-            pushHistory={true}
-          />
-        ))
+              resource={application}
+              isOpen={isOpen}
+              onClose={onClose}
+              pushHistory={true}
+            />
+          ))
 
       }
     ],
