@@ -28,7 +28,7 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => 
 
     const selector:Selector = React.useMemo(() => getAnalysisRunSelector(resourceAsArray(replicaSets)),[replicaSets]);
 
-    const [analysisRuns, arLoaded] = useK8sWatchResource({
+    const [analysisRuns] = useK8sWatchResource({
         groupVersionKind: { group: 'argoproj.io', version: 'v1alpha1', kind: 'AnalysisRun' },
         isList: true,
         namespaced: true,
@@ -37,13 +37,9 @@ export const Revisions: React.FC<RevisionsProps> = ({ rollout, replicaSets}) => 
     });
 
     React.useEffect(() => {
-        if (arLoaded) {
-            getReplicaSetInfo(rollout, resourceAsArray(replicaSets), resourceAsArray(analysisRuns) as AnalysisRunKind[]).then((result) => {
-                setReplicaSetInfo(result);
-            });
-        } else {
-            setReplicaSetInfo([]);
-        }
+        getReplicaSetInfo(rollout, resourceAsArray(replicaSets), resourceAsArray(analysisRuns) as AnalysisRunKind[]).then((result) => {
+            setReplicaSetInfo(result);
+        });
     }, [rollout, replicaSets, analysisRuns]);
 
     return (
