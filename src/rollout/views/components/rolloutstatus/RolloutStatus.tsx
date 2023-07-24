@@ -34,7 +34,7 @@ export const RolloutStatusFragment: React.FC<RolloutStatusProps> = ({ status, me
     }
     return (
         <span style={{ display:'inline-flex', alignItems: 'center' }}>
-             {icon} <span style={{paddingLeft: '4px'}}>{status}</span> {message &&
+             {icon} <span style={{paddingLeft: '4px'}}>{status}</span> {status == RolloutStatus.Degraded && message &&
             <Tooltip
                 content={message}
             >
