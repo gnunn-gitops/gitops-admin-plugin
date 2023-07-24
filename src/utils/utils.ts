@@ -73,3 +73,8 @@ export function getObjectModifyPermissions(obj: K8sResourceCommon, model: K8sMod
 export function resourceAsArray(resource: K8sResourceCommon | K8sResourceCommon[]): K8sResourceCommon[] {
   return Array.isArray(resource) ? resource: [resource];
 }
+
+export function encodeHTMLEntities(rawStr:string): string {
+  if (rawStr == undefined) return undefined;
+  return rawStr.replace(/[\u00A0-\u9999<>\&]/g, ((i) => `&#${i.charCodeAt(0)};`));
+}

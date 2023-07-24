@@ -179,6 +179,13 @@ const Measurement: React.FC<MeasurementProps> = ({ measurement }) => {
 }
 
 function getMeasurementTooltip(measurement: Measurement) {
+    let value: string;
+    try {
+        value = JSON.stringify(JSON.parse(measurement.value),null,2);
+    } catch (e) {
+        value = measurement.value;
+    }
+
     return (
         <table style={{borderSpacing: "8px 4px", borderCollapse: "separate"}}>
             <tr><th>Status: </th><td>{measurement.phase}</td></tr>
@@ -191,7 +198,7 @@ function getMeasurementTooltip(measurement: Measurement) {
             <tr><th style={{whiteSpace:"nowrap"}}>Started At: </th><td><Timestamp simple timestamp={measurement.startedAt}/></td></tr>
             <tr><th style={{whiteSpace:"nowrap"}}>Finished At: </th><td><Timestamp simple timestamp={measurement.startedAt}/></td></tr>
             {measurement.value &&
-                <tr><th>Value: </th><td><pre>{JSON.stringify(JSON.parse(measurement.value),null,2)}</pre></td></tr>
+                <tr><th>Value: </th><td><pre>{value}</pre></td></tr>
             }
         </table>
     )
