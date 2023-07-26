@@ -20,6 +20,7 @@ const DestinationsListFragment: React.FC<DestinationListProps> = ({ destinations
             loadError={null}
             columns={useDestinationsColumns()}
             Row={destinationsListRow}
+            aria-label='destinations'
         />
     )
 }
