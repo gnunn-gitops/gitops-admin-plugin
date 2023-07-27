@@ -135,7 +135,6 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
             <><span className='pf-u-text-align-center'>No Conditions</span></>
           }
       </PageSection>
-
     </div>
   );
 };
