@@ -78,3 +78,11 @@ export function encodeHTMLEntities(rawStr:string): string {
   if (rawStr == undefined) return undefined;
   return rawStr.replace(/[\u00A0-\u9999<>\&]/g, ((i) => `&#${i.charCodeAt(0)};`));
 }
+
+export function getSelectorSearchURL(namespace: string, kind: string, selector: string): string {
+  if (namespace) {
+    return "/search/ns/" + namespace + "?kind=" + kind + "&q=" + selector;
+  } else {
+    return "/search?kind=" + kind + "&q=" + selector;
+  }
+}

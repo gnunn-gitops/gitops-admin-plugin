@@ -1,5 +1,5 @@
 import React from 'react';
-import { modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
+import { getSelectorSearchURL, modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
 import {
   K8sResourceCommon,
   ListPageBody,
@@ -21,7 +21,7 @@ import { RolloutStatus } from 'src/rollout/utils/rollout-utils';
 import { RolloutStatusFragment } from '../components/rolloutstatus/RolloutStatus';
 import { Label, LabelGroup } from '@patternfly/react-core';
 import { Link } from 'react-router-dom';
-
+import { SearchIcon } from '@patternfly/react-icons';
 
 type RolloutListProps = {
   namespace: string;
@@ -67,13 +67,14 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace, hideNameLabelFilte
           loadError={loadError}
           columns={columns}
           Row={rolloutListRow}
+          rowData={{ namespaceScope: (namespace != undefined) }}
         />
       </ListPageBody>
     </>
   );
 };
 
-const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs }) => {
+const rolloutListRow: React.FC<RowProps<RolloutKind, { namespaceScope: boolean }>> = ({ obj, activeColumnIDs, rowData: { namespaceScope } }) => {
   return (
     <>
       <TableData id="name" activeColumnIDs={activeColumnIDs}>
@@ -96,13 +97,19 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
         {obj.metadata.labels &&
           <LabelGroup>
             {Object.keys(obj.metadata.labels).map(function (key: string, index) {
-              return <Link to={"/search?kind=Rollout&q=" + key + "%3D" + obj.metadata.labels[key]}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
+              return <Link to={getSelectorSearchURL(namespaceScope ? obj.metadata.namespace : undefined, "Rollout", key + "=" + obj.metadata.labels[key])}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
             })}
           </LabelGroup>
         }
       </TableData>
       <TableData id="selector" activeColumnIDs={activeColumnIDs}>
-        {obj.status && obj.status.selector ? obj.status.selector : "-"}
+        {obj.status && obj.status.selector ?
+          <Link to={getSelectorSearchURL(obj.metadata.namespace, "Pod", obj.status.selector)}>
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}><SearchIcon className="pf-u-pr-xs" size='sm' />{obj.status.selector}</span>
+          </Link>
+          :
+          "-"
+        }
       </TableData>
       <TableData
         id="actions"
