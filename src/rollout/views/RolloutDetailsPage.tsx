@@ -18,6 +18,7 @@ import { k8sUpdate, useK8sWatchResource } from '@openshift-console/dynamic-plugi
 import { Revisions } from './components/revisions/Revisions';
 import { DetailsDescriptionGroup } from '@shared/views/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
 import { RolloutStatusFragment } from './components/rolloutstatus/RolloutStatus';
+import { Conditions } from '@shared/views/components/Conditions/conditions';
 
 type RolloutDetailsPageProps = RouteComponentProps<{
   ns: string;
@@ -124,6 +125,17 @@ const RolloutDetailsPage: React.FC<RolloutDetailsPageProps> = ({ obj }) => {
         </Title>
         <Revisions rollout={obj} replicaSets={resourceAsArray(replicaSets)} />
       </PageSection>
+      <PageSection hasShadowTop={true}>
+        <Title headingLevel="h2" className="co-section-heading">
+          {t('Conditions')}
+        </Title>
+          {obj.status?.conditions ?
+            <Conditions conditions={obj.status.conditions}/>
+          :
+            <><span className='pf-u-text-align-center'>No Conditions</span></>
+          }
+      </PageSection>
+
     </div>
   );
 };
