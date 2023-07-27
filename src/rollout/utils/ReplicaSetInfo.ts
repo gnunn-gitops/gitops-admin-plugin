@@ -110,8 +110,6 @@ export function getAnalysisRunSelector(replicaSets: K8sResourceCommon[]):Selecto
 
 export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[], analysisRuns: AnalysisRunKind[]): Promise<ReplicaSetInfo[]> => {
     const result: ReplicaSetInfo[] = [];
-    console.log(rollout);
-    console.log(replicaSets);
 
     if (!replicaSets || !rollout) return result;
     if (!rollout.metadata || !Array.isArray(replicaSets)) return result;
@@ -130,6 +128,7 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
         const revision: string = rs.metadata.annotations[annotationRevisionKey];
 
         revisions[revision] = rs;
+        console.log("Creating revision " + revision);
 
         result.push({
             name: rs.metadata.name,
@@ -152,7 +151,8 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
         const podTemplateHash: string = ar.metadata.labels[labelPodTemplateHashKey];
 
         if (!revisions[revision]) {
-            result.push({
+            console.log("Creating " + revision + " not found, pushing new one");
+            const rsInfo: ReplicaSetInfo = {
                 name: undefined,
                 namespace: ar.metadata.namespace,
                 revision: +revision,
@@ -161,10 +161,13 @@ export const getReplicaSetInfo = async (rollout: RolloutKind, replicaSets: any[]
                 pods: undefined,
                 podTemplateHash: podTemplateHash,
                 analysisRuns: getAnalysisRunInfo(analysisRuns, podTemplateHash, revision)
-            });
-            // Add the revision has marked so we don't add duplicate entries
-            revisions[revision] = undefined;
+            }
+            result.push(rsInfo);
+            // Add the revision to revisions as string constrant so we do not add duplicate entries
+            revisions[revision] = "no-replica-set";
         }
     });
+    console.log("ReplicaSetInfo");
+    console.log(result);
     return result;
 }
