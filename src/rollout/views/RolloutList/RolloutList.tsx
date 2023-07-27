@@ -19,6 +19,8 @@ import RolloutRowActions from './RolloutRowActions';
 import { RolloutKind, RolloutModel } from 'src/rollout/models/RolloutModel';
 import { RolloutStatus } from 'src/rollout/utils/rollout-utils';
 import { RolloutStatusFragment } from '../components/rolloutstatus/RolloutStatus';
+import { Label, LabelGroup } from '@patternfly/react-core';
+import { Link } from 'react-router-dom';
 
 
 type RolloutListProps = {
@@ -68,23 +70,32 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
 const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs }) => {
   return (
     <>
-      <TableData id="name" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="name" activeColumnIDs={activeColumnIDs}>
         <ResourceLink
           groupVersionKind={modelToGroupVersionKind(RolloutModel)}
           name={obj.metadata.name}
           namespace={obj.metadata.namespace}
         />
       </TableData>
-      <TableData id="namespace" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
-      <TableData id="status" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="status" activeColumnIDs={activeColumnIDs}>
         <RolloutStatusFragment status={obj.status?.phase as RolloutStatus}  />
       </TableData>
-      <TableData id="pods" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="pods" activeColumnIDs={activeColumnIDs}>
         {obj.status && obj.status.readyReplicas && obj.status.replicas ? obj.status.readyReplicas + " of " + obj.status.replicas : "-"}
       </TableData>
-      <TableData id="selector" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="labels" activeColumnIDs={activeColumnIDs} >
+        {obj.metadata.labels &&
+          <LabelGroup>
+            {Object.keys(obj.metadata.labels).map(function(key: string, index){
+              return <Link to={"/search?kind=Rollout&q="+key+"%3D" + obj.metadata.labels[key]}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
+            })}
+          </LabelGroup>
+        }
+      </TableData>
+      <TableData id="selector" activeColumnIDs={activeColumnIDs}>
         {obj.status && obj.status.selector ? obj.status.selector : "-"}
       </TableData>
       <TableData
@@ -108,7 +119,6 @@ const useRolloutColumns = (namespace) => {
       id: 'name',
       transforms: [sortable],
       sort: 'metadata.name',
-      props: { className: 'pf-m-width-15' },
     }
   );
   // Only show namespace column when defined
@@ -122,7 +132,6 @@ const useRolloutColumns = (namespace) => {
         id: 'namespace',
         transforms: [sortable],
         sort: 'metadata.namespace',
-        props: { className: 'pf-m-width-15' },
       }
     )
   }
@@ -133,21 +142,24 @@ const useRolloutColumns = (namespace) => {
       id: 'status',
       transforms: [sortable],
       sort: 'status.phase',
-      props: { className: 'pf-m-width-15' },
     },
     {
       title: 'Pods',
       id: 'pods',
       transforms: [sortable],
       sort: 'status.readyReplicas',
-      props: { className: 'pf-m-width-15' },
+    },
+    {
+      title: 'Labels',
+      id: 'labels',
+      transforms: [sortable],
+      sort: 'metadata.labels',
     },
     {
       title: 'Selector',
       id: 'selector',
       transforms: [sortable],
       sort: 'status.selector',
-      props: { className: 'pf-m-width-15' },
     },
     {
       title: '',
