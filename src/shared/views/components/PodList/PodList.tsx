@@ -1,6 +1,7 @@
 import { K8sGroupVersionKind, K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPageHeader, PrometheusEndpoint, ResourceLink, RowFilter, RowProps, Selector, TableColumn, TableData, Timestamp, VirtualizedTable, useK8sWatchResource, useListPageFilter, usePrometheusPoll } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
 import * as React from 'react';
+import PodRowActions from './PodRowActions';
 
 type PodListProps = {
   namespace: string;
@@ -168,7 +169,7 @@ const podListRow: React.FC<RowProps<any, {memResults, cpuResults}>> = ({ obj, ac
         activeColumnIDs={activeColumnIDs}
         className="dropdown-kebab-pf pf-c-table__action"
       >
-        -
+        <PodRowActions obj={obj} />
       </TableData>
     </>
   );
