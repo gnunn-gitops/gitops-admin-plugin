@@ -97,7 +97,11 @@ const rolloutListRow: React.FC<RowProps<RolloutKind, { namespaceScope: boolean }
         {obj.metadata.labels &&
           <LabelGroup>
             {Object.keys(obj.metadata.labels).map(function (key: string, index) {
-              return <Link to={getSelectorSearchURL(namespaceScope ? obj.metadata.namespace : undefined, "Rollout", key + "=" + obj.metadata.labels[key])}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
+              return (
+                  <Label color="blue" href="javascript:void(0);">
+                    <Link to={getSelectorSearchURL(namespaceScope ? obj.metadata.namespace : undefined, "Rollout", key + "=" + obj.metadata.labels[key])}>{key + "=" + obj.metadata.labels[key]}</Link>
+                  </Label>
+              );
             })}
           </LabelGroup>
         }
