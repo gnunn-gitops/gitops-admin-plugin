@@ -189,7 +189,7 @@ const ApplicationDetailsPage: React.FC<ApplicationDetailsPageProps> = ({ obj }) 
                     {obj?.status?.conditions &&
                       <FlexItem>
                         <ConditionsPopover
-                          conditions={obj.status.conditions}
+                          conditions={obj.status?.conditions}
                         />
                       </FlexItem>
                     }
