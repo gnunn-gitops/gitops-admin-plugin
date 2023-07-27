@@ -1,4 +1,4 @@
-import { K8sGroupVersionKind, K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPageHeader, ResourceLink, RowFilter, RowProps, Selector, TableColumn, TableData, Timestamp, VirtualizedTable, useK8sWatchResource, useListPageFilter } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sGroupVersionKind, K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPageHeader, PrometheusEndpoint, ResourceLink, RowFilter, RowProps, Selector, TableColumn, TableData, Timestamp, VirtualizedTable, useK8sWatchResource, useListPageFilter, usePrometheusPoll } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
 import * as React from 'react';
 
@@ -47,6 +47,16 @@ export const PodList: React.FC<PodListProps> = ({ namespace, selector }) => {
     selector: selector
   });
 
+  const [memResults] = usePrometheusPoll({
+    endpoint: PrometheusEndpoint.QUERY,
+    query: "sum(container_memory_working_set_bytes{namespace='" + namespace + "',container=''}) BY (pod, namespace)"
+  });
+
+  const [cpuResults] = usePrometheusPoll({
+    endpoint: PrometheusEndpoint.QUERY,
+    query: "pod:container_cpu_usage:sum{namespace='" + namespace + "'}"
+  });
+
   const columns = usePodColumns(namespace);
 
   const [data, filteredData, onFilterChange] = useListPageFilter(pods, filters);
@@ -70,13 +80,42 @@ export const PodList: React.FC<PodListProps> = ({ namespace, selector }) => {
           loadError={loadError}
           columns={columns}
           Row={podListRow}
+          rowData={{memResults, cpuResults}}
         />
       </ListPageBody>
     </div>
   )
 }
 
-const podListRow: React.FC<RowProps<any>> = ({ obj, activeColumnIDs }) => {
+function getMetric(podName: string, results): string {
+  var value: string = "-";
+  if (results.data) {
+    results.data.result.forEach((result) => {
+      if (result.metric.pod == podName) {
+        value = ""+result.value[1];
+      }
+    })
+  }
+  return value;
+}
+
+function formatMemoryMetric(value: string) {
+
+  var metric: number = Number(value);
+  metric = metric / 1024;
+  if (metric < 100) return metric.toFixed(1) + " KiB"
+  metric = metric / 1024;
+  if (metric < 100) return metric.toFixed(1) + " MiB"
+  metric = metric / 1024;
+  if (metric < 100) return metric.toFixed(1) + " GiB"
+}
+
+function formatCPUMetric(value: string) {
+  var metric: number = Number(value) * 1000;
+  return metric.toFixed(3) + " cores";
+}
+
+const podListRow: React.FC<RowProps<any, {memResults, cpuResults}>> = ({ obj, activeColumnIDs, rowData: {memResults, cpuResults} }) => {
 
   const {readyCount, totalContainers, restartCount} = podContainerStatuses(obj);
 
@@ -109,6 +148,16 @@ const podListRow: React.FC<RowProps<any>> = ({ obj, activeColumnIDs }) => {
           })
         :
           "-"
+        }
+      </TableData>
+      <TableData id="memory" activeColumnIDs={activeColumnIDs}>
+        {memResults &&
+          <span>{formatMemoryMetric(getMetric(obj.metadata.name, memResults))}</span>
+        }
+      </TableData>
+      <TableData id="cpu" activeColumnIDs={activeColumnIDs}>
+        {cpuResults &&
+          <span>{formatCPUMetric(getMetric(obj.metadata.name, cpuResults))}</span>
         }
       </TableData>
       <TableData id="created" activeColumnIDs={activeColumnIDs}>
@@ -177,6 +226,16 @@ const usePodColumns = (namespace) => {
       sort: 'metadata.ownerReferences',
       id: 'owner',
       transforms: [sortable],
+    },
+    {
+      title: 'Memory',
+      id: 'memory',
+      transforms: []
+    },
+    {
+      title: 'CPU',
+      id: 'cpu',
+      transforms: []
     },
     {
       title: 'Created At',
