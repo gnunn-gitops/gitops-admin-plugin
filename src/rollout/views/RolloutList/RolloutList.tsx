@@ -25,9 +25,11 @@ import { Link } from 'react-router-dom';
 
 type RolloutListProps = {
   namespace: string;
+  hideNameLabelFilters?: boolean;
+  showTitle?: boolean;
 };
 
-const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
+const RolloutList: React.FC<RolloutListProps> = ({ namespace, hideNameLabelFilters, showTitle }) => {
   const [rollouts, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
     isList: true,
     groupVersionKind: {
@@ -44,16 +46,20 @@ const RolloutList: React.FC<RolloutListProps> = ({ namespace }) => {
 
   return (
     <>
-      <ListPageHeader title={'Rollouts'}>
-        <ListPageCreate groupVersionKind={modelToRef(RolloutModel)}>Create Rollout</ListPageCreate>
-      </ListPageHeader>
+      {showTitle == undefined &&
+        <ListPageHeader title={'Rollouts'}>
+          <ListPageCreate groupVersionKind={modelToRef(RolloutModel)}>Create Rollout</ListPageCreate>
+        </ListPageHeader>
+      }
       <ListPageBody>
-        <ListPageFilter
-              data={data}
-              loaded={loaded}
-              rowFilters={filters}
-              onFilterChange={onFilterChange}
-        />
+        {!hideNameLabelFilters &&
+          <ListPageFilter
+            data={data}
+            loaded={loaded}
+            rowFilters={filters}
+            onFilterChange={onFilterChange}
+          />
+        }
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
           unfilteredData={rollouts}
@@ -81,7 +87,7 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
       <TableData id="status" activeColumnIDs={activeColumnIDs}>
-        <RolloutStatusFragment status={obj.status?.phase as RolloutStatus}  />
+        <RolloutStatusFragment status={obj.status?.phase as RolloutStatus} />
       </TableData>
       <TableData id="pods" activeColumnIDs={activeColumnIDs}>
         {obj.status && obj.status.readyReplicas && obj.status.replicas ? obj.status.readyReplicas + " of " + obj.status.replicas : "-"}
@@ -89,8 +95,8 @@ const rolloutListRow: React.FC<RowProps<RolloutKind>> = ({ obj, activeColumnIDs 
       <TableData id="labels" activeColumnIDs={activeColumnIDs} >
         {obj.metadata.labels &&
           <LabelGroup>
-            {Object.keys(obj.metadata.labels).map(function(key: string, index){
-              return <Link to={"/search?kind=Rollout&q="+key+"%3D" + obj.metadata.labels[key]}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
+            {Object.keys(obj.metadata.labels).map(function (key: string, index) {
+              return <Link to={"/search?kind=Rollout&q=" + key + "%3D" + obj.metadata.labels[key]}><Label href="javascript:void(0);" color="blue">{key + "=" + obj.metadata.labels[key]}</Label></Link>;
             })}
           </LabelGroup>
         }

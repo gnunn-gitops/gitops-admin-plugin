@@ -21,9 +21,11 @@ import AppProjectRowActions from './AppProjectRowActions';
 
 type AppProjectListProps = {
   namespace: string;
+  hideNameLabelFilters?: boolean;
+  showTitle?: boolean;
 };
 
-const AppProjectList: React.FC<AppProjectListProps> = ({ namespace }) => {
+const AppProjectList: React.FC<AppProjectListProps> = ({ namespace, hideNameLabelFilters, showTitle }) => {
   const [appProjects, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
     isList: true,
     groupVersionKind: {
@@ -40,11 +42,15 @@ const AppProjectList: React.FC<AppProjectListProps> = ({ namespace }) => {
 
   return (
     <>
-      <ListPageHeader title={'Projects'}>
-        <ListPageCreate groupVersionKind={modelToRef(AppProjectModel)}>Create Project</ListPageCreate>
-      </ListPageHeader>
+      {showTitle == undefined &&
+        <ListPageHeader title={'Projects'}>
+          <ListPageCreate groupVersionKind={modelToRef(AppProjectModel)}>Create Project</ListPageCreate>
+        </ListPageHeader>
+      }
       <ListPageBody>
-        <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+        {!hideNameLabelFilters &&
+          <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+        }
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
           unfilteredData={appProjects}
