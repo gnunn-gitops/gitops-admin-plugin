@@ -7,9 +7,10 @@ import { Action, K8sVerb, k8sPatch } from '@openshift-console/dynamic-plugin-sdk
 
 import { AnnotationsModal } from '../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../shared/views/modals/LabelsModal/LabelsModal';
-import { syncAppK8s, refreshAppk8s } from 'src/services/argocd';
+import { syncAppK8s, refreshAppk8s, terminateOpK8s } from 'src/services/argocd';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { PhaseStatus } from '@gitops-utils/constants';
+import { getAppOperationState } from '@gitops-utils/gitops';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -37,6 +38,20 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
         cta: () =>
           // TODO - Show toast alert if it fails but this is proving more challenging then I thought
           syncAppK8s(application)
+      },
+      {
+        id: 'gitops-action-stop-application',
+        disabled: (application && application.status && getAppOperationState(application).phase != PhaseStatus.RUNNING),
+        label: t('Stop'),
+        accessReview: {
+          group: ApplicationModel.apiGroup,
+          verb: 'patch' as K8sVerb,
+          resource: ApplicationModel.plural,
+          namespace: application?.metadata?.namespace
+        },
+        cta: () =>
+          // TODO - Show toast alert if it fails but this is proving more challenging then I thought
+          terminateOpK8s(application)
       },
       {
         id: 'gitops-action-refresh-application',

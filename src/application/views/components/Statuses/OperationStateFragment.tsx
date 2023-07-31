@@ -1,9 +1,10 @@
 // Adapted from Argo CD UI code here:
 
-import { ApplicationKind, OperationState } from "@application-model";
+import { ApplicationKind } from "@application-model";
 import { PhaseStatus } from "@gitops-utils/constants";
 import React from "react";
 import { PhaseErrorIcon, PhaseFailedIcon, PhaseRunningIcon, PhaseSucceededIcon, PhaseTerminatingIcon } from "../../../../shared/views/icons/icons";
+import { getAppOperationState, getOperationType } from "@gitops-utils/gitops";
 
 interface OperationStateProps {
     app: ApplicationKind;
@@ -50,33 +51,6 @@ export const OperationStateFragment: React.FC<OperationStateProps> = ({ app, qui
         </React.Fragment>
     );
 };
-
-// https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
-export const getAppOperationState = (app: ApplicationKind): OperationState => {
-    if (!app.status || !app.status.operationState) return undefined;
-
-    if (app.metadata.deletionTimestamp) {
-        return {
-            phase: PhaseStatus.RUNNING,
-            startedAt: app.metadata.deletionTimestamp
-        } as OperationState;
-    } else {
-        return app.status.operationState;
-    }
-}
-
-// Adapted from Argo CD UI code here:
-// https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
-export function getOperationType(application: ApplicationKind) {
-    const operation = application.status?.operationState?.operation;
-    if (application.metadata.deletionTimestamp && !operation) {
-        return 'Delete';
-    }
-    if (operation && operation.sync) {
-        return 'Sync';
-    }
-    return 'Unknown';
-}
 
 // Adapted from Argo CD UI code here:
 // https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx

@@ -155,6 +155,19 @@ export const syncAppK8s = async (app: ApplicationKind, resources?: Resource[]): 
     })
 }
 
+export const terminateOpK8s = async(app: ApplicationKind): Promise<ApplicationKind> => {
+    return k8sPatch({
+        model: ApplicationModel,
+        resource: app,
+        data: [{
+            op: 'add',
+            path: '/status/operationState/phase',
+            value: 'Terminating',
+        }],
+        path: "status"
+    })
+}
+
 /*
  * Refreshes the application using the annotation bypassing the Argo CD RBAC, see SyncApp for more info
  */

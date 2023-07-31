@@ -1,5 +1,6 @@
-import { ApplicationKind } from "@application-model";
+import { ApplicationKind, OperationState } from "@application-model";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
+import { PhaseStatus } from "./constants";
 
 export const annotationRefreshKey = "argocd.argoproj.io/refresh";
 export const labelControllerNamespaceKey = "gitops.openshift.io/controllerNamespace";
@@ -100,3 +101,30 @@ export const getArgoServer = async (model, app: ApplicationKind): Promise<ArgoSe
     return info;
   }
 };
+
+// https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
+export const getAppOperationState = (app: ApplicationKind): OperationState => {
+  if (!app.status || !app.status.operationState) return undefined;
+
+  if (app.metadata.deletionTimestamp) {
+      return {
+          phase: PhaseStatus.RUNNING,
+          startedAt: app.metadata.deletionTimestamp
+      } as OperationState;
+  } else {
+      return app.status.operationState;
+  }
+}
+
+// Adapted from Argo CD UI code here:
+// https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
+export function getOperationType(application: ApplicationKind) {
+  const operation = application.status?.operationState?.operation;
+  if (application.metadata.deletionTimestamp && !operation) {
+      return 'Delete';
+  }
+  if (operation && operation.sync) {
+      return 'Sync';
+  }
+  return 'Unknown';
+}

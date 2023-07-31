@@ -14,10 +14,11 @@ import {
 
 import { AnnotationsModal } from '../../../../shared/views/modals/AnnotationsModal/AnnotationsModal';
 import { LabelsModal } from '../../../../shared/views/modals/LabelsModal/LabelsModal';
-import { refreshAppk8s, syncAppK8s } from 'src/services/argocd';
+import { refreshAppk8s, syncAppK8s, terminateOpK8s } from 'src/services/argocd';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 import ResourceDeleteModal from '@shared/views/modals/ResourceDeleteModal/ResourceDeleteModal';
 import { getObjectModifyPermissions } from '@gitops-utils/utils';
+import { getAppOperationState } from '@gitops-utils/gitops';
 
 type ApplicationRowActionsProps = {
   obj?: ApplicationKind;
@@ -100,6 +101,10 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
     syncAppK8s(obj);
   };
 
+  const onTerminateApplication = () => {
+    terminateOpK8s(obj);
+  };
+
   const onRefreshApplication = () => {
     refreshAppk8s(obj, false);
   };
@@ -118,6 +123,9 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       dropdownItems={[
         <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch || obj.status?.operationState?.phase == PhaseStatus.TERMINATING || obj.status?.operationState?.phase == PhaseStatus.RUNNING}>
           {t('Sync')}
+        </DropdownItem>,
+        <DropdownItem onClick={onTerminateApplication} key="application-stop" isDisabled={!canPatch || (obj && getAppOperationState(obj).phase != PhaseStatus.RUNNING) }>
+        {t('Stop')}
         </DropdownItem>,
         <DropdownItem onClick={onRefreshApplication} key="application-refresh" isDisabled={!canPatch}>
           {t('Refresh')}
