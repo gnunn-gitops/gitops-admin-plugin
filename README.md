@@ -57,7 +57,7 @@ The following prerequisites are required to use this plugin:
 The plugin can be installed from the manifests included in the `/manifests` folder using kustomize.
 
 ```
-oc apply -k ./manifests/overlays/install
+oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install
 ```
 
 Note the `install` overally include a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
