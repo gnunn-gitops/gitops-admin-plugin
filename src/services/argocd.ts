@@ -13,7 +13,8 @@ export const retryRollout = async (rollout: RolloutKind): Promise<RolloutKind> =
             op: 'add',
             path: '/status/abort',
             value: false
-        }]
+        }],
+        path: "status"
     })
 }
 
@@ -26,7 +27,7 @@ export const abortRollout = async (rollout: RolloutKind): Promise<RolloutKind> =
             path: '/status/abort',
             value: true
         }],
-        path: "abort"
+        path: "status"
     })
 }
 
