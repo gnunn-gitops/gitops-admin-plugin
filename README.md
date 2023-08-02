@@ -60,7 +60,9 @@ The plugin can be installed from the manifests included in the `/manifests` fold
 oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install
 ```
 
-Note the `install` overally include a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
+Note the `install` overlay include a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
+
+After running this command it may take a few minutes for the plugin to appear, check `oc get co` to see the status of the console operator.
 
 ## Local development
 
