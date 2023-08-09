@@ -125,7 +125,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
       <TableData id="revision" activeColumnIDs={activeColumnIDs}>
         <RevisionFragment
           revision={obj.status?.sync?.revision || ''}
-          repoURL={obj.spec.source.repoURL}
+          repoURL={obj.spec.source?.repoURL}
           helm={obj.status?.sourceType == "Helm"}
         />
       </TableData>

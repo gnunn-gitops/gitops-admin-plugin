@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { ApplicationKind, ApplicationModel, applicationModelRef } from '@application-model';
+import { ApplicationKind, ApplicationModel, OperationState, applicationModelRef } from '@application-model';
 import { useModal } from '@gitops-utils/components/ModalProvider/ModalProvider';
 import { DEFAULT_NAMESPACE, PhaseStatus } from '@gitops-utils/constants';
 import { k8sPatch } from '@openshift-console/dynamic-plugin-sdk';
@@ -113,6 +113,8 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
     refreshAppk8s(obj, true);
   };
 
+  const state: OperationState = getAppOperationState(obj);
+
   return (
     <Dropdown
       menuAppendTo={getContentScrollableElement}
@@ -121,10 +123,10 @@ const ApplicationRowActions: React.FC<ApplicationRowActionsProps> = ({ obj }) =>
       isOpen={isDropdownOpen}
       isPlain
       dropdownItems={[
-        <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch || obj.status?.operationState?.phase == PhaseStatus.TERMINATING || obj.status?.operationState?.phase == PhaseStatus.RUNNING}>
+        <DropdownItem onClick={onSyncApplication} key="application-sync" isDisabled={!canPatch || (obj && obj.status?.operationState?.phase && (obj.status?.operationState?.phase == PhaseStatus.TERMINATING || obj.status?.operationState?.phase == PhaseStatus.RUNNING))}>
           {t('Sync')}
         </DropdownItem>,
-        <DropdownItem onClick={onTerminateApplication} key="application-stop" isDisabled={!canPatch || (obj && getAppOperationState(obj).phase != PhaseStatus.RUNNING) }>
+        <DropdownItem onClick={onTerminateApplication} key="application-stop" isDisabled={!canPatch || (obj && state && state.phase != PhaseStatus.RUNNING) }>
         {t('Stop')}
         </DropdownItem>,
         <DropdownItem onClick={onRefreshApplication} key="application-refresh" isDisabled={!canPatch}>
