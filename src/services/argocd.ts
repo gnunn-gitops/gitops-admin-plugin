@@ -161,7 +161,7 @@ export const terminateOpK8s = async(app: ApplicationKind): Promise<ApplicationKi
         model: ApplicationModel,
         resource: app,
         data: [{
-            op: 'add',
+            op: (app.status?.operationState?.phase ? "replace":"add"),
             path: '/status/operationState/phase',
             value: 'Terminating',
         }],
