@@ -129,7 +129,7 @@ export const syncAppK8s = async (app: ApplicationKind, resources?: Resource[]): 
         info: [
             {
                 name: "Reason",
-                value: "Initated by user in openshift console"
+                value: "Initiated by user in openshift console"
             }
         ],
         initiatedBy: {
@@ -161,11 +161,10 @@ export const terminateOpK8s = async(app: ApplicationKind): Promise<ApplicationKi
         model: ApplicationModel,
         resource: app,
         data: [{
-            op: (app.status?.operationState?.phase ? "replace":"add"),
+            op: "replace",
             path: '/status/operationState/phase',
             value: 'Terminating',
-        }],
-        path: "status"
+        }]
     })
 }
 

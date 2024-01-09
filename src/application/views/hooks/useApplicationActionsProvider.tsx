@@ -27,7 +27,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
     () => [
       {
         id: 'gitops-action-sync-application',
-        disabled: (application && application.status?.operationState?.phase && (application.status?.operationState?.phase == PhaseStatus.TERMINATING || application.status?.operationState?.phase == PhaseStatus.RUNNING)),
+        disabled: (application && application.status?.operationState?.phase && (application.status?.operationState?.phase == PhaseStatus.RUNNING)),
         label: t('Sync'),
         accessReview: {
           group: ApplicationModel.apiGroup,
