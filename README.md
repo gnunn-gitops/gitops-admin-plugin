@@ -12,7 +12,8 @@ Note that this plugin is community supported and is not part of the OpenShift Gi
 
 More screenshots:
 
-[Application Details Screenshot](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-details.png)
+[Application Details](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-details.png)
+
 [Rollouts Details](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-details.png)
 
 # Current Status
