@@ -33,9 +33,8 @@ function filterApp(project: AppProjectKind, appset: K8sResourceCommon) {
       if (app.metadata.ownerReferences == undefined) return false;
       app.metadata.ownerReferences.forEach((owner) => {
         console.log(owner.kind + "," + owner.name + "=" + appset.metadata.name);
-        if (owner.kind == appset.kind && owner.name == appset.metadata.name) return true;
+        return (owner.kind == appset.kind && owner.name == appset.metadata.name)
       });
-      return false;
     }
     return true;
   }
