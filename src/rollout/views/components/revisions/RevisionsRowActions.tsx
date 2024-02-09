@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Dropdown, DropdownItem, DropdownPosition, KebabToggle } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
-import { ReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
+import { ReplicaSetInfo, ReplicaSetStatus } from 'src/rollout/utils/ReplicaSetInfo';
 import { rollbackRollout } from 'src/services/argocd';
 import { RolloutKind } from '@rollout-model/RolloutModel';
 
@@ -28,7 +28,7 @@ export const RevisionsRowActions: React.FC<RevisionsRowActionsProps> = ({ rollou
           isOpen={isDropdownOpen}
           isPlain
           dropdownItems={[
-            <DropdownItem onClick={onRollback} key="rollout-rollback" isDisabled={!rsInfo.name || rsInfo.statuses.length != 0}>
+            <DropdownItem onClick={onRollback} key="rollout-rollback" isDisabled={!rsInfo.name || rsInfo.statuses.includes(ReplicaSetStatus.Active)}>
               {t('Rollback')}
             </DropdownItem>
           ]}
