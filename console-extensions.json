@@ -27,6 +27,17 @@
     }
   },
   {
+    "type": "console.flag/model",
+    "properties": {
+      "flag": "APPLICATIONSET",
+      "model": {
+        "group": "argoproj.io",
+        "kind": "ApplicationSet",
+        "version": "v1alpha1"
+      }
+    }
+  },
+  {
     "type": "console.navigation/resource-ns",
     "properties": {
       "id": "applicationset",
@@ -38,6 +49,21 @@
         "kind": "ApplicationSet",
         "version": "v1alpha1"
       }
+    }
+  },
+  {
+    "type": "console.tab/horizontalNav",
+    "properties": {
+      "page": {
+        "name": "Generators",
+        "href": "applicationsets-generators"
+      },
+      "model": {
+        "group": "argoproj.io",
+        "kind": "ApplicationSet",
+        "version": "v1alpha1"
+      },
+      "component": { "$codeRef": "AppSetGeneratorsPage" }
     }
   },
   {
@@ -120,7 +146,6 @@
       }
     }
   },
-
   {
     "type": "console.flag/model",
     "properties": {

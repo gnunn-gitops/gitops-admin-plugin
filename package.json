@@ -80,7 +80,8 @@
 
       "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx",
 
-      "AppSetAppsPage": "./applicationset/views/ApplicationSetAppsPage.tsx"
+      "AppSetAppsPage": "./applicationset/views/AppsPage.tsx",
+      "AppSetGeneratorsPage": "./applicationset/views/GeneratorsPage.tsx"
 
     },
     "dependencies": {
