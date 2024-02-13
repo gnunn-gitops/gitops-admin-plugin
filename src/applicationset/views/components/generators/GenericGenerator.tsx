@@ -1,18 +1,16 @@
-import { Card, CardBody, CardTitle } from '@patternfly/react-core';
 import * as React from 'react';
+import GeneratorView from './GeneratorView';
 
 interface GenericGeneratorProps {
     gentype: string,
     generator: Object
-
 }
 
 export const GenericGeneratorFragment: React.FC<GenericGeneratorProps> = ({ gentype, generator }) => {
 
     return (
-        <Card isFlat isRounded>
-            <CardTitle>{gentype}</CardTitle>,
-            <CardBody>Unknown Generator</CardBody>
-        </Card>
+        <GeneratorView title={gentype}>
+            <span>This is an unknown type of Generator</span>
+        </GeneratorView>
     )
 }
