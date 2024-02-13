@@ -1,9 +1,10 @@
 import React from "react";
 import { GitGeneratorFragment } from "./generators/GitGenerator";
 import { GenericGeneratorFragment } from "./generators/GenericGenerator";
+import { AppSetGenerator } from "src/applicationset/model/ApplicationSetModel";
 
 interface GeneratorsProps {
-    generators: Object[]
+    generators: AppSetGenerator[]
 }
 
 export const Generators: React.FC<GeneratorsProps> = ({ generators }) => {
@@ -26,12 +27,12 @@ export const Generators: React.FC<GeneratorsProps> = ({ generators }) => {
     );
 }
 
-function renderGenerator(generator: Object) {
+function renderGenerator(generator: AppSetGenerator) {
     var gentype = Object.keys(generator)[0];
     switch (gentype) {
         case "git":
             return (
-                <GitGeneratorFragment generator={generator}/>
+                <GitGeneratorFragment generator={generator.git}/>
             )
         default:
             return (
