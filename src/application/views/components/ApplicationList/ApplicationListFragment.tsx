@@ -31,10 +31,13 @@ function filterApp(project: AppProjectKind, appset: K8sResourceCommon) {
       return (app.spec.project == project.metadata.name)
     } else if (appset != undefined) {
       if (app.metadata.ownerReferences == undefined) return false;
+      var matched: boolean = false;
       app.metadata.ownerReferences.forEach((owner) => {
-        console.log(owner.kind + "," + owner.name + "=" + appset.metadata.name);
-        return (owner.kind == appset.kind && owner.name == appset.metadata.name)
+        console.log("Compare:" + owner.kind + "," + owner.name + "=" + appset.kind + "," + appset.metadata.name);
+        matched = (owner.kind == appset.kind && owner.name == appset.metadata.name)
+        if (matched) return;
       });
+      return matched;
     }
     return true;
   }
