@@ -29,6 +29,10 @@ export type MatrixAppSetGenerator = {
     generators: AppSetGenerator[]
 }
 
+export type UnionAppSetGenerator = {
+    generators: AppSetGenerator[]
+}
+
 export type MergeAppSetGenerator = {
     generators: AppSetGenerator[]
     mergeKeys: string[]
@@ -86,7 +90,8 @@ export type AppSetGenerator = {
     matrix?: MatrixAppSetGenerator,
     merge?: MergeAppSetGenerator,
     pullRequest: PullRequestAppSetGenerator,
-    scmProvider?: SCMProviderAppSetGenerator
+    scmProvider?: SCMProviderAppSetGenerator,
+    union?: UnionAppSetGenerator
 }
 
 export type ApplicationSetSpec = {

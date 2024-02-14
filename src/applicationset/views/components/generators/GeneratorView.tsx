@@ -8,7 +8,7 @@ type GeneratorViewProps = {
 };
 
 const GeneratorView = ({ title, icon, children }: GeneratorViewProps) => (
-    <Card isFlat isRounded>
+    <Card isFlat isRounded isCompact>
         <CardTitle>
         <div style={{display: "flex", verticalAlign: "bottom"}}>{icon}<span style={{paddingLeft: "4px"}}>{title}</span></div>
         </CardTitle>
