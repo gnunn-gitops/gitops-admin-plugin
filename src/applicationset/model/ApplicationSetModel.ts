@@ -16,7 +16,7 @@ export const ApplicationSetModel: K8sModel = {
 };
 
 export type ListAppSetGenerator = {
-    elements: Object[]
+    elements?: Object[]
     elementsYaml?: string
 }
 
