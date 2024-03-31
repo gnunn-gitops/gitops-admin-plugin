@@ -58,6 +58,9 @@
     "react-i18next": "^11.7.3",
     "react-router": "5.3.x",
     "react-router-dom": "5.3.x",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
     "stylelint": "^15.3.0",
     "stylelint-config-standard": "^31.0.0",
@@ -75,7 +78,8 @@
     "displayName": "OpenShift GitOps Plugin",
     "description": "Administrator Perspective Console Plugin for OpenShift GitOps",
     "exposedModules": {
-        "ApplicationList": "./gitops/components/application/ApplicationListTab.tsx"
+        "ApplicationList": "./gitops/components/application/ApplicationListTab.tsx",
+        "useApplicationActionsProvider": "./gitops/components/application/hooks/useApplicationActionsProvider.tsx"
     },
     "dependencies": {
       "@console/pluginAPI": "*"

@@ -13,7 +13,8 @@
         "@utils/*": ["src/utils/*"],
         "@gitops-utils/*": ["src/gitops/utils/*"],
         "@gitops-shared/*": ["src/gitops/components/shared/*"],
-        "@gitops-models/*": ["src/gitops/models/*"]
+        "@gitops-models/*": ["src/gitops/models/*"],
+        "@gitops-services/*": ["src/gitops/services/*"],
       }
   },
   "include": ["src"]

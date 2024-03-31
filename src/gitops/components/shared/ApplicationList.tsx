@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPageHeader, ResourceLink, RowFilter, RowProps, TableColumn, TableData, VirtualizedTable, useK8sWatchResource, useListPageFilter } from "@openshift-console/dynamic-plugin-sdk";
+import { Action, K8sResourceCommon, ListPageBody, ListPageCreate, ListPageFilter, ListPageHeader, ResourceLink, RowFilter, RowProps, TableColumn, TableData, VirtualizedTable, useK8sWatchResource, useListPageFilter } from "@openshift-console/dynamic-plugin-sdk";
 import { modelToGroupVersionKind, modelToRef } from 'src/gitops/utils/utils';
 import { ApplicationKind, ApplicationModel } from '@gitops-models/ApplicationModel';
 import { HealthStatus, SyncStatus } from 'src/gitops/utils/constants';
@@ -12,6 +12,8 @@ import RevisionFragment from '../application/Revision';
 import { AppProjectKind } from '@gitops-models/AppProjectModel';
 import { isApplicationRefreshing } from 'src/gitops/utils/gitops';
 import { sortable } from '@patternfly/react-table'
+import { useApplicationActionsProvider } from '../application/hooks/useApplicationActionsProvider';
+import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 
 interface ApplicationProps {
   namespace: string;
@@ -92,6 +94,8 @@ const ApplicationList: React.FC<ApplicationProps> = ({ namespace, project, appse
 
 const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeColumnIDs }) => {
 
+  const actionList:[actions: Action[] ] = useApplicationActionsProvider(obj);
+
   return (
     <>
       <TableData id="name" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
@@ -139,6 +143,11 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
         activeColumnIDs={activeColumnIDs}
         className="dropdown-kebab-pf pf-c-table__action"
       >
+        <ActionsDropdown
+            actions={actionList ? actionList[0] : []}
+            id="gitops-application-actions"
+            isKebabToggle={true}
+        />
       </TableData>
     </>
   );

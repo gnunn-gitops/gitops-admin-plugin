@@ -73,5 +73,18 @@
             "$codeRef": "ApplicationList"
           }
         }
+    },
+    {
+        "type": "console.action/resource-provider",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "Application",
+            "version": "v1alpha1"
+          },
+          "provider": {
+            "$codeRef": "useApplicationActionsProvider.useApplicationActionsProvider"
+          }
+        }
       }
 ]
