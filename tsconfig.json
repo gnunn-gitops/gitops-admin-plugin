@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "jsx": "react",
+    "allowJs": true,
+    "strict": false,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "paths": {
+        "@utils/*": ["src/utils/*"],
+        "@gitops-utils/*": ["src/gitops/utils/*"],
+        "@gitops-shared/*": ["src/gitops/components/shared/*"],
+        "@gitops-models/*": ["src/gitops/models/*"]
+      }
+  },
+  "include": ["src"]
+}
