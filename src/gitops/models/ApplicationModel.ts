@@ -14,6 +14,7 @@ export const ApplicationModel: K8sModel = {
   kind: 'Application',
   id: 'application',
   crd: true,
+  propagationPolicy: "Foreground"
 };
 
 export type ApplicationSource = {
