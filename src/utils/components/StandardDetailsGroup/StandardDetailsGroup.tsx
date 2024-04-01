@@ -44,10 +44,10 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
         }
 
         {!(Details.Labels in exclude) &&
-          <DescriptionListGroup>
+          <DescriptionListGroup className="pf-c-description-list__group">
             <Split>
               <SplitItem isFilled>
-                <DescriptionListTermHelpText>
+                <DescriptionListTermHelpText className="pf-c-description-list__term">
                   <Popover headerContent={<div>{t('Labels')}</div>} bodyContent={<div>{t('Map of string keys and values that can be used to organize and categorize (scope and select) objects.')}</div>}>
                     <DescriptionListTermHelpTextButton>
                       {t('Labels')}
@@ -66,8 +66,8 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
         }
 
         {!(Details.Annotations in exclude) &&
-          <DescriptionListGroup>
-            <DescriptionListTermHelpText>
+          <DescriptionListGroup className="pf-c-description-list__group">
+            <DescriptionListTermHelpText className="pf-c-description-list__term">
               <Popover headerContent={<div>{t('Annotations')}</div>} bodyContent={<div>{t('Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.')}</div>}>
                 <DescriptionListTermHelpTextButton>
                   {t('Annotations')}

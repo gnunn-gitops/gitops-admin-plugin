@@ -15,6 +15,7 @@
         "@gitops-shared/*": ["src/gitops/components/shared/*"],
         "@gitops-models/*": ["src/gitops/models/*"],
         "@gitops-services/*": ["src/gitops/services/*"],
+        "@images/*": ["src/images/*"]
       }
   },
   "include": ["src"]

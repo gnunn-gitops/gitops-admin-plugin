@@ -64,27 +64,54 @@
     {
         "type": "console.page/resource/list",
         "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Application",
-            "version": "v1alpha1"
-          },
-          "component": {
-            "$codeRef": "ApplicationList"
-          }
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Application",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "ApplicationList"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Application",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "ApplicationDetails"
+            }
         }
     },
     {
         "type": "console.action/resource-provider",
         "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Application",
-            "version": "v1alpha1"
-          },
-          "provider": {
-            "$codeRef": "useApplicationActionsProvider.useApplicationActionsProvider"
-          }
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Application",
+                "version": "v1alpha1"
+            },
+            "provider": {
+                "$codeRef": "useApplicationActionsProvider.useApplicationActionsProvider"
+            }
         }
-      }
+    },
+    {
+        "type": "console.yaml-template",
+        "properties": {
+            "name": "default",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Application",
+                "version": "v1alpha1"
+            },
+            "template": {
+                "$codeRef": "yamlApplicationTemplates.defaultApplicationYamlTemplate"
+            }
+        }
+    }
 ]

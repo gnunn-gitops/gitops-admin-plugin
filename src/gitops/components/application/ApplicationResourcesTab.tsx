@@ -5,7 +5,7 @@ import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, Vi
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatus from './Statuses/SyncStatus';
-import { PageSection } from '@patternfly/react-core';
+import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 import HealthStatus from './Statuses/HealthStatus';
 import { HealthStatus as HS } from '@gitops-utils/constants';
 import ResourceRowActions from './ResourceRowActions';
@@ -50,7 +50,7 @@ const ApplicationResourcesTab: React.FC<ApplicationResourcesTabProps> = ({ obj }
 
     return (
         <div>
-            <PageSection>
+            <PageSection variant={PageSectionVariants.light}>
                 <VirtualizedTable
                     data={resources}
                     unfilteredData={resources}

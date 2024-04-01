@@ -9,8 +9,8 @@ type DetailsDescriptionGroupProps = {
 export const DetailsDescriptionGroup = (props: React.PropsWithChildren<DetailsDescriptionGroupProps>) => {
 
     return (
-            <DescriptionListGroup>
-                <DescriptionListTermHelpText>
+            <DescriptionListGroup className="pf-c-description-list__group">
+                <DescriptionListTermHelpText className="pf-c-description-list__term">
                     <Popover headerContent={<div>{props.title}</div>} bodyContent={<div>{props.help}</div>}>
                         <DescriptionListTermHelpTextButton>{props.title}</DescriptionListTermHelpTextButton>
                     </Popover>

@@ -5,11 +5,8 @@ import { RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-c
 import { sortable } from '@patternfly/react-table';
 import ExternalLink from '@gitops-shared/ExternalLink';
 
-import './SourcesFragment.scss';
+import './Sources.scss';
 import { repoUrl, revisionUrl } from '@gitops-utils/urls';
-
-//import * as  gitIcon from '../../../../images/git.png';
-//import * as  helmIcon from '../../../../images/helm.png';
 
 interface SourceListProps {
     sources: ApplicationSource[]
@@ -36,7 +33,7 @@ const sourceListRow: React.FC<RowProps<ApplicationSource>> = ({ obj, activeColum
     return (
         <>
             <TableData id="type" activeColumnIDs={activeColumnIDs} className='gitops-admin-plugin__sources-type-column'>
-                <img loading="lazy" src={(obj.chart ? require("../../../../images/helm.png"): require("../../../../images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
+                <img loading="lazy" src={(obj.chart ? require("@images/helm.png"): require("@images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
             </TableData>
             <TableData id="repository" activeColumnIDs={activeColumnIDs}>
                 <ExternalLink href={obj.repoURL}>

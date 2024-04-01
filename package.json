@@ -79,6 +79,9 @@
     "description": "Administrator Perspective Console Plugin for OpenShift GitOps",
     "exposedModules": {
         "ApplicationList": "./gitops/components/application/ApplicationListTab.tsx",
+        "ApplicationDetails": "./gitops/components/application/ApplicationNavPage.tsx",
+        "yamlApplicationTemplates": "src/gitops/components/application/templates/index.ts",
+
         "useApplicationActionsProvider": "./gitops/components/application/hooks/useApplicationActionsProvider.tsx"
     },
     "dependencies": {

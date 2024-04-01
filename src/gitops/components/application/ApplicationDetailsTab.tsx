@@ -12,6 +12,7 @@ import {
   GridItem,
   Label,
   PageSection,
+  PageSectionVariants,
   Popover,
   Title,
   ToggleGroup,
@@ -116,15 +117,15 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
 
   return (
     <div>
-      <PageSection>
+      <PageSection variant={PageSectionVariants.light}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Application details')}
         </Title>
         <Grid hasGutter={true} span={2} sm={3} md={6} lg={6} xl={6} xl2={6}>
           <GridItem>
-            <DescriptionList>
-              <DescriptionListGroup>
-                <DescriptionListTermHelpText>
+            <DescriptionList className="pf-c-description-list">
+              <DescriptionListGroup className="pf-c-description-list__group">
+                <DescriptionListTermHelpText className="pf-c-description-list__term">
                   <Popover headerContent={<div>{t('Name')}</div>} bodyContent={<div>{t('Name must be unique within a namespace.')}</div>}>
                     <DescriptionListTermHelpTextButton>{t('Name')}</DescriptionListTermHelpTextButton>
                   </Popover>
@@ -134,7 +135,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
                     <FlexItem>{obj?.metadata?.name}</FlexItem>
                     <FlexItem>
                       <ExternalLink href={argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
-                        <img loading="lazy" src={require('../../images/argo.png')} alt="Argo CD" width="19px" height="24px" />
+                        <img loading="lazy" src={require('@images/argo.png')} alt="Argo CD" width="19px" height="24px" />
                       </ExternalLink>
                     </FlexItem>
                   </Flex>
@@ -153,7 +154,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
 
 
           <GridItem>
-            <DescriptionList>
+            <DescriptionList className="pf-c-description-list">
 
               <DetailsDescriptionGroup title={t('Health Status')} help={t('Health status represents the overall health of the application.')}>
                 <HealthStatus
@@ -230,7 +231,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
           </GridItem>
         </Grid>
       </PageSection>
-      <PageSection hasShadowTop={true}>
+      <PageSection hasShadowTop={true} variant={PageSectionVariants.light}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Sources')}
         </Title>
@@ -238,7 +239,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
           sources={sources}
         />
       </PageSection>
-      <PageSection hasShadowTop={true}>
+      <PageSection hasShadowTop={true} variant={PageSectionVariants.light}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('History')}
         </Title>
