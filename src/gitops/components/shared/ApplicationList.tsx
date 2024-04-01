@@ -4,10 +4,10 @@ import { modelToGroupVersionKind, modelToRef } from 'src/gitops/utils/utils';
 import { ApplicationKind, ApplicationModel } from '@gitops-models/ApplicationModel';
 import { HealthStatus, SyncStatus } from 'src/gitops/utils/constants';
 import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
-import SyncStatusFragment from '../application/SyncStatus';
-import { OperationStateFragment } from '../application/OperationState';
-import HealthStatusFragment from '../application/HealthStatus';
-import RevisionFragment from '../application/Revision';
+import SyncStatusFragment from '../application/Statuses/SyncStatus';
+import { OperationState } from '../application/Statuses/OperationState';
+import HealthStatusFragment from '../application/Statuses/HealthStatus';
+import RevisionFragment from '../application/Revision/Revision';
 //import ApplicationRowActions from './ApplicationRowActions';
 import { AppProjectKind } from '@gitops-models/AppProjectModel';
 import { isApplicationRefreshing } from 'src/gitops/utils/gitops';
@@ -119,7 +119,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
             />
           </FlexItem>
           <FlexItem>
-            <OperationStateFragment app={obj} quiet={true} />
+            <OperationState app={obj} quiet={true} />
           </FlexItem>
         </Flex>
       </TableData>

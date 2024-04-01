@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@gitops-models/ApplicationModel';
-import { Action, K8sVerb, useLabelsModal, useAnnotationsModal, useDeleteModal, getGroupVersionKindForResource, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useLabelsModal, useAnnotationsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import { syncAppK8s, refreshAppk8s, terminateOpK8s } from '@gitops-services/ArgoCD';
 import { PhaseStatus } from '@gitops-utils/constants';

@@ -13,7 +13,7 @@ interface OperationStateProps {
 
 // Adapted from Argo CD UI code here:
 // https://github.com/argoproj/argo-cd/blob/master/ui/src/app/applications/components/utils.tsx
-export const OperationStateFragment: React.FC<OperationStateProps> = ({ app, quiet }) => {
+export const OperationState: React.FC<OperationStateProps> = ({ app, quiet }) => {
 
     const appOperationState = getAppOperationState(app);
     if (appOperationState === undefined) {

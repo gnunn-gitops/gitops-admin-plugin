@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '@gitops-shared/Icons';
-import { HealthStatus } from 'src/gitops/utils/constants';
+import { HealthStatus as HS } from 'src/gitops/utils/constants';
 import { Button, Popover } from '@patternfly/react-core';
 
 interface HealthProps {
@@ -9,22 +9,22 @@ interface HealthProps {
   message?: string
 }
 
-const HealthStatusFragment: React.FC<HealthProps> = ({ status, message }) => {
+const HealthStatus: React.FC<HealthProps> = ({ status, message }) => {
   let targetIcon: React.ReactNode;
   switch (status) {
-    case HealthStatus.HEALTHY:
+    case HS.HEALTHY:
       targetIcon = <HealthHealthyIcon />;
       break;
-    case HealthStatus.DEGRADED:
+    case HS.DEGRADED:
       targetIcon = <HealthDegradedIcon />;
       break;
-    case HealthStatus.SUSPENDED:
+    case HS.SUSPENDED:
       targetIcon = <HealthSuspendedIcon />;
       break;
-    case HealthStatus.MISSING:
+    case HS.MISSING:
       targetIcon = <HealthMissingIcon />;
       break;
-    case HealthStatus.PROGRESSING:
+    case HS.PROGRESSING:
       targetIcon = <HealthProgressingIcon />;
       break;
     default:
@@ -60,4 +60,4 @@ const HealthStatusFragment: React.FC<HealthProps> = ({ status, message }) => {
   );
 };
 
-export default HealthStatusFragment;
+export default HealthStatus;
