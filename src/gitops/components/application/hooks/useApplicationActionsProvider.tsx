@@ -2,11 +2,13 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@gitops-models/ApplicationModel';
-import { Action, K8sVerb, useLabelsModal, useAnnotationsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useLabelsModal, useAnnotationsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import { syncAppK8s, refreshAppk8s, terminateOpK8s } from '@gitops-services/ArgoCD';
 import { PhaseStatus } from '@gitops-utils/constants';
 import { getAppOperationState } from '@gitops-utils/gitops';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
 
 type UseApplicationActionsProvider = (
   application: ApplicationKind,
@@ -14,16 +16,12 @@ type UseApplicationActionsProvider = (
 const t = (key: string) => key;
 
 export const useApplicationActionsProvider: UseApplicationActionsProvider = (application) => {
-
+  const {createModal}  = useModal();
   const history = useHistory();
-
-//   const groupVersionKind = getGroupVersionKindForResource(application);
-//   const [kind] = useK8sModel(groupVersionKind);
-//   console.log(kind);
 
   const launchLabelsModal = useLabelsModal(application);
   const launchAnnotationsModal = useAnnotationsModal(application);
-  const launchDeleteModal = useDeleteModal(application);
+  //const launchDeleteModal = useDeleteModal(application);
 
   // TODO - Need to get namespace into accessReview, application is undefined so there needs to be a callback
   // of some sort. React.useCallback didn't work
@@ -133,10 +131,20 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
           verb: 'delete' as K8sVerb,
           resource: ApplicationModel.plural
         },
-        cta: () => {launchDeleteModal()}
-      }
+        cta: () =>
+            createModal(({ isOpen, onClose }) => {
+                return (
+                  <ResourceDeleteModal
+                    resource={application}
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    pushHistory={true}
+                    />
+                );
+              }),
+        }
     ],
-    [t, application, history],
+    [t, application, createModal, history],
   );
 
   return [actions];

@@ -1,5 +1,16 @@
 [
     {
+        "type": "console.context-provider",
+        "properties": {
+            "provider": {
+                "$codeRef": "modalProvider.ModalProvider"
+            },
+            "useValueHook": {
+                "$codeRef": "modalProvider.useModalValue"
+            }
+        }
+    },
+    {
         "type": "console.flag/model",
         "properties": {
             "flag": "APPLICATION",
@@ -112,6 +123,21 @@
             "template": {
                 "$codeRef": "yamlApplicationTemplates.defaultApplicationYamlTemplate"
             }
+        }
+    },
+    {
+        "type": "console.resource/details-item",
+        "properties": {
+            "id": "gitops-appproject-description",
+            "column": "right",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "AppProject",
+                "version": "v1alpha1"
+            },
+            "title": "Description",
+            "path": "spec.description",
+            "sortWeight": 0
         }
     }
 ]
