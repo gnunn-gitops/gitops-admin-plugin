@@ -150,6 +150,30 @@
             "$codeRef": "ProjectList"
           }
         }
+      },
+      {
+        "type": "console.page/resource/details",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "AppProject",
+            "version": "v1alpha1"
+          },
+          "component": { "$codeRef": "AppProjectDetails" }
+        }
+      },
+      {
+        "type": "console.yaml-template",
+        "properties": {
+          "name": "default",
+          "model": {
+            "group": "argoproj.io",
+            "kind": "AppProject",
+            "version": "v1alpha1"
+          },
+          "template": {
+            "$codeRef": "yamlAppProjectTemplates.defaultAppProjectYamlTemplate"
+          }
+        }
       }
-
 ]

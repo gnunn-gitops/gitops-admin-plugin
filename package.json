@@ -84,6 +84,8 @@
         "useApplicationActionsProvider": "./gitops/components/application/hooks/useApplicationActionsProvider.tsx",
 
         "ProjectList": "./gitops/components/project/ProjectListTab.tsx",
+        "AppProjectDetails": "./gitops/components/project/ProjectNavPage.tsx",
+        "yamlAppProjectTemplates": "./gitops/components/project/templates/index.ts",
         "useProjectActionsProvider": "./gitops/components/project/hooks/useProjectActionsProvider.tsx",
 
         "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
