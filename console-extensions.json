@@ -126,18 +126,30 @@
         }
     },
     {
-        "type": "console.resource/details-item",
+        "type": "console.action/resource-provider",
         "properties": {
-            "id": "gitops-appproject-description",
-            "column": "right",
-            "model": {
-                "group": "argoproj.io",
-                "kind": "AppProject",
-                "version": "v1alpha1"
-            },
-            "title": "Description",
-            "path": "spec.description",
-            "sortWeight": 0
+          "model": {
+            "group": "argoproj.io",
+            "kind": "AppProject",
+            "version": "v1alpha1"
+          },
+          "provider": {
+            "$codeRef": "useProjectActionsProvider.useProjectActionsProvider"
+          }
         }
-    }
+      },
+      {
+        "type": "console.page/resource/list",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "AppProject",
+            "version": "v1alpha1"
+          },
+          "component": {
+            "$codeRef": "ProjectList"
+          }
+        }
+      }
+
 ]

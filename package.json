@@ -82,6 +82,10 @@
         "ApplicationDetails": "./gitops/components/application/ApplicationNavPage.tsx",
         "yamlApplicationTemplates": "src/gitops/components/application/templates/index.ts",
         "useApplicationActionsProvider": "./gitops/components/application/hooks/useApplicationActionsProvider.tsx",
+
+        "ProjectList": "./gitops/components/project/ProjectListTab.tsx",
+        "useProjectActionsProvider": "./gitops/components/project/hooks/useProjectActionsProvider.tsx",
+
         "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
     },
     "dependencies": {
