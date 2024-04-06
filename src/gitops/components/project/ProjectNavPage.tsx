@@ -10,6 +10,7 @@ import { Bullseye, Spinner } from '@patternfly/react-core';
 import ProjectDetailsTab from './ProjectDetailsTab';
 import ProjectYAMLTab from './ProjectYAMLTab';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
+import ProjectAllowDenyTab from './ProjectAllowDenyTab';
 import ProjectRolesTab from './ProjectRolesTab';
 import ProjectWindowsTab from './ProjectWindowsTab';
 import ProjectAppsTab from './ProjectAppsTab';
@@ -49,6 +50,11 @@ const ProjectNavPage: React.FC<ProjectPageProps> = ({ name, namespace, kind }) =
         href: 'yaml',
         name: t('YAML'),
         component: ProjectYAMLTab,
+      },
+      {
+        href: 'allowdeny',
+        name: t('Allow/Deny'),
+        component: ProjectAllowDenyTab,
       },
       {
         href: 'roles',

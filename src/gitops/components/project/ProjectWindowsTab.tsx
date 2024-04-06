@@ -3,7 +3,7 @@ import * as React from 'react';
 import { RowProps, TableColumn, TableData, VirtualizedTable } from '@openshift-console/dynamic-plugin-sdk';
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
-import { List, ListItem, PageSection } from '@patternfly/react-core';
+import { List, ListItem, PageSection, PageSectionVariants } from '@patternfly/react-core';
 import { AppProjectKind, SyncWindow } from '@gitops-models/AppProjectModel';
 
 type AppProjectWindowsProps = RouteComponentProps<{
@@ -26,7 +26,7 @@ const ProjectWindowsTab: React.FC<AppProjectWindowsProps> = ({ obj }) => {
 
     return (
         <div>
-            <PageSection>
+            <PageSection variant={PageSectionVariants.light}>
                 <VirtualizedTable
                     data={windows}
                     unfilteredData={windows}
