@@ -13,6 +13,7 @@ import { ApplicationSetKind, ApplicationSetModel } from '@gitops-models/Applicat
 import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 import AppSetDetailsTab from './AppSetDetailsTab';
 import GeneratorsTab from './GeneratorsTab';
+import AppsTab from './AppsTab';
 
 type AppSetPageProps = {
   name: string;
@@ -51,6 +52,11 @@ const AppSetNavPage: React.FC<AppSetPageProps> = ({ name, namespace, kind }) => 
         href: 'generators',
         name: t('Generators'),
         component: GeneratorsTab,
+      },
+      {
+        href: 'applications',
+        name: t('Applications'),
+        component: AppsTab,
       }
     ],
     [],
