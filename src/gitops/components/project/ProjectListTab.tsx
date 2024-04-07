@@ -91,7 +91,7 @@ const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColu
       >
         <ActionsDropdown
             actions={actionList ? actionList[0] : []}
-            id="gitops-application-actions"
+            id="gitops-project-actions"
             isKebabToggle={true}
         />
 

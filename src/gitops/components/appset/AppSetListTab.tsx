@@ -91,7 +91,7 @@ const appSetListRow: React.FC<RowProps<ApplicationSetKind>> = ({ obj, activeColu
       >
         <ActionsDropdown
             actions={actionList ? actionList[0] : []}
-            id="gitops-application-actions"
+            id="gitops-applicationset-actions"
             isKebabToggle={true}
         />
 
