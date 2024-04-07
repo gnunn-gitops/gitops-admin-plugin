@@ -8,7 +8,6 @@ import {
 import { Bullseye, Spinner } from '@patternfly/react-core';
 
 import ProjectDetailsTab from './ProjectDetailsTab';
-import ProjectYAMLTab from './ProjectYAMLTab';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
 import ProjectAllowDenyTab from './ProjectAllowDenyTab';
 import ProjectRolesTab from './ProjectRolesTab';
@@ -17,6 +16,7 @@ import ProjectAppsTab from './ProjectAppsTab';
 import PageTitle from '@utils/components/PageTitle/PageTitle';
 import { AppProjectModel } from '@gitops-models/AppProjectModel';
 import { useProjectActionsProvider } from './hooks/useProjectActionsProvider';
+import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 
 type ProjectPageProps = {
   name: string;
@@ -49,7 +49,7 @@ const ProjectNavPage: React.FC<ProjectPageProps> = ({ name, namespace, kind }) =
       {
         href: 'yaml',
         name: t('YAML'),
-        component: ProjectYAMLTab,
+        component: ResourceYAMLTab,
       },
       {
         href: 'allowdeny',

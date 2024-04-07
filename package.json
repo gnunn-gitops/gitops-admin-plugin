@@ -88,6 +88,9 @@
         "yamlAppProjectTemplates": "./gitops/components/project/templates/index.ts",
         "useProjectActionsProvider": "./gitops/components/project/hooks/useProjectActionsProvider.tsx",
 
+        "ApplicationSetList": "./gitops/components/appset/AppSetListTab.tsx",
+        "ApplicationSetDetails": "./gitops/components/appset/AppSetNavPage.tsx",
+
         "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
     },
     "dependencies": {

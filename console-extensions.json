@@ -175,5 +175,40 @@
             "$codeRef": "yamlAppProjectTemplates.defaultAppProjectYamlTemplate"
           }
         }
+      },
+      {
+        "type": "console.flag/model",
+        "properties": {
+          "flag": "APPLICATIONSET",
+          "model": {
+            "group": "argoproj.io",
+            "kind": "ApplicationSet",
+            "version": "v1alpha1"
+          }
+        }
+      },
+      {
+        "type": "console.page/resource/list",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "ApplicationSet",
+            "version": "v1alpha1"
+          },
+          "component": {
+            "$codeRef": "ApplicationSetList"
+          }
+        }
+      },
+      {
+        "type": "console.page/resource/details",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "ApplicationSet",
+            "version": "v1alpha1"
+          },
+          "component": { "$codeRef": "ApplicationSetDetails" }
+        }
       }
 ]

@@ -1,6 +1,8 @@
 import { ApplicationKind,  OperationState } from "@gitops-models/ApplicationModel";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
-import { PhaseStatus } from "./constants";
+import { ApplicationSetStatus, PhaseStatus } from "./constants";
+import { ApplicationSetKind } from "@gitops-models/ApplicationSetModel";
+import {K8sResourceConditionStatus} from '@openshift-console/dynamic-plugin-sdk-internal/lib/extensions/console-types';
 
 export const annotationRefreshKey = "argocd.argoproj.io/refresh";
 export const labelControllerNamespaceKey = "gitops.openshift.io/controllerNamespace";
@@ -127,4 +129,22 @@ export function getOperationType(application: ApplicationKind) {
       return 'Sync';
   }
   return 'Unknown';
+}
+
+export function getAppSetStatus(appset: ApplicationSetKind): ApplicationSetStatus {
+    if (appset.status?.conditions) {
+        var status:ApplicationSetStatus = ApplicationSetStatus.HEALTHY
+        appset.status.conditions.forEach(function (condition) {
+            if (condition.type == 'ErrorOccurred' && condition.status != K8sResourceConditionStatus.False) {
+                status = ApplicationSetStatus.ERROR
+            } else if (condition.type == 'ParametersGenerated' && condition.status != K8sResourceConditionStatus.True) {
+                status = ApplicationSetStatus.ERROR
+            } else if (condition.type == 'ApplicationSetUpToDate' && condition.status == K8sResourceConditionStatus.True) {
+                status = ApplicationSetStatus.ERROR
+            }
+        });
+        return status;
+    } else {
+        return ApplicationSetStatus.UNKNOWN
+    }
 }

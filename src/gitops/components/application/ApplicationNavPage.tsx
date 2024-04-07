@@ -9,12 +9,12 @@ import { Bullseye, Spinner } from '@patternfly/react-core';
 
 import ApplicationDetailsTab from './ApplicationDetailsTab';
 import ApplicationResourcesTab from './ApplicationResourcesTab';
-import ApplicationYAMLTab from './ApplicationYAMLTab';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
 import ApplicationSyncStatusTab from './ApplicationSycnStatusTab';
 import { useApplicationActionsProvider } from './hooks/useApplicationActionsProvider';
 import PageTitle from '@utils/components/PageTitle/PageTitle';
 import { ApplicationModel } from '@gitops-models/ApplicationModel';
+import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 
 type ApplicationPageProps = {
   name: string;
@@ -47,7 +47,7 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
       {
         href: 'yaml',
         name: t('YAML'),
-        component: ApplicationYAMLTab,
+        component: ResourceYAMLTab,
       },
       {
         href: 'resources',

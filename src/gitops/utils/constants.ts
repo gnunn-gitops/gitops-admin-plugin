@@ -22,3 +22,9 @@ export enum PhaseStatus {
     FAILED = 'Failed',
     ERROR = 'Error'
 }
+
+export enum ApplicationSetStatus {
+    HEALTHY = "Healthy",
+    ERROR= "Error",
+    UNKNOWN = "Unknown"
+}

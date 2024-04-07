@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { AppProjectModel } from '@gitops-models/AppProjectModel';
-import { AppProjectKind } from '@gitops-models/AppProjectModel';
 import { modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
 import {
     Action,
@@ -17,34 +15,37 @@ import { ResourceLink, RowProps, TableData } from '@openshift-console/dynamic-pl
 import { TableColumn } from '@openshift-console/dynamic-plugin-sdk';
 import { sortable } from '@patternfly/react-table';
 import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
-import { useProjectActionsProvider } from './hooks/useProjectActionsProvider';
+import { ApplicationSetKind, ApplicationSetModel } from '@gitops-models/ApplicationSetModel';
+import { useAppSetActionsProvider } from './hooks/useAppSetActionsProvider';
+import Status from './Status';
+import { getAppSetStatus } from '@gitops-utils/gitops';
 
-type ProjectListTabProps = {
+type AppSetListTabProps = {
   namespace: string;
   hideNameLabelFilters?: boolean;
   showTitle?: boolean;
 };
 
-const ProjectListTab: React.FC<ProjectListTabProps> = ({ namespace, hideNameLabelFilters, showTitle }) => {
-  const [appProjects, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
+const AppSetListTab: React.FC<AppSetListTabProps> = ({ namespace, hideNameLabelFilters, showTitle }) => {
+  const [appSets, loaded, loadError] = useK8sWatchResource<K8sResourceCommon[]>({
     isList: true,
     groupVersionKind: {
       group: 'argoproj.io',
-      kind: 'AppProject',
+      kind: 'ApplicationSet',
       version: 'v1alpha1',
     },
     namespaced: true,
     namespace,
   });
   // const { t } = useTranslation();
-  const columns = useAppProjectColumns(namespace);
-  const [data, filteredData, onFilterChange] = useListPageFilter(appProjects);
+  const columns = useAppSetColumns(namespace);
+  const [data, filteredData, onFilterChange] = useListPageFilter(appSets);
 
   return (
     <>
       {showTitle == undefined &&
-        <ListPageHeader title={'Projects'}>
-          <ListPageCreate groupVersionKind={modelToRef(AppProjectModel)}>Create Project</ListPageCreate>
+        <ListPageHeader title={'ApplicationSets'}>
+          <ListPageCreate groupVersionKind={modelToRef(ApplicationSetModel)}>Create ApplicationSet</ListPageCreate>
         </ListPageHeader>
       }
       <ListPageBody>
@@ -53,27 +54,26 @@ const ProjectListTab: React.FC<ProjectListTabProps> = ({ namespace, hideNameLabe
         }
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
-          unfilteredData={appProjects}
+          unfilteredData={appSets}
           loaded={loaded}
           loadError={loadError}
           columns={columns}
-          Row={appProjectListRow}
+          Row={appSetListRow}
         />
       </ListPageBody>
     </>
   );
 };
 
-const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColumnIDs }) => {
+const appSetListRow: React.FC<RowProps<ApplicationSetKind>> = ({ obj, activeColumnIDs }) => {
 
-    const actionList:[actions: Action[] ] = useProjectActionsProvider(obj);
-
+  const actionList:[actions: Action[] ] = useAppSetActionsProvider(obj);
 
   return (
     <>
       <TableData id="name" activeColumnIDs={activeColumnIDs}>
         <ResourceLink
-          groupVersionKind={modelToGroupVersionKind(AppProjectModel)}
+          groupVersionKind={modelToGroupVersionKind(ApplicationSetModel)}
           name={obj.metadata.name}
           namespace={obj.metadata.namespace}
         />
@@ -81,8 +81,8 @@ const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColu
       <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
         <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
       </TableData>
-      <TableData id="description" activeColumnIDs={activeColumnIDs}>
-        {obj.spec.description || '-'}
+      <TableData id="status" activeColumnIDs={activeColumnIDs}>
+        <Status status={getAppSetStatus(obj)}/>
       </TableData>
       <TableData
         id="actions"
@@ -100,7 +100,7 @@ const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColu
   );
 };
 
-const useAppProjectColumns = (namespace) => {
+const useAppSetColumns = (namespace) => {
 
   const columns: TableColumn<K8sResourceCommon>[] = [];
 
@@ -129,10 +129,10 @@ const useAppProjectColumns = (namespace) => {
 
   columns.push(
     {
-      title: 'Description',
-      id: 'description',
-      transforms: [sortable],
-      sort: 'spec.description'
+        title: 'Status',
+        id: 'status',
+        transforms: [sortable],
+        sort: 'status.conditions[0].status'
     },
     {
       title: '',
@@ -144,4 +144,4 @@ const useAppProjectColumns = (namespace) => {
   return React.useMemo(() => columns, [namespace]);
 };
 
-export default ProjectListTab;
+export default AppSetListTab;
