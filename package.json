@@ -92,6 +92,7 @@
         "ApplicationSetDetails": "./gitops/components/appset/AppSetNavPage.tsx",
 
         "RolloutList": "./rollout/components/RolloutListTab.tsx",
+        "RolloutDetails": "./rollout/components/RolloutNavPage.tsx",
         "useRolloutActionsProvider": "./rollout/components/hooks/useRolloutActionsProvider.tsx",
         "yamlRolloutTemplates": "src/rollout/templates/index.ts",
 

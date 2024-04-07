@@ -265,6 +265,17 @@
         }
       },
       {
+        "type": "console.page/resource/details",
+        "properties": {
+          "model": {
+            "group": "argoproj.io",
+            "kind": "Rollout",
+            "version": "v1alpha1"
+          },
+          "component": { "$codeRef": "RolloutDetails" }
+        }
+      },
+      {
         "type": "console.yaml-template",
         "properties": {
           "name": "default",

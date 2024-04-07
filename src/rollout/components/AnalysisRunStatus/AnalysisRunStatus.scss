@@ -1,0 +1,10 @@
+.gitops_admin_plugin__measurement_border {
+    border-radius: 8px;
+    /* Todo: Replace with PF color */
+    border: 2px solid #D2D2D2;
+    padding: 4px 8px 4px 8px;
+}
+
+.gitops_admin_plugin__tight_description_list {
+    --pf-c-description-list--m-compact--RowGap: 0.2rem;
+}
