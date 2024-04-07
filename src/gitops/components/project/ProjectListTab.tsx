@@ -66,8 +66,7 @@ const ProjectListTab: React.FC<ProjectListTabProps> = ({ namespace, hideNameLabe
 
 const appProjectListRow: React.FC<RowProps<AppProjectKind>> = ({ obj, activeColumnIDs }) => {
 
-    const actionList:[actions: Action[] ] = useProjectActionsProvider(obj);
-
+  const actionList:[actions: Action[] ] = useProjectActionsProvider(obj);
 
   return (
     <>
