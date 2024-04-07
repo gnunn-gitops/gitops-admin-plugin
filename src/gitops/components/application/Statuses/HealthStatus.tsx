@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '@gitops-shared/Icons';
+import { HealthDegradedIcon, HealthHealthyIcon, HealthMissingIcon, HealthProgressingIcon, HealthSuspendedIcon, HealthUnknownIcon } from '@utils/components/Icons/Icons';
 import { HealthStatus as HS } from 'src/gitops/utils/constants';
 import { Button, Popover } from '@patternfly/react-core';
 

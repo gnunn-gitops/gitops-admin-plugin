@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ApplicationSetStatus } from '@gitops-utils/constants';
-import { HealthDegradedIcon, HealthHealthyIcon, HealthUnknownIcon } from '@gitops-shared/Icons';
+import { HealthDegradedIcon, HealthHealthyIcon, HealthUnknownIcon } from '@utils/components/Icons/Icons';
 
 interface SyncProps {
   status: ApplicationSetStatus

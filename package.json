@@ -91,6 +91,11 @@
         "ApplicationSetList": "./gitops/components/appset/AppSetListTab.tsx",
         "ApplicationSetDetails": "./gitops/components/appset/AppSetNavPage.tsx",
 
+        "RolloutList": "./rollout/components/RolloutListTab.tsx",
+        "useRolloutActionsProvider": "./rollout/components/hooks/useRolloutActionsProvider.tsx",
+        "yamlRolloutTemplates": "src/rollout/templates/index.ts",
+
+
         "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx"
     },
     "dependencies": {

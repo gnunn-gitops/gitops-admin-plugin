@@ -3,7 +3,7 @@
 import { ApplicationKind } from "@gitops-models/ApplicationModel";
 import { PhaseStatus } from "src/gitops/utils/constants";
 import * as React from "react";
-import { PhaseErrorIcon, PhaseFailedIcon, PhaseRunningIcon, PhaseSucceededIcon, PhaseTerminatingIcon } from "@gitops-shared/Icons";
+import { PhaseErrorIcon, PhaseFailedIcon, PhaseRunningIcon, PhaseSucceededIcon, PhaseTerminatingIcon } from "@utils/components/Icons/Icons";
 import { getAppOperationState, getOperationType } from "@gitops-utils/gitops";
 
 interface OperationStateProps {
