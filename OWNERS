@@ -1,9 +1,3 @@
 approvers:
-  - christianvogt
-  - florkbr
-  - spadgett
-  - vojtechszocs
-  - jhadvig
-  - TheRealJon
-  - rhamilto
-component: Management Console
+  - gnunn1
+component: OpenShift GitOps Admin Plugin
