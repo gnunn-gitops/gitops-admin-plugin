@@ -98,7 +98,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
 
   return (
     <>
-      <TableData id="name" activeColumnIDs={activeColumnIDs} className="pf-m-width-15">
+      <TableData id="name" activeColumnIDs={activeColumnIDs} >
         <ResourceLink
           groupVersionKind={modelToGroupVersionKind(ApplicationModel)}
           name={obj.metadata.name}
@@ -141,7 +141,7 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
       <TableData
         id="actions"
         activeColumnIDs={activeColumnIDs}
-        className="dropdown-kebab-pf pf-c-table__action"
+        className="dropdown-kebab-pf pf-v5-c-table__action"
       >
         <ActionsDropdown
             actions={actionList ? actionList[0] : []}
@@ -161,9 +161,7 @@ const useApplicationColumns = (namespace) => {
     {
       title: 'Name',
       id: 'name',
-//      transforms: [sortable],
       sort: 'metadata.name',
-      props: { className: 'pf-m-width-15' },
     }
   );
   // Only show namespace column when defined
@@ -175,7 +173,6 @@ const useApplicationColumns = (namespace) => {
       {
         title: 'Namespace',
         id: 'namespace',
-//        transforms: [sortable],
         sort: 'metadata.namespace',
         props: { className: 'pf-m-width-15' },
       }
@@ -209,7 +206,7 @@ const useApplicationColumns = (namespace) => {
     {
       title: '',
       id: 'actions',
-      props: { className: 'dropdown-kebab-pf pf-c-table__action' },
+      props: { className: 'dropdown-kebab-pf pf-v5-c-table__action' },
     }
   );
 

@@ -123,7 +123,7 @@ const rolloutListRow: React.FC<RowProps<RolloutKind, { namespaceScope: boolean }
       <TableData
         id="actions"
         activeColumnIDs={activeColumnIDs}
-        className="dropdown-kebab-pf pf-c-table__action"
+        className="dropdown-kebab-pf pf-v5-c-table__action"
       >
         <ActionsDropdown
             actions={actionList ? actionList[0] : []}
@@ -190,7 +190,7 @@ const useRolloutColumns = (namespace) => {
     {
       title: '',
       id: 'actions',
-      props: { className: 'dropdown-kebab-pf pf-c-table__action' },
+      props: { className: 'dropdown-kebab-pf pf-v5-c-table__action' },
     }
   )
 

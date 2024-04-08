@@ -87,7 +87,7 @@ const appSetListRow: React.FC<RowProps<ApplicationSetKind>> = ({ obj, activeColu
       <TableData
         id="actions"
         activeColumnIDs={activeColumnIDs}
-        className="dropdown-kebab-pf pf-c-table__action"
+        className="dropdown-kebab-pf pf-v5-c-table__action"
       >
         <ActionsDropdown
             actions={actionList ? actionList[0] : []}
