@@ -288,5 +288,35 @@
             "$codeRef": "yamlRolloutTemplates.defaultRolloutYamlTemplate"
           }
         }
+      },
+      {
+        "type": "console.dashboards/overview/inventory/item",
+        "flags": {
+          "required": ["APPLICATION"]
+        },
+        "properties": {
+          "mapper": { "$codeRef": "ApplicationInventory.getApplicationStatusGroups" },
+          "model": { "$codeRef": "dashboardUtils.ApplicationModel" }
+        }
+      },
+      {
+        "flags": {
+          "required": ["APPLICATION"]
+        },
+        "properties": {
+          "icon": { "$codeRef": "ApplicationInventory.HealthSuspendedIcon" },
+          "id": "app-suspended"
+        },
+        "type": "console.dashboards/overview/inventory/item/group"
+      },
+      {
+        "type": "console.dashboards/overview/inventory/item",
+        "flags": {
+          "required": ["APPLICATIONSET"]
+        },
+        "properties": {
+          "mapper": { "$codeRef": "ApplicationSetInventory.getApplicationSetStatusGroups" },
+          "model": { "$codeRef": "dashboardUtils.ApplicationSetModel" }
+        }
       }
 ]
