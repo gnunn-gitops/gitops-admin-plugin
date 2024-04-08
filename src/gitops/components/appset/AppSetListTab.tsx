@@ -7,6 +7,7 @@ import {
   ListPageCreate,
   ListPageFilter,
   ListPageHeader,
+  RowFilter,
   useK8sWatchResource,
   useListPageFilter,
   VirtualizedTable,
@@ -19,6 +20,7 @@ import { ApplicationSetKind, ApplicationSetModel } from '@gitops-models/Applicat
 import { useAppSetActionsProvider } from './hooks/useAppSetActionsProvider';
 import Status from './Status';
 import { getAppSetStatus } from '@gitops-utils/gitops';
+import { ApplicationSetStatus } from '@gitops-utils/constants';
 
 type AppSetListTabProps = {
   namespace: string;
@@ -39,7 +41,7 @@ const AppSetListTab: React.FC<AppSetListTabProps> = ({ namespace, hideNameLabelF
   });
   // const { t } = useTranslation();
   const columns = useAppSetColumns(namespace);
-  const [data, filteredData, onFilterChange] = useListPageFilter(appSets);
+  const [data, filteredData, onFilterChange] = useListPageFilter(appSets, filters);
 
   return (
     <>
@@ -50,7 +52,7 @@ const AppSetListTab: React.FC<AppSetListTabProps> = ({ namespace, hideNameLabelF
       }
       <ListPageBody>
         {!hideNameLabelFilters &&
-          <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+          <ListPageFilter data={data} loaded={loaded} rowFilters={filters} onFilterChange={onFilterChange} />
         }
         <VirtualizedTable<K8sResourceCommon>
           data={filteredData}
@@ -143,5 +145,25 @@ const useAppSetColumns = (namespace) => {
 
   return React.useMemo(() => columns, [namespace]);
 };
+
+export const filters: RowFilter[] = [
+    {
+      filterGroupName: 'Status',
+      type: 'appset-status',
+      reducer: (appset) => (getAppSetStatus(appset)),
+      filter: (input, appset) => {
+        if (input.selected?.length) {
+            return input.selected.includes(getAppSetStatus(appset));
+        } else {
+            return true;
+        }
+      },
+      items: [
+        { id: ApplicationSetStatus.HEALTHY, title: ApplicationSetStatus.HEALTHY },
+        { id: ApplicationSetStatus.ERROR, title: ApplicationSetStatus.ERROR },
+        { id: ApplicationSetStatus.UNKNOWN, title: ApplicationSetStatus.UNKNOWN },
+      ],
+    }
+  ];
 
 export default AppSetListTab;
