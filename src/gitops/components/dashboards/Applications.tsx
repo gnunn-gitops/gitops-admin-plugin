@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 
 import { StatusGroupMapper } from '@openshift-console/dynamic-plugin-sdk';
 
@@ -43,7 +42,7 @@ export const getApplicationStatusGroups: StatusGroupMapper = (apps) => {
         HealthStatus.MISSING
       ],
     },
-    ['app-suspended']: {
+    'gitops-suspended': {
         count: 0,
         filterType: 'app-health',
         statusIDs: [
@@ -63,6 +62,8 @@ export const getApplicationStatusGroups: StatusGroupMapper = (apps) => {
   return groups;
 };
 
-export const HealthSuspendedIcon: FC = () => (
-    <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
-  );
+export const HealthSuspendedIcon: React.FC = () => {
+    return (
+        <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
+    )
+}
