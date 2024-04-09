@@ -1,6 +1,11 @@
 # Introduction
 
-This project is intended as a POC to understand the feasibility of using a [console dynamic plugin](https://docs.openshift.com/container-platform/4.13/web_console/dynamic-plugin/overview-dynamic-plugin.html) in OpenShift to manage OpenShift GitOps, aka Argo CD. The goals of the POC were:
+This project provides an OpenShift Console [plugin](https://docs.openshift.com/container-platform/4.13/web_console/dynamic-plugin/overview-dynamic-plugin.html) to manage OpenShift GitOps (aka Argo CD and Rollouts).
+
+This plugin is not intended as a 1:1 replacement for the Argo CD UI, rather it enables users to accomplish 70 to 80 percent of their tasks in the OpenShift console with ability to easily "punch-out" to
+the Argo CD UI if more features are required.
+
+The goals of this plugin are as follows;
 
 1. Provide a basic view of Application, ApplicationSet and AppProjects objects in the OpenShift console
 2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
@@ -24,8 +29,8 @@ The following table shows the current status of development.
 | ------------- | -------------      | -------------- |
 | Application  | 100%  | Feature complete |
 | AppProject  | 100%  | Feature complete |
-| ApplicationSet | 20% | Default OpenShift view with an additional tab to view list of associated applications. |
-| Rollout | 90% | Feature complete implementation, needs more testing but everything is there in terms of goals. |
+| ApplicationSet | 60% | Default OpenShift view additional tab to view generators. |
+| Rollout | 80% | Supports Rollouts and Analysis, no support for Experiments at this time. Common actions support (Promote, Rollback, etc) |
 
 # Philosophy
 
@@ -35,9 +40,9 @@ If the user has Kubernetes RBAC permissions to view Application objects then it 
 
 As a result this plugin is not particularly suitable for users working with Argo CD in multi-tenant deployments. This is because in a multi-tenant scenario Argo RBAC must be used to enforce separation between tenants and tenants cannot be allowed direct access to the namespace where Argo CD and the Applications are deployed. Otherwise the user will be able to view secrets they should not have access to, potentially modify Application objects to bypass Argo CD RBAC, etc.
 
-I am very optimistic that when [Applications in Any Namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace) becomes GA this will become the preferred way to manage tenancy in Argo CD and the plugins resource based philosophy is well suited for this.
+This plugin does work well with [Applications in Any Namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace) which isa my preferred way to handle multi-tenancy despite it not currently being GA.
 
-However at this time the plugin is most suited for cluster and Argo CD administrators who will typically have elevated permissions.
+Outside of Applications in Any Namespace, at this time the plugin is most suited for cluster and Argo CD administrators who will typically have elevated permissions.
 
 # Limitations
 
@@ -52,18 +57,30 @@ There are some limitations in this current implementation:
 
 The following prerequisites are required to use this plugin:
 
-* OpenShift 4.12+
+* OpenShift 4.14+
 * OpenShift GitOps 1.8+ or Argo CD 2.6+ (tested with OpenShift GitOps 1.9/Argo CD 2.7)
+
+## Versioning
+
+OpenShift 4.15 made many incompatible changes in the plugin API, notably it supports React 5 and Patternfly 5. I have opted to upgrade the plugin to the newer versions and as a result the `4.15` branch and
+image tag should be used to install the plugin on 4.15. The main branch is aligned with `4.14`, however no additional work is being performed on 4.14.
+
+| OpenShift Version  | Branch      | Tag        |
+| ------------- | -------------      | -------------- |
+| 4.14  | main  | 4.14, latest |
+| 4.15  | 4.15  | main |
+
+Note in the near future the main branch will be cloned to a 4.14 branch and the 4.15 branch will move to main.
 
 ## Deployment on cluster
 
-The plugin can be installed from the manifests included in the `/manifests` folder using kustomize.
+The plugin can be installed from the manifests included in the `/manifests` folder using kustomize, make sure to use the correct branch.
 
 ```
 oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install
 ```
 
-Note the `install` overlay include a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
+Note the `install` overlay includes a job with the elevated permissions needed to patch `consoles.operator.openshift.io` to include this plugin. This enables deployment via Argo CD since everything is automated.
 
 After running this command it may take a few minutes for the plugin to appear, check `oc get co` to see the status of the console operator.
 
@@ -99,6 +116,7 @@ Thanks to the following individuals:
 * Pavel Kratochvíl whose [crontab](https://github.com/raspbeep/crontab-plugin/tree/initial-branch) example provides a great starting point for building plugins needed to support CRDs.
 * Andrew Block for Kyverno policy plugin and getting me over the Typescript/react hump
 * Keith Chong for his work on the Developers perspective GitOps plugin from which I borrowed a few things.
+- Thanks to the OpenShift Virtualization folks, their [kubevirt-plugin](https://github.com/kubevirt-ui/kubevirt-plugin) repository is an invaluable reference.
 * Argo CD UI where I leveraged it for A/B testing plus re-used some of the existing code there instead of re-inventing the wheel. All rights remain with original authors, code I specifically use:
   - code for determining Operation State
   - code for calculating URLs for git repos and paths
