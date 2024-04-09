@@ -20,14 +20,13 @@ import {
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
 import { ResourceLink, k8sUpdate, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
-import { ApplicationHistory, ApplicationKind, ApplicationModel,ApplicationSource } from '@gitops-models/ApplicationModel';
+import { ApplicationKind, ApplicationModel,ApplicationSource } from '@gitops-models/ApplicationModel';
 import HealthStatus from './Statuses/HealthStatus';
 import SyncStatus from './Statuses/SyncStatus';
 import Revision from './Revision/Revision';
 import { ArgoServer, getArgoServer, getFriendlyClusterName } from '@gitops-utils/gitops';
 import SourceList from './Sources/Sources';
 
-import HistoryList from './History/History';
 import ExternalLink from '@gitops-shared/ExternalLink';
 import { ConditionsPopover } from './Conditions/ConditionsPopover';
 import { OperationState } from './Statuses/OperationState';
@@ -71,13 +70,6 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
   } else {
     //Should never fall here since there always has to be a source or sources
     sources = [];
-  }
-
-  var history: ApplicationHistory[];
-  if (obj?.status?.history) {
-    history = obj?.status?.history;
-  } else {
-    history = [];
   }
 
   const onChangeAutomated = (event: React.MouseEvent<any> | React.KeyboardEvent | MouseEvent, selected: boolean) => {
@@ -237,14 +229,6 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
         </Title>
         <SourceList
           sources={sources}
-        />
-      </PageSection>
-      <PageSection hasShadowTop={true} variant={PageSectionVariants.light}>
-        <Title headingLevel="h2" className="co-section-heading">
-          {t('History')}
-        </Title>
-        <HistoryList
-          history={history}
         />
       </PageSection>
     </div>

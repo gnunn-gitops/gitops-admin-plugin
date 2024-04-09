@@ -15,6 +15,7 @@ import { useApplicationActionsProvider } from './hooks/useApplicationActionsProv
 import PageTitle from '@utils/components/PageTitle/PageTitle';
 import { ApplicationModel } from '@gitops-models/ApplicationModel';
 import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
+import ApplicationHistoryTab from './ApplicationHistoryTab';
 
 type ApplicationPageProps = {
   name: string;
@@ -58,6 +59,11 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         href: 'syncStatus',
         name: t('Sync Status'),
         component: ApplicationSyncStatusTab,
+      },
+      {
+        href: 'History',
+        name: t('History'),
+        component: ApplicationHistoryTab,
       },
     ],
     [],
