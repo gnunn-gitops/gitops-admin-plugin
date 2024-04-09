@@ -23,6 +23,11 @@
     },
     {
         "type": "console.navigation/section",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "id": "gitops",
             "insertAfter": "workloads",
@@ -32,6 +37,11 @@
     },
     {
         "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "APPLICATIONSET"
+            ]
+        },
         "properties": {
             "id": "applicationset",
             "name": "%plugin__gitops-admin-plugin~ApplicationSets%",
@@ -46,6 +56,11 @@
     },
     {
         "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "id": "application",
             "name": "%plugin__gitops-admin-plugin~Applications%",
@@ -60,6 +75,11 @@
     },
     {
         "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "id": "appproject",
             "name": "%plugin__gitops-admin-plugin~Projects%",
@@ -74,6 +94,11 @@
     },
     {
         "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -87,6 +112,11 @@
     },
     {
         "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -100,6 +130,11 @@
     },
     {
         "type": "console.action/resource-provider",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -113,6 +148,11 @@
     },
     {
         "type": "console.yaml-template",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
         "properties": {
             "name": "default",
             "model": {
@@ -127,196 +167,272 @@
     },
     {
         "type": "console.action/resource-provider",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "AppProject",
-            "version": "v1alpha1"
-          },
-          "provider": {
-            "$codeRef": "useProjectActionsProvider.useProjectActionsProvider"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/list",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "AppProject",
-            "version": "v1alpha1"
-          },
-          "component": {
-            "$codeRef": "ProjectList"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/details",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "AppProject",
-            "version": "v1alpha1"
-          },
-          "component": { "$codeRef": "AppProjectDetails" }
-        }
-      },
-      {
-        "type": "console.yaml-template",
-        "properties": {
-          "name": "default",
-          "model": {
-            "group": "argoproj.io",
-            "kind": "AppProject",
-            "version": "v1alpha1"
-          },
-          "template": {
-            "$codeRef": "yamlAppProjectTemplates.defaultAppProjectYamlTemplate"
-          }
-        }
-      },
-      {
-        "type": "console.flag/model",
-        "properties": {
-          "flag": "APPLICATIONSET",
-          "model": {
-            "group": "argoproj.io",
-            "kind": "ApplicationSet",
-            "version": "v1alpha1"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/list",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "ApplicationSet",
-            "version": "v1alpha1"
-          },
-          "component": {
-            "$codeRef": "ApplicationSetList"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/details",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "ApplicationSet",
-            "version": "v1alpha1"
-          },
-          "component": { "$codeRef": "ApplicationSetDetails" }
-        }
-      },
-
-      {
-        "type": "console.flag/model",
-        "properties": {
-          "flag": "ROLLOUT",
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          }
-        }
-      },
-      {
-        "type": "console.navigation/resource-ns",
-        "properties": {
-          "id": "rollout",
-          "name": "%plugin__gitops-admin-plugin~Rollouts%",
-          "perspective": "admin",
-          "section": "workloads",
-          "insertAfter": "statefulsets",
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/list",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          },
-          "component": {
-            "$codeRef": "RolloutList"
-          }
-        }
-      },
-      {
-        "type": "console.action/resource-provider",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          },
-          "provider": {
-            "$codeRef": "useRolloutActionsProvider.useRolloutActionsProvider"
-          }
-        }
-      },
-      {
-        "type": "console.page/resource/details",
-        "properties": {
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          },
-          "component": { "$codeRef": "RolloutDetails" }
-        }
-      },
-      {
-        "type": "console.yaml-template",
-        "properties": {
-          "name": "default",
-          "model": {
-            "group": "argoproj.io",
-            "kind": "Rollout",
-            "version": "v1alpha1"
-          },
-          "template": {
-            "$codeRef": "yamlRolloutTemplates.defaultRolloutYamlTemplate"
-          }
-        }
-      },
-      {
-        "type": "console.dashboards/overview/inventory/item",
         "flags": {
-          "required": ["APPLICATION"]
+            "required": [
+                "APPLICATION"
+            ]
         },
         "properties": {
-          "mapper": { "$codeRef": "ApplicationInventory.getApplicationStatusGroups" },
-          "model": { "$codeRef": "dashboardUtils.ApplicationModel" }
+            "model": {
+                "group": "argoproj.io",
+                "kind": "AppProject",
+                "version": "v1alpha1"
+            },
+            "provider": {
+                "$codeRef": "useProjectActionsProvider.useProjectActionsProvider"
+            }
         }
-      },
-      {
+    },
+    {
+        "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "AppProject",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "ProjectList"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "AppProject",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "AppProjectDetails"
+            }
+        }
+    },
+    {
+        "type": "console.yaml-template",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
+        "properties": {
+            "name": "default",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "AppProject",
+                "version": "v1alpha1"
+            },
+            "template": {
+                "$codeRef": "yamlAppProjectTemplates.defaultAppProjectYamlTemplate"
+            }
+        }
+    },
+    {
+        "type": "console.flag/model",
+        "properties": {
+            "flag": "APPLICATIONSET",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "ApplicationSet",
+                "version": "v1alpha1"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "APPLICATIONSET"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "ApplicationSet",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "ApplicationSetList"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "APPLICATIONSET"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "ApplicationSet",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "ApplicationSetDetails"
+            }
+        }
+    },
+    {
+        "type": "console.flag/model",
+        "properties": {
+            "flag": "ROLLOUT",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            }
+        }
+    },
+    {
+        "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "ROLLOUT"
+            ]
+        },
+        "properties": {
+            "id": "rollout",
+            "name": "%plugin__gitops-admin-plugin~Rollouts%",
+            "perspective": "admin",
+            "section": "workloads",
+            "insertAfter": "statefulsets",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "ROLLOUT"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "RolloutList"
+            }
+        }
+    },
+    {
+        "type": "console.action/resource-provider",
+        "flags": {
+            "required": [
+                "ROLLOUT"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            },
+            "provider": {
+                "$codeRef": "useRolloutActionsProvider.useRolloutActionsProvider"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "ROLLOUT"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            },
+            "component": {
+                "$codeRef": "RolloutDetails"
+            }
+        }
+    },
+    {
+        "type": "console.yaml-template",
+        "flags": {
+            "required": [
+                "ROLLOUT"
+            ]
+        },
+        "properties": {
+            "name": "default",
+            "model": {
+                "group": "argoproj.io",
+                "kind": "Rollout",
+                "version": "v1alpha1"
+            },
+            "template": {
+                "$codeRef": "yamlRolloutTemplates.defaultRolloutYamlTemplate"
+            }
+        }
+    },
+    {
+        "type": "console.dashboards/overview/inventory/item",
+        "flags": {
+            "required": [
+                "APPLICATION"
+            ]
+        },
+        "properties": {
+            "mapper": {
+                "$codeRef": "ApplicationInventory.getApplicationStatusGroups"
+            },
+            "model": {
+                "$codeRef": "dashboardUtils.ApplicationModel"
+            }
+        }
+    },
+    {
         "type": "console.dashboards/overview/inventory/item/group",
         "flags": {
-          "required": ["APPLICATION"]
+            "required": [
+                "APPLICATION"
+            ]
         },
         "properties": {
-          "icon": { "$codeRef": "ApplicationInventory.HealthSuspendedIcon" },
-          "id": "gitops-suspended"
+            "icon": {
+                "$codeRef": "ApplicationInventory.HealthSuspendedIcon"
+            },
+            "id": "gitops-suspended"
         }
-      },
-      {
+    },
+    {
         "type": "console.dashboards/overview/inventory/item",
         "flags": {
-          "required": ["APPLICATIONSET"]
+            "required": [
+                "APPLICATIONSET"
+            ]
         },
         "properties": {
-          "mapper": { "$codeRef": "ApplicationSetInventory.getApplicationSetStatusGroups" },
-          "model": { "$codeRef": "dashboardUtils.ApplicationSetModel" }
+            "mapper": {
+                "$codeRef": "ApplicationSetInventory.getApplicationSetStatusGroups"
+            },
+            "model": {
+                "$codeRef": "dashboardUtils.ApplicationSetModel"
+            }
         }
-      }
+    }
 ]
