@@ -48,7 +48,7 @@ export const getApplicationStatusGroups: StatusGroupMapper = (apps) => {
         statusIDs: [
           HealthStatus.SUSPENDED
         ],
-    }
+    },
   };
 
   apps.forEach((app: ApplicationKind) => {
@@ -62,8 +62,6 @@ export const getApplicationStatusGroups: StatusGroupMapper = (apps) => {
   return groups;
 };
 
-export const HealthSuspendedIcon: React.FC = () => {
-    return (
-        <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
-    )
-}
+export const HealthSuspendedIcon: React.FC = () => (
+    <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
+)
