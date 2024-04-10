@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+# Explictly set here as running with plugin-metadata.ts does not seem to set it
+npm_package_consolePlugin_name=gitops-admin-plugin
+
 CONSOLE_IMAGE=${CONSOLE_IMAGE:="quay.io/openshift/origin-console:latest"}
 CONSOLE_PORT=${CONSOLE_PORT:=9000}
 CONSOLE_IMAGE_PLATFORM=${CONSOLE_IMAGE_PLATFORM:="linux/amd64"}

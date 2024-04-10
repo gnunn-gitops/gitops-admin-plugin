@@ -1,6 +1,6 @@
 {
   "name": "gitops-admin-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "repository": "git@github.com:gnunn-gitops/gitops-console-plugin.git",
   "license": "Apache-2.0",
@@ -70,39 +70,5 @@
     "webpack": "5.75.0",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
-  },
-  "consolePlugin": {
-    "name": "gitops-admin-plugin",
-    "version": "0.1.0",
-    "displayName": "OpenShift GitOps Plugin",
-    "description": "Administrator Perspective Console Plugin for OpenShift GitOps",
-    "exposedModules": {
-        "ApplicationList": "./gitops/components/application/ApplicationListTab.tsx",
-        "ApplicationDetails": "./gitops/components/application/ApplicationNavPage.tsx",
-        "yamlApplicationTemplates": "src/gitops/components/application/templates/index.ts",
-        "useApplicationActionsProvider": "./gitops/components/application/hooks/useApplicationActionsProvider.tsx",
-
-        "ProjectList": "./gitops/components/project/ProjectListTab.tsx",
-        "AppProjectDetails": "./gitops/components/project/ProjectNavPage.tsx",
-        "yamlAppProjectTemplates": "./gitops/components/project/templates/index.ts",
-        "useProjectActionsProvider": "./gitops/components/project/hooks/useProjectActionsProvider.tsx",
-
-        "ApplicationSetList": "./gitops/components/appset/AppSetListTab.tsx",
-        "ApplicationSetDetails": "./gitops/components/appset/AppSetNavPage.tsx",
-
-        "RolloutList": "./rollout/components/RolloutListTab.tsx",
-        "RolloutDetails": "./rollout/components/RolloutNavPage.tsx",
-        "useRolloutActionsProvider": "./rollout/components/hooks/useRolloutActionsProvider.tsx",
-        "yamlRolloutTemplates": "src/rollout/templates/index.ts",
-
-        "modalProvider": "./utils/components/ModalProvider/ModalProvider.tsx",
-
-        "dashboardUtils": "./gitops/components/dashboards/dashboardUtils.ts",
-        "ApplicationInventory": "src/gitops/components/dashboards/Applications.tsx",
-        "ApplicationSetInventory": "./gitops/components/dashboards/ApplicationSets.tsx"
-    },
-    "dependencies": {
-      "@console/pluginAPI": "*"
-    }
   }
 }

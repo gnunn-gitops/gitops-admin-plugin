@@ -434,5 +434,57 @@
                 "$codeRef": "dashboardUtils.ApplicationSetModel"
             }
         }
-    }
-]
+    },
+    {
+        "type": "console.flag/model",
+        "properties": {
+            "flag": "EXTERNAL_SECRET",
+            "model": {
+                "group": "external-secrets.io",
+                "kind": "ExternalSecret",
+                "version": "v1beta1"
+            }
+        }
+    },
+    {
+        "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
+        "properties": {
+            "id": "externalsecret",
+            "name": "%plugin__gitops-admin-plugin~ExternalSecrets%",
+            "perspective": "admin",
+            "section": "workloads",
+            "insertAfter": "secrets",
+            "model": {
+                "group": "external-secrets.io",
+                "kind": "ExternalSecret",
+                "version": "v1beta1"
+            }
+        }
+    },
+    {
+        "type": "console.resource/details-item",
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
+        "properties": {
+            "id": "external-secret-status",
+            "column": "Right",
+            "model": {
+                "group": "external-secrets.io",
+                "kind": "ExternalSecret",
+                "version": "v1beta1"
+            },
+            "title": "status",
+            "component": {
+                "$codeRef": "ESStatus"
+            },
+            "sortWeight": 0
+        }
+    }]

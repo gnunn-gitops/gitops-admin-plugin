@@ -6,8 +6,8 @@ import { K8sModel } from '@openshift-console/dynamic-plugin-sdk/lib/api/common-t
 export const ApplicationModel: K8sModel = {
   label: 'Application',
   labelPlural: 'Applications',
-  apiVersion: 'v1alpha1',
-  apiGroup: 'argoproj.io',
+  apiVersion: 'v1beta1',
+  apiGroup: 'external-secrets.io',
   plural: 'applications',
   abbr: 'app',
   namespaced: true,
