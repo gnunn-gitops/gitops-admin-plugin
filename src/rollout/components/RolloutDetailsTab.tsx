@@ -10,13 +10,12 @@ import {
   Title
 } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
-import { getObjectModifyPermissions, resourceAsArray } from '@gitops-utils/utils';
+import { getObjectModifyPermissions } from '@gitops-utils/utils';
 import StandardDetailsGroup from '@utils/components/StandardDetailsGroup/StandardDetailsGroup';
 import { RolloutModel } from '@rollout-models/RolloutModel';
 import BlueGreenServices from './Strategy/BlueGreenServices';
 import CanaryServices from './Strategy/CanaryServices';
-import { k8sUpdate, useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
-import { Revisions } from './Revisions/Revisions';
+import { k8sUpdate } from '@openshift-console/dynamic-plugin-sdk';
 import { DetailsDescriptionGroup } from '@utils/components/DetailsDescriptionGroup/DetailsDescriptionGroup';
 import { RolloutStatusFragment } from './RolloutStatus';
 import { Conditions } from '@utils/components/Conditions/conditions';
@@ -32,14 +31,6 @@ const RolloutDetailsTab: React.FC<RolloutDetailsTabProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
 
   const [canPatch, canUpdate] = getObjectModifyPermissions(obj, RolloutModel);
-
-  const [replicaSets] = useK8sWatchResource({
-    groupVersionKind: { group: 'apps', version: 'v1', kind: 'ReplicaSet' },
-    isList: true,
-    namespaced: true,
-    namespace: obj.metadata?.namespace,
-    selector: obj.spec.selector
-  });
 
   const onReplicaChange = (event: React.FormEvent<HTMLInputElement>) => {
     const value = (event.target as HTMLInputElement).value;
@@ -119,12 +110,6 @@ const RolloutDetailsTab: React.FC<RolloutDetailsTabProps> = ({ obj }) => {
             </DescriptionList>
           </GridItem>
         </Grid>
-      </PageSection>
-      <PageSection variant={PageSectionVariants.light} hasShadowTop={true}>
-        <Title headingLevel="h2" className="co-section-heading">
-          {t('Revisions')}
-        </Title>
-        <Revisions rollout={obj} replicaSets={resourceAsArray(replicaSets)} />
       </PageSection>
       <PageSection variant={PageSectionVariants.light} hasShadowTop={true}>
         <Title headingLevel="h2" className="co-section-heading">
