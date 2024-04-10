@@ -13,8 +13,7 @@ export const ApplicationModel: K8sModel = {
   namespaced: true,
   kind: 'Application',
   id: 'application',
-  crd: true,
-  propagationPolicy: "Foreground"
+  crd: true
 };
 
 export type ApplicationSource = {
