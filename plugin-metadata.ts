@@ -30,7 +30,7 @@ const metadata: ConsolePluginBuildMetadata = {
     modalProvider: "./utils/components/ModalProvider/ModalProvider.tsx",
 
     dashboardUtils: "./gitops/components/dashboards/dashboardUtils.ts",
-    ApplicationInventory: "src/gitops/components/dashboards/Applications.tsx",
+    ApplicationInventory: "./gitops/components/dashboards/Applications.tsx",
     ApplicationSetInventory: "./gitops/components/dashboards/ApplicationSets.tsx",
 
     ESStatus: "./externalsecrets/components/ESStatus"
