@@ -62,6 +62,4 @@ export const getApplicationStatusGroups: StatusGroupMapper = (apps) => {
   return groups;
 };
 
-export const HealthSuspendedIcon: React.FC = () => (
-    <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
-)
+export const HealthSuspendedIcon = <OutlinedPauseCircleIcon color={global_disabled_color_100.value} />
