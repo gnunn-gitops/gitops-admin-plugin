@@ -67,8 +67,8 @@ image tag should be used to install the plugin on 4.15. The main branch is align
 
 | OpenShift Version  | Branch      | Image Tag        |
 | ------------- | -------------      | -------------- |
-| 4.14  | 4.14-0.0.21  | 4.14, latest |
-| 4.15  | 4.15  | main |
+| 4.14  | main, 4.14-0.0.21  | 4.14, latest |
+| 4.15  | 4.15  | 4.15 |
 
 Note in the near future the main branch will be cloned to a 4.14 branch and the 4.15 branch will move to main.
 
