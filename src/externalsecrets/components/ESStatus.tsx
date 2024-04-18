@@ -7,54 +7,55 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 
 import { SyncUnknownIcon } from '@utils/components/Icons/Icons';
-import { ExternalSecretKind } from '@es-models/models/ExternalSecrets';
+import { ExternalSecretKind } from '@es-models/ExternalSecrets';
+import { ConditionReason } from '../utils/es-utils';
 
 interface ESStatusProps {
-    es: ExternalSecretKind
+    externalSecret: ExternalSecretKind
 }
 
-const ESStatus: React.FC<ESStatusProps> = ({ es }) => {
+const ESStatus: React.FC<ESStatusProps> = ({ externalSecret:es }) => {
+
     let targetIcon: React.ReactNode = <SyncUnknownIcon />;
     let status: string = "Unknown"
     if (es.status?.conditions) {
         es.status.conditions.forEach((condition) => {
+            console.log(condition.reason)
             switch (condition.reason) {
                 case ConditionReason.ConditionReasonSecretSynced:
                     if (condition.status == "True") {
-                        targetIcon = GreenCheckCircleIcon;
-                        status = "Synched"
+                        targetIcon = <GreenCheckCircleIcon/>;
+                        status = "Synced"
                     } else {
-                        targetIcon = RedExclamationCircleIcon;
-                        status = "Not Synched"
+                        targetIcon = <RedExclamationCircleIcon/>;
+                        status = "Not Synced"
                     }
                     break;
                 case (ConditionReason.ConditionReasonSecretSyncedError):
-                    targetIcon = RedExclamationCircleIcon
+                    targetIcon = <RedExclamationCircleIcon/>
                     status = "Sync Error"
                     break;
                 case (ConditionReason.ConditionReasonSecretDeleted):
-                    targetIcon = YellowExclamationTriangleIcon
+                    targetIcon = <YellowExclamationTriangleIcon/>
                     status = "Secret Deleted"
                     break;
                 case (ConditionReason.ReasonInvalidStoreRef):
-                    targetIcon = RedExclamationCircleIcon
+                    targetIcon = <RedExclamationCircleIcon/>
                     status = "Invalid Secret Store"
                     break;
                 case (ConditionReason.ReasonUpdateFailed):
-                    targetIcon = RedExclamationCircleIcon
+                    targetIcon = <RedExclamationCircleIcon/>
                     status = "Update Failed"
                     break;
                 case (ConditionReason.ReasonUpdated):
-                    targetIcon = GreenCheckCircleIcon;
+                    targetIcon = <GreenCheckCircleIcon/>
                     status = "Synched"
                 case (ConditionReason.ReasonProviderClientConfig):
-                    targetIcon = RedExclamationCircleIcon
+                    targetIcon = <RedExclamationCircleIcon/>
                     status = "Invalid Provider Config"
                     break;
             }
         })
-        targetIcon = <GreenCheckCircleIcon />
-        status = "Synced"
     }
 
     return (

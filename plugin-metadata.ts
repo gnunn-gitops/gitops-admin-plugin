@@ -33,7 +33,8 @@ const metadata: ConsolePluginBuildMetadata = {
     ApplicationInventory: "./gitops/components/dashboards/Applications.tsx",
     ApplicationSetInventory: "./gitops/components/dashboards/ApplicationSets.tsx",
 
-    ESStatus: "./externalsecrets/components/ESStatus"
+    ExternalSecretList: "./externalsecrets/components/ESListTab.tsx",
+    useESActionsProvider: "./externalsecrets/components/hooks/useESActionsProvider.tsx",
   }
 };
 

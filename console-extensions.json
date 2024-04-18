@@ -467,24 +467,39 @@
         }
     },
     {
-        "type": "console.resource/details-item",
+        "type": "console.page/resource/list",
         "flags": {
             "required": [
                 "EXTERNAL_SECRET"
             ]
         },
         "properties": {
-            "id": "external-secret-status",
-            "column": "Right",
             "model": {
                 "group": "external-secrets.io",
                 "kind": "ExternalSecret",
                 "version": "v1beta1"
             },
-            "title": "status",
             "component": {
-                "$codeRef": "ESStatus"
-            },
-            "sortWeight": 0
+                "$codeRef": "ExternalSecretList"
+            }
         }
-    }]
+    },
+    {
+        "type": "console.action/resource-provider",
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "external-secrets.io",
+                "kind": "ExternalSecret",
+                "version": "v1beta1"
+            },
+            "provider": {
+                "$codeRef": "useESActionsProvider.useESActionsProvider"
+            }
+        }
+    }
+]

@@ -17,7 +17,7 @@
         "@gitops-services/*": ["src/gitops/services/*"],
         "@rollout-models/*": ["src/rollout/models/*"],
         "@rollout-services/*": ["src/rollout/services/*"],
-        "@es-models/*": ["src/externalsecrets/*"],
+        "@es-models/*": ["src/externalsecrets/models/*"],
         "@images/*": ["src/images/*"]
       }
   },
