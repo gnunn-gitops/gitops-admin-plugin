@@ -19,6 +19,7 @@ import { sortable } from '@patternfly/react-table';
 import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 import ESStatus from './ESStatus';
 import { useESActionsProvider } from './hooks/useESActionsProvider';
+import { getTargetSecretName } from '../utils/es-utils';
 
 type ESListTabProps = {
     namespace: string;
@@ -89,7 +90,7 @@ const appProjectListRow: React.FC<RowProps<ExternalSecretKind>> = ({ obj, active
             <TableData id="secret" activeColumnIDs={activeColumnIDs}>
                 <ResourceLink
                   groupVersionKind={gvk}
-                  name={obj.spec.target?.name}
+                  name={getTargetSecretName(obj)}
                   namespace={obj.metadata.namespace}
                 />
             </TableData>

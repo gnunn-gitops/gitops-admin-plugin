@@ -75,7 +75,7 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
               resource={externalSecret}
               isOpen={isOpen}
               onClose={onClose}
-              pushHistory={true}
+              shouldRedirect={true}
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),

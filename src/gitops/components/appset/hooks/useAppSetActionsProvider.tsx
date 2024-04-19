@@ -75,7 +75,7 @@ export const useAppSetActionsProvider: UseAppSetActionsProvider = (appSet) => {
               resource={appSet}
               isOpen={isOpen}
               onClose={onClose}
-              pushHistory={true}
+              shouldRedirect={true}
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),

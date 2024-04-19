@@ -74,3 +74,7 @@ export function getStatus(es: ExternalSecretKind): ExternalSecretStatus {
     }
     return status;
 }
+
+export function getTargetSecretName(es: ExternalSecretKind):string {
+    return es.spec.target?.name ? es.spec.target.name : es.metadata.name;
+}

@@ -147,7 +147,7 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
               resource={rollout}
               isOpen={isOpen}
               onClose={onClose}
-              pushHistory={true}
+              shouldRedirect={true}
             />
           )),
       },

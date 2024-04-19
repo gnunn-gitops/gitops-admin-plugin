@@ -75,7 +75,7 @@ export const useProjectActionsProvider: UseProjectActionsProvider = (appProject)
               resource={appProject}
               isOpen={isOpen}
               onClose={onClose}
-              pushHistory={true}
+              shouldRedirect={true}
             />
           )),
         //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),

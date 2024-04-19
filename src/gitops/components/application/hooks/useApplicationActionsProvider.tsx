@@ -138,7 +138,7 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
                     resource={application}
                     isOpen={isOpen}
                     onClose={onClose}
-                    pushHistory={true}
+                    shouldRedirect={true}
                     />
                 );
               }),
