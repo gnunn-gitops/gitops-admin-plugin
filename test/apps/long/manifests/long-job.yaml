@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+  name: long-job
+spec:
+  suspend: false
+  template:
+    metadata:
+      labels:
+        job-name: long-job
+    spec:
+      containers:
+      - command:
+        - /bin/bash
+        - -c
+        - |
+          sleep $DELAY
+        env:
+        - name: DELAY
+          value: "10"
+        image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:1.7
+        imagePullPolicy: IfNotPresent
+        name: long-job
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      serviceAccount: default
+      serviceAccountName: default
