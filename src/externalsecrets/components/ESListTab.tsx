@@ -15,11 +15,11 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 import { ResourceLink, RowProps, TableData } from '@openshift-console/dynamic-plugin-sdk';
 import { TableColumn } from '@openshift-console/dynamic-plugin-sdk';
-import { sortable } from '@patternfly/react-table';
+import { SortByDirection, sortable } from '@patternfly/react-table';
 import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 import ESStatus from './ESStatus';
 import { useESActionsProvider } from './hooks/useESActionsProvider';
-import { getTargetSecretName } from '../utils/es-utils';
+import { getStatus, getTargetSecretName } from '../utils/es-utils';
 
 type ESListTabProps = {
     namespace: string;
@@ -137,12 +137,23 @@ const useESColumns = (namespace) => {
                 title: 'Secret',
                 id: 'secret',
                 transforms: [sortable],
-                sort: 'obj.spec.target.name'
+                sort: (data, direction) => data.sort((es1, es2) => {
+                    const sn1 = getTargetSecretName(es1 as ExternalSecretKind)
+                    const sn2 = getTargetSecretName(es2 as ExternalSecretKind)
+
+                    return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
+                })
             },
             {
                 title: 'Status',
                 id: 'status',
-                transforms: []
+                transforms: [sortable],
+                sort: (data, direction) => data.sort((es1, es2) => {
+                    const sn1 = getStatus(es1 as ExternalSecretKind).code
+                    const sn2 = getStatus(es2 as ExternalSecretKind).code
+
+                    return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
+                })
             },
             {
                 title: '',
