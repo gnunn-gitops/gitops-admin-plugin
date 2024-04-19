@@ -2,12 +2,11 @@ import * as React from 'react';
 
 import {
     GreenCheckCircleIcon,
-    RedExclamationCircleIcon,
-    YellowExclamationTriangleIcon
+    RedExclamationCircleIcon
 } from '@openshift-console/dynamic-plugin-sdk';
 
 import { ExternalSecretKind } from '@es-models/ExternalSecrets';
-import { ExternalSecretStatus, ExternalSecretStatusSeverity, getStatus } from '../utils/es-utils';
+import { ExternalSecretStatus, getStatus } from '../utils/es-utils';
 
 interface ESStatusProps {
     externalSecret: ExternalSecretKind
@@ -16,19 +15,12 @@ interface ESStatusProps {
 const ESStatus: React.FC<ESStatusProps> = ({ externalSecret:es }) => {
 
     let status: ExternalSecretStatus = getStatus(es);
-    let targetIcon: React.ReactNode;
-    if (status.severity == ExternalSecretStatusSeverity.ERROR) {
-        targetIcon = <RedExclamationCircleIcon/>;
-    } else if (status.severity == ExternalSecretStatusSeverity.WARNING) {
-        targetIcon = <YellowExclamationTriangleIcon/>
-    } else {
-        targetIcon = <GreenCheckCircleIcon/>;
-    }
+    let targetIcon: React.ReactNode = status.ready ? <GreenCheckCircleIcon/> : <RedExclamationCircleIcon/>;
 
     return (
         (
             <span>
-                {targetIcon} {status.code}
+                {targetIcon} {status.reason}
             </span>
         )
     );

@@ -1,0 +1,21 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: eso-test
+  namespace: default
+spec:
+  data:
+  - remoteRef:
+      conversionStrategy: Default
+      decodingStrategy: None
+      key: AWS_LETSENCRYPT_TYPO
+      metadataPolicy: None
+    secretKey: secret-access-key
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: doppler-cluster
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    name: letsencrypt-aws

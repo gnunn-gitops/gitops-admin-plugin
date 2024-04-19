@@ -9,6 +9,7 @@ import {
     ListPageCreate,
     ListPageFilter,
     ListPageHeader,
+    RowFilter,
     useK8sWatchResource,
     useListPageFilter,
     VirtualizedTable,
@@ -19,7 +20,7 @@ import { SortByDirection, sortable } from '@patternfly/react-table';
 import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 import ESStatus from './ESStatus';
 import { useESActionsProvider } from './hooks/useESActionsProvider';
-import { getStatus, getTargetSecretName } from '../utils/es-utils';
+import { ConditionReason, getStatus } from '../utils/es-utils';
 
 type ESListTabProps = {
     namespace: string;
@@ -40,7 +41,7 @@ const ESListTab: React.FC<ESListTabProps> = ({ namespace, hideNameLabelFilters, 
     });
     // const { t } = useTranslation();
     const columns = useESColumns(namespace);
-    const [data, filteredData, onFilterChange] = useListPageFilter(externalSecrets);
+    const [data, filteredData, onFilterChange] = useListPageFilter(externalSecrets, filters);
 
     return (
         <>
@@ -51,7 +52,7 @@ const ESListTab: React.FC<ESListTabProps> = ({ namespace, hideNameLabelFilters, 
             }
             <ListPageBody>
                 {!hideNameLabelFilters &&
-                    <ListPageFilter data={data} loaded={loaded} onFilterChange={onFilterChange} />
+                    <ListPageFilter data={data} loaded={loaded} rowFilters={filters} onFilterChange={onFilterChange} />
                 }
                 <VirtualizedTable<K8sResourceCommon>
                     data={filteredData}
@@ -70,9 +71,9 @@ const appProjectListRow: React.FC<RowProps<ExternalSecretKind>> = ({ obj, active
 
     const actionList: [actions: Action[]] = useESActionsProvider(obj);
     const gvk: K8sGroupVersionKind = {
-        version: "v1",
-        group: "",
-        kind: "Secret"
+        version: "v1beta1",
+        group: "external-secrets.io",
+        kind: obj.spec.secretStoreRef.kind ? obj.spec.secretStoreRef.kind : "SecretStore"
     }
 
     return (
@@ -87,11 +88,11 @@ const appProjectListRow: React.FC<RowProps<ExternalSecretKind>> = ({ obj, active
             <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
                 <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
             </TableData>
-            <TableData id="secret" activeColumnIDs={activeColumnIDs}>
+            <TableData id="store" activeColumnIDs={activeColumnIDs}>
                 <ResourceLink
                   groupVersionKind={gvk}
-                  name={getTargetSecretName(obj)}
-                  namespace={obj.metadata.namespace}
+                  name={obj.spec.secretStoreRef.name}
+                  namespace={gvk.kind == "SecretStore" ? obj.metadata.namespace : null}
                 />
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
@@ -134,23 +135,18 @@ const useESColumns = (namespace) => {
                 ]
                 : []),
             {
-                title: 'Secret',
-                id: 'secret',
+                title: 'Store',
+                id: 'store',
                 transforms: [sortable],
-                sort: (data, direction) => data.sort((es1, es2) => {
-                    const sn1 = getTargetSecretName(es1 as ExternalSecretKind)
-                    const sn2 = getTargetSecretName(es2 as ExternalSecretKind)
-
-                    return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
-                })
+                sort: 'spec.secretStoreRef.name'
             },
             {
                 title: 'Status',
                 id: 'status',
                 transforms: [sortable],
                 sort: (data, direction) => data.sort((es1, es2) => {
-                    const sn1 = getStatus(es1 as ExternalSecretKind).code
-                    const sn2 = getStatus(es2 as ExternalSecretKind).code
+                    const sn1 = getStatus(es1 as ExternalSecretKind).reason
+                    const sn2 = getStatus(es2 as ExternalSecretKind).reason
 
                     return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
                 })
@@ -164,5 +160,30 @@ const useESColumns = (namespace) => {
 
     return columns;
 };
+
+export const filters: RowFilter[] = [
+    {
+        filterGroupName: 'Status',
+        type: 'es-status',
+        reducer: (es) => (getStatus(es).reason),
+        filter: (input, es) => {
+            if (input.selected?.length) {
+                return input.selected.includes(getStatus(es).reason);
+            } else {
+                return true;
+            }
+        },
+        items: [
+            { id: ConditionReason.SecretSynced, title: ConditionReason.SecretSynced },
+            { id: ConditionReason.SecretSyncedError, title: ConditionReason.SecretSyncedError },
+            { id: ConditionReason.Updated, title: ConditionReason.Updated },
+            { id: ConditionReason.UpdateFailed, title: ConditionReason.UpdateFailed },
+            { id: ConditionReason.InvalidStoreRef, title: ConditionReason.InvalidStoreRef },
+            { id: ConditionReason.InvalidProviderClientConfig, title: ConditionReason.InvalidProviderClientConfig },
+            { id: ConditionReason.SecretDeleted, title: ConditionReason.SecretDeleted },
+            { id: ConditionReason.Unknown, title: ConditionReason.Unknown },
+],
+    }
+];
 
 export default ESListTab;
