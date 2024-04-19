@@ -30,7 +30,7 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
   const submit = (event) => {
     event.preventDefault();
     //const propagationPolicy = isChecked && model ? model.propagationPolicy : 'Orphan';
-    const propagationPolicy = isChecked ? 'Orphan' : model?.propagationPolicy ? model.propagationPolicy : 'Background';
+    const propagationPolicy = !isChecked ? 'Orphan': model?.propagationPolicy ? model.propagationPolicy : 'Background';
     const json = propagationPolicy
       ? { kind: 'DeleteOptions', apiVersion: 'v1', propagationPolicy }
       : null;
