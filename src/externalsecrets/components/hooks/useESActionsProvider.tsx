@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useModal } from '@utils/components/ModalProvider/ModalProvider';
-import { Action, K8sVerb, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, k8sUpdate, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { ExternalSecretKind, ExternalSecretModel, externalSecretModelRef } from '@es-models/ExternalSecrets';
@@ -22,7 +22,7 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
   const actions = React.useMemo(
     () => [
       {
-        id: 'dataimportcron-action-edit-labels',
+        id: 'es-action-edit-labels',
         disabled: false,
         label: t('Edit labels'),
         accessReview: {
@@ -34,7 +34,7 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
         cta: () => {launchLabelsModal()}
       },
       {
-        id: 'crontab-action-edit-annotations',
+        id: 'es-action-edit-annotations',
         disabled: false,
         label: t('Edit annotations'),
         accessReview: {
@@ -46,7 +46,7 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
         cta: () => {launchAnnotationsModal()}
       },
       {
-        id: 'crontab-action-edit-crontab',
+        id: 'es-action-edit-crontab',
         disabled: false,
         label: t('Edit'),
         accessReview: {
@@ -61,7 +61,7 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
           ),
       },
       {
-        id: 'crontab-action-delete',
+        id: 'es-action-delete',
         label: t('Delete'),
         accessReview: {
           group: ExternalSecretModel.apiGroup,
@@ -78,7 +78,26 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
               shouldRedirect={true}
             />
           )),
-        //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),
+      },
+      {
+        id: 'es-action-refresh',
+        label: t('Refresh'),
+        accessReview: {
+            group: ExternalSecretModel.apiGroup,
+            verb: 'update' as K8sVerb,
+            resource: ExternalSecretModel.plural,
+            namespace: externalSecret?.metadata?.namespace
+        },
+          cta: () => {
+                if (!externalSecret.metadata.annotations) {
+                    externalSecret.metadata.annotations = {};
+                }
+                externalSecret.metadata.annotations["force-sync"] = "" + Math.round(new Date().getTime() / 1000);
+                k8sUpdate({
+                    model: ExternalSecretModel,
+                    data: externalSecret,
+                });
+          }
       },
     ],
     [/*t, */ externalSecret, createModal /*, dataSource*/, history],

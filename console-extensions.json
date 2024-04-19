@@ -501,5 +501,24 @@
                 "$codeRef": "useESActionsProvider.useESActionsProvider"
             }
         }
-    }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "external-secrets.io",
+                "kind": "ExternalSecret",
+                "version": "v1beta1"
+            },
+            "component": {
+                "$codeRef": "ExternalSecretDetails"
+            }
+        }
+    },
+
 ]
