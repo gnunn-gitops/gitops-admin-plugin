@@ -14,7 +14,7 @@ import {
 } from '@openshift-console/dynamic-plugin-sdk';
 import { ResourceLink, RowProps, TableData } from '@openshift-console/dynamic-plugin-sdk';
 import { TableColumn } from '@openshift-console/dynamic-plugin-sdk';
-import { sortable } from '@patternfly/react-table';
+import { SortByDirection, sortable } from '@patternfly/react-table';
 import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 import { ApplicationSetKind, ApplicationSetModel } from '@gitops-models/ApplicationSetModel';
 import { useAppSetActionsProvider } from './hooks/useAppSetActionsProvider';
@@ -125,7 +125,12 @@ const useAppSetColumns = (namespace) => {
                 title: 'Status',
                 id: 'status',
                 transforms: [sortable],
-                sort: 'status.conditions[0].status',
+                sort: (data, direction) => data.sort((es1, es2) => {
+                    const sn1 = getAppSetStatus(es1 as ApplicationSetKind)
+                    const sn2 = getAppSetStatus(es2 as ApplicationSetKind)
+
+                    return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
+                })
             },
             {
                 title: '',
