@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Card, CardBody, CardTitle } from '@patternfly/react-core';
+import { Card, CardBody, CardTitle, Divider, Icon } from '@patternfly/react-core';
 
 
 type GeneratorViewProps = {
@@ -12,7 +12,8 @@ type GeneratorViewProps = {
 const GeneratorView = ({ title, icon, children }: GeneratorViewProps) => (
     <Card isFlat isRounded isCompact>
         <CardTitle>
-        <div style={{display: "flex", verticalAlign: "bottom"}}>{icon}<span style={{paddingLeft: "4px"}}>{title}</span></div>
+            <div style={{display: "flex", verticalAlign: "bottom"}}><Icon size="lg">{icon}</Icon><span style={{paddingLeft: "6px"}}>{title}</span></div>
+            <Divider style={{paddingTop: "6px", paddingBottom: "4px"}}/>
         </CardTitle>
         <CardBody>
             {children}
