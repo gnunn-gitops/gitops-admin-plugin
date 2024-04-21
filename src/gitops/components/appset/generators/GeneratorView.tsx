@@ -12,12 +12,14 @@ type GeneratorViewProps = {
 const GeneratorView = ({ title, icon, children }: GeneratorViewProps) => (
     <Card isFlat isRounded isCompact>
         <CardTitle>
-            <div style={{display: "flex", verticalAlign: "bottom"}}><Icon size="lg">{icon}</Icon><span style={{paddingLeft: "6px"}}>{title}</span></div>
-            <Divider style={{paddingTop: "6px", paddingBottom: "4px"}}/>
+            <div style={{ display: "flex", verticalAlign: "bottom" }}><Icon size="lg">{icon}</Icon><span style={{ paddingLeft: "6px" }}>{title}</span></div>
+            {children &&
+                <Divider style={{ paddingTop: "6px", paddingBottom: "4px" }} />
+            }
         </CardTitle>
-        <CardBody>
-            {children}
-      </CardBody>
+        {children &&
+            <CardBody>{children}</CardBody>
+        }
     </Card>
-  );
-  export default GeneratorView;
+);
+export default GeneratorView;
