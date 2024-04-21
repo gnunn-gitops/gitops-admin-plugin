@@ -26,16 +26,17 @@ export type ClusterAppSetGenerator = {
     values?: Map<string, string>
 }
 
-export type MatrixAppSetGenerator = {
+export type GeneratorParent = {
     generators: AppSetGenerator[]
 }
 
-export type UnionAppSetGenerator = {
-    generators: AppSetGenerator[]
+export type MatrixAppSetGenerator = GeneratorParent & {
 }
 
-export type MergeAppSetGenerator = {
-    generators: AppSetGenerator[]
+export type UnionAppSetGenerator = GeneratorParent & {
+}
+
+export type MergeAppSetGenerator = GeneratorParent & {
     mergeKeys: string[]
 }
 
@@ -95,8 +96,7 @@ export type AppSetGenerator = {
     union?: UnionAppSetGenerator
 }
 
-export type ApplicationSetSpec = {
-    generators?: AppSetGenerator[]
+export type ApplicationSetSpec = GeneratorParent & {
 }
 
 export type ApplicationSetStatus = {

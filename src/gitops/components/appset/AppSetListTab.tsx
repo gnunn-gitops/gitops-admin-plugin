@@ -19,7 +19,7 @@ import ActionsDropdown from '@utils/components/ActionDropDown/ActionDropDown'
 import { ApplicationSetKind, ApplicationSetModel } from '@gitops-models/ApplicationSetModel';
 import { useAppSetActionsProvider } from './hooks/useAppSetActionsProvider';
 import Status from './Status';
-import { getAppSetStatus } from '@gitops-utils/gitops';
+import { getAppSetGeneratorCount, getAppSetStatus } from '@gitops-utils/gitops';
 import { ApplicationSetStatus } from '@gitops-utils/constants';
 
 type AppSetListTabProps = {
@@ -83,6 +83,9 @@ const appSetListRow: React.FC<RowProps<ApplicationSetKind>> = ({ obj, activeColu
             <TableData id="namespace" activeColumnIDs={activeColumnIDs}>
                 <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
             </TableData>
+            <TableData id='generators' activeColumnIDs={activeColumnIDs}>
+                {getAppSetGeneratorCount(obj)}
+            </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
                 <Status status={getAppSetStatus(obj)} />
             </TableData>
@@ -122,14 +125,25 @@ const useAppSetColumns = (namespace) => {
                 ]
                 : []),
             {
+                title: 'Generators',
+                id: 'generators',
+                transforms: [sortable],
+                sort: (data, direction) => data.sort((appset1, appset2) => {
+                    const g1 = getAppSetGeneratorCount(appset1 as ApplicationSetKind)
+                    const g2 = getAppSetGeneratorCount(appset2 as ApplicationSetKind)
+
+                    return (direction == SortByDirection.asc) ? (g1 - g2) : (g2 - g1);
+                })
+            },
+            {
                 title: 'Status',
                 id: 'status',
                 transforms: [sortable],
-                sort: (data, direction) => data.sort((es1, es2) => {
-                    const sn1 = getAppSetStatus(es1 as ApplicationSetKind)
-                    const sn2 = getAppSetStatus(es2 as ApplicationSetKind)
+                sort: (data, direction) => data.sort((appset1, appset2) => {
+                    const sn1 = getAppSetStatus(appset1 as ApplicationSetKind)
+                    const sn2 = getAppSetStatus(appset2 as ApplicationSetKind)
 
-                    return (direction==SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
+                    return (direction == SortByDirection.asc) ? sn1.localeCompare(sn2) : sn2.localeCompare(sn1);
                 })
             },
             {
