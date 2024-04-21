@@ -6,6 +6,7 @@ import { ListGeneratorFragment } from "./generators/ListGenerator";
 import { MatrixGeneratorFragment } from "./generators/MatrixGenerator";
 import { UnionGeneratorFragment } from "./generators/UnionGenerator";
 import { MergeGeneratorFragment } from "./generators/MergeGenerator";
+import { ClusterGeneratorFragment } from "./generators/ClusterGenerator";
 
 interface GeneratorsProps {
     generators: AppSetGenerator[]
@@ -34,6 +35,10 @@ export const Generators: React.FC<GeneratorsProps> = ({ generators }) => {
 function renderGenerator(generator: AppSetGenerator) {
     var gentype = Object.keys(generator)[0];
     switch (gentype) {
+        case "clusters":
+            return (
+                <ClusterGeneratorFragment generator={generator.clusters}/>
+            )
         case "git":
             return (
                 <GitGeneratorFragment generator={generator.git}/>
