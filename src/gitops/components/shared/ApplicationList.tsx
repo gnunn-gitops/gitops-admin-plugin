@@ -136,7 +136,9 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
                 />
             </TableData>
             <TableData id="project" activeColumnIDs={activeColumnIDs}>
-                {obj.spec.project || ''}
+                {obj.spec?.project &&
+                    <ResourceLink groupVersionKind={{ group: 'argoproj.io', version: 'v1alpha1', kind: 'AppProject' }} name={obj.spec.project}/>
+                }
             </TableData>
             <TableData
                 id="actions"
