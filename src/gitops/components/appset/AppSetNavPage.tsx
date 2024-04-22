@@ -14,6 +14,7 @@ import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 import AppSetDetailsTab from './AppSetDetailsTab';
 import GeneratorsTab from './GeneratorsTab';
 import AppsTab from './AppsTab';
+import EventsTab from '@utils/components/EventsTab/EventsTab';
 
 type AppSetPageProps = {
   name: string;
@@ -57,6 +58,11 @@ const AppSetNavPage: React.FC<AppSetPageProps> = ({ name, namespace, kind }) => 
         href: 'applications',
         name: t('Applications'),
         component: AppsTab,
+      },
+      {
+        href: 'events',
+        name: t('Events'),
+        component: EventsTab,
       }
     ],
     [],

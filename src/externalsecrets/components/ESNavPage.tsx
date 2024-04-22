@@ -12,6 +12,7 @@ import { useESActionsProvider } from './hooks/useESActionsProvider';
 import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 import ESDetailsTab from './ESDetailsTab';
 import { ExternalSecretKind, ExternalSecretModel } from '@es-models/ExternalSecrets';
+import EventsTab from '@utils/components/EventsTab/EventsTab';
 
 type ESPageProps = {
   name: string;
@@ -45,6 +46,11 @@ const ESNavPage: React.FC<ESPageProps> = ({ name, namespace, kind }) => {
         href: 'yaml',
         name: t('YAML'),
         component: ResourceYAMLTab,
+      },
+      {
+        href: 'events',
+        name: t('Events'),
+        component: EventsTab,
       }
     ],
     [],

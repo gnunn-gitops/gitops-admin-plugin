@@ -12,10 +12,10 @@ import PageTitle from '@utils/components/PageTitle/PageTitle';
 import { useRolloutActionsProvider } from './hooks/useRolloutActionsProvider';
 import { RolloutModel } from '../models/RolloutModel';
 import RolloutDetailsTab from './RolloutDetailsTab';
-import RolloutEventsTab from './RolloutEventsTab';
 import RolloutPodsTab from './RolloutPodsTab';
 import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 import RolloutRevisionsTab from './RolloutRevisionsTab';
+import EventsTab from '@utils/components/EventsTab/EventsTab';
 
 type RolloutPageProps = {
   name: string;
@@ -63,7 +63,7 @@ const RolloutNavPage: React.FC<RolloutPageProps> = ({ name, namespace, kind }) =
       {
         href: 'events',
         name: t('Events'),
-        component: RolloutEventsTab,
+        component: EventsTab,
       }
     ],
     [],

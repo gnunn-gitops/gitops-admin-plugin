@@ -16,6 +16,7 @@ import PageTitle from '@utils/components/PageTitle/PageTitle';
 import { ApplicationModel } from '@gitops-models/ApplicationModel';
 import ResourceYAMLTab from '@utils/components/ResourceYAMLTab/ResourceYAMLTab';
 import ApplicationHistoryTab from './ApplicationHistoryTab';
+import EventsTab from '@utils/components/EventsTab/EventsTab';
 
 type ApplicationPageProps = {
   name: string;
@@ -65,6 +66,11 @@ const ApplicationNavPage: React.FC<ApplicationPageProps> = ({ name, namespace, k
         name: t('History'),
         component: ApplicationHistoryTab,
       },
+      {
+        href: 'events',
+        name: t('Events'),
+        component: EventsTab,
+      }
     ],
     [],
   );

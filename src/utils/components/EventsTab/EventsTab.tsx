@@ -1,21 +1,21 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { ResourceEventStream } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sResourceCommon, ResourceEventStream } from '@openshift-console/dynamic-plugin-sdk';
 import { PageSection, Title } from '@patternfly/react-core';
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
-import { RolloutKind } from '../models/RolloutModel';
 
-type RolloutEventsTabProps = RouteComponentProps<{
+
+type EventsTabProps = RouteComponentProps<{
   ns: string;
   name: string;
 }> & {
-  obj?: RolloutKind;
+  obj?: K8sResourceCommon;
 };
 
-const RolloutEventsTab: React.FC<RolloutEventsTabProps> = ({ obj: rollout }) => {
+const EventsTab: React.FC<EventsTabProps> = ({ obj }) => {
   const { t } = useGitOpsTranslation();
-  return !rollout ? (
+  return !obj ? (
     <div>
       <PageSection>
         <Title headingLevel="h2" className="co-section-heading">
@@ -24,8 +24,8 @@ const RolloutEventsTab: React.FC<RolloutEventsTabProps> = ({ obj: rollout }) => 
       </PageSection>
     </div>
   ) : (
-    <ResourceEventStream resource={rollout} />
+    <ResourceEventStream resource={obj} />
   );
 };
 
-export default RolloutEventsTab;
+export default EventsTab;
