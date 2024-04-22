@@ -31,11 +31,11 @@ Here are some features of the plugin;
         </ul>
       </td>
       <td >
-        <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
-          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=50% height=50%/>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png"/>
         </a>
-        <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
-            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=50% height=50%/>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
         </a>
       </td>
     </tr>
