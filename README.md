@@ -14,15 +14,15 @@ no responsibility for anything that goes wrong so caveat emptor.
 
 Here are some features of the plugin;
 
-<table class="none" style="width: 100%">
+<table class="none">
     <tr>
-      <th style="width: 20%">Feature</th>
-      <th style="width: 50%">Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-      <th style="width: 30%">Screenshots</th>
+      <th >Feature</th>
+      <th >Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+      <th >Screenshots</th>
     </tr>
     <tr>
       <td>Application</td>
-      <td style="width: 50%">
+      <td >
         <ul>
             <li>Filter on statuses</li>
             <li>View synced resources</li>
@@ -30,7 +30,7 @@ Here are some features of the plugin;
             <li>Punch out to Argo CD UI for app as well as resource</li>
         </ul>
       </td>
-      <td style="width: 50%">
+      <td >
         <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
           <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/>
         </a><br>
