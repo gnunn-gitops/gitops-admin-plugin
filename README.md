@@ -21,8 +21,8 @@ Here are some features of the plugin;
       <th >Screenshots</th>
     </tr>
     <tr>
-      <td>Application</td>
-      <td >
+      <td valign="top">Application</td>
+      <td valign="top">
         <ul>
             <li>Filter on statuses</li>
             <li>View synced resources</li>
