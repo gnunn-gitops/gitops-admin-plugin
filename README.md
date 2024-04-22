@@ -180,11 +180,10 @@ for that version.
 | 4.14  | 4.14-0.0.21  | 4.14 |
 | 4.15  | main  | 4.15, latest |
 
-Note in the near future the main branch will be cloned to a 4.14 branch and the 4.15 branch will move to main.
-
 ## Deployment on cluster
 
-The plugin can be installed from the manifests included in the `/manifests` folder using kustomize, make sure to use the correct branch.
+The plugin can be installed from the manifests included in the `/manifests` folder using kustomize, make sure
+to use the correct branch for the desired version.
 
 ```
 oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install
