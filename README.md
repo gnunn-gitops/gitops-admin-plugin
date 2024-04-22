@@ -32,10 +32,10 @@ Here are some features of the plugin;
       </td>
       <td >
         <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
-          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/>
-        </a><br>
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=50% height=50%/>
+        </a>
         <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
-            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/>
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=50% height=50%/>
         </a>
       </td>
     </tr>
