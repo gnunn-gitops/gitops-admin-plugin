@@ -14,6 +14,34 @@ no responsibility for anything that goes wrong so caveat emptor.
 
 Here are some features of the plugin;
 
+<table>
+    <tr>
+      <th>Feature</th>
+      <th>Description</th>
+      <th>Screenshots</th>
+    </tr>
+    <tr>
+      <td>Application</td>
+      <td>
+        <ul>
+            <li>Filter on statuses</li>
+            <li>View synced resources</li>
+            <li>Common actions: Sync, Refresh (Soft and Hard), Terminate</li>
+            <li>Punch out to Argo CD UI for app as well as resource</li>
+        </ul>
+      </td>
+      <td>
+        <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/>
+        </a><br>
+        <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/>
+        </a>
+      </td>
+    </tr>
+</table>
+
+
 | Feature  | Description          | Screenshots        |
 | ------------- | -------------      | -------------- |
 | Application  | Filter on statuses<br/>View synced resources<br/><nobr>Common actions: Sync, Refresh (Soft and Hard), Terminate</nobr><br/>Punch out to Argo CD UI for app as well as resource  |  <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/></a><br><a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/></a>  |
