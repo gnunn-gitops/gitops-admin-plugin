@@ -22,7 +22,7 @@ Here are some features of the plugin;
     </tr>
     <tr>
       <td>Application</td>
-      <td>
+      <td style="width: 50%">
         <ul>
             <li>Filter on statuses</li>
             <li>View synced resources</li>
@@ -30,7 +30,7 @@ Here are some features of the plugin;
             <li>Punch out to Argo CD UI for app as well as resource</li>
         </ul>
       </td>
-      <td>
+      <td style="width: 50%">
         <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png">
           <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/>
         </a><br>
