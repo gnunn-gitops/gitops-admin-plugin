@@ -21,6 +21,20 @@ Here are some features of the plugin;
       <th >Screenshots</th>
     </tr>
     <tr>
+      <td valign="top">Dashboard - Inventory</td>
+      <td valign="top">
+        <ul>
+            <li>Adds Applications and ApplicationSets to Inventory Dashboard</li>
+        </ul>
+      </td>
+      <td >
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/dashboard-inventory.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/dashboard-inventory.png"/>
+        </a>
+      </td>
+    </tr>
+
+    <tr>
       <td valign="top">Application</td>
       <td valign="top">
         <ul>
@@ -58,21 +72,67 @@ Here are some features of the plugin;
             <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
         </a>
       </td>
-
-
+    </tr>
+    <tr>
+      <td valign="top">AppProject</td>
+      <td valign="top">
+        <ul>
+            <li>View list of Applications for project (if in same namespace)</li>
+            <li>View resource allow/deny lists</li>
+            <li>View defined roles</li>
+            <li>View sync windows</li>
+        </ul>
+      </td>
+      <td >
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/projects-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-list.png"/>
+        </a>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/projects-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">Rollouts</td>
+      <td valign="top">
+        <ul>
+            <li>Filter on status of Rollout</li>
+            <li>Actions: Promote, Full Promote, Retry, Restart, Abort</li>
+            <li>View Revisions</li>
+            <li>View AnalysisRuns</li>
+        </ul>
+      </td>
+      <td >
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-list.png"/>
+        </a>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
+        </a>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-revisions.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-revisions.png">
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">ExternalSecrets</td>
+      <td valign="top">
+        <ul>
+            <li>Support ExternalSecret Kind</li>
+            <li>Filter on ExternalSecret status</li>
+            <li>Refresh ExternalSecret</li>
+        </ul>
+      </td>
+      <td >
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/externalsecrets-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-list.png"/>
+        </a>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/externalsecrets-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
+        </a>
+      </td>
     </tr>
 </table>
-
-# Current Status
-
-The following table shows the current status of development.
-
-| Custom Resource  | Goal Status          | Comments        |
-| ------------- | -------------      | -------------- |
-| Application  | 100%  | Feature complete |
-| AppProject  | 100%  | Feature complete |
-| ApplicationSet | 60% | Default OpenShift view additional tab to view generators. |
-| Rollout | 80% | Supports Rollouts and Analysis, no support for Experiments at this time. Common actions support (Promote, Rollback, etc) |
 
 # Philosophy
 
