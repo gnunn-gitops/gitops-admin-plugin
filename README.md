@@ -177,7 +177,7 @@ for that version.
 
 | OpenShift Version  | Branch      | Image Tag        |
 | ------------- | -------------      | -------------- |
-| 4.14  | main, 4.14-0.0.21  | 4.14 |
+| 4.14  | 4.14-0.0.21  | 4.14 |
 | 4.15  | main  | 4.15, latest |
 
 Note in the near future the main branch will be cloned to a 4.14 branch and the 4.15 branch will move to main.
