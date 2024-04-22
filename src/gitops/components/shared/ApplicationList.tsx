@@ -216,14 +216,15 @@ export const filters: RowFilter[] = [
     {
         filterGroupName: 'Sync Status',
         type: 'app-sync',
-        reducer: (application) => (application.status?.sync?.status),
+        reducer: (application) => (application.status?.sync?.status == SyncStatus.UNKNOWN? FilterUnknownStatus: application.status?.sync?.status),
         filter: (input, application) => {
             if (input.selected?.length && application?.status?.sync?.status) {
                 return input.selected.includes(application.status.sync.status) ||
-                    (input.selected.includes(FilterUnknownStatus) && application.status.sync.status == SyncStatus.UNKNOWN)
-            } else {
-                return true;
+                  (input.selected.includes(FilterUnknownStatus) && application.status.sync.status == SyncStatus.UNKNOWN)
+            } else if (!application?.status?.sync?.status) {
+                return false;
             }
+            return true;
         },
         items: [
             { id: SyncStatus.SYNCED, title: SyncStatus.SYNCED },
