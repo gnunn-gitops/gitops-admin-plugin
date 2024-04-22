@@ -12,9 +12,9 @@ no responsibility for anything that goes wrong so caveat emptor.
 
 # Features
 
-Here are some features of the plugin;
+Here are some features of the plugin:
 
-<table class="none">
+<table>
     <tr>
       <th >Feature</th>
       <th >Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -27,13 +27,12 @@ Here are some features of the plugin;
             <li>Adds Applications and ApplicationSets to Inventory Dashboard</li>
         </ul>
       </td>
-      <td >
+      <td>
         <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/dashboard-inventory.png">
           <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/dashboard-inventory.png"/>
         </a>
       </td>
     </tr>
-
     <tr>
       <td valign="top">Application</td>
       <td valign="top">
