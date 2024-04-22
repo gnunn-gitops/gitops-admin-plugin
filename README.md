@@ -16,7 +16,7 @@ Here are some features of the plugin;
 
 | Feature  | Description          | Screenshots        |
 | ------------- | -------------      | -------------- |
-| Application  | Filter on statuses<br/>View synced resources<br/>Common actions: Sync, Refresh (Soft and Hard), Terminate<br/>Punch out to Argo CD UI for app as well as resource  |  <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/></a><br/><a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/></a>  |
+| Application  | Filter on statuses<br/>View synced resources<br/><nobr>Common actions: Sync, Refresh (Soft and Hard), Terminate</nobr><br/>Punch out to Argo CD UI for app as well as resource  |  <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/></a><br><a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/></a>  |
 
 
 # Current Status
