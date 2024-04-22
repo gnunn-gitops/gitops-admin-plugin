@@ -177,7 +177,7 @@ for that version.
 
 | OpenShift Version  | Branch      | Image Tag        |
 | ------------- | -------------      | -------------- |
-| 4.14  | 4.14-0.0.21  | 4.14 |
+| 4.14 (not supported)  | 4.14-0.0.21  | 4.14 |
 | 4.15  | main  | 4.15, latest |
 
 ## Deployment on cluster
