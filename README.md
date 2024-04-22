@@ -1,25 +1,23 @@
 # Introduction
 
-This project provides an OpenShift Console [plugin](https://docs.openshift.com/container-platform/4.13/web_console/dynamic-plugin/overview-dynamic-plugin.html) to manage OpenShift GitOps (aka Argo CD and Rollouts).
+This project provides an OpenShift Console [plugin](https://docs.openshift.com/container-platform/4.13/web_console/dynamic-plugin/overview-dynamic-plugin.html)
+to manage OpenShift GitOps (aka Argo CD and Rollouts) as well as External Secrets.
 
-This plugin is not intended as a 1:1 replacement for the Argo CD UI, rather it enables users to accomplish 70 to 80 percent of their tasks in the OpenShift console with ability to easily "punch-out" to
-the Argo CD UI if more features are required.
+This plugin is not intended as a 1:1 replacement for the Argo CD UI, rather it enables users to accomplish ~70 percent of their tasks in the OpenShift
+console with ability to easily "punch-out" to the Argo CD UI if more features are required. This plugin follows the OpenShift Console's philosophy
+in that it interacts with resources via the Kubernetes API, it does not use Argo CD RBAC. Please review the Philosophy section for more details.
 
-The goals of this plugin are as follows;
+*Note*: This plugin is community supported and is not part of the OpenShift GitOps product nor is it supported by Red Hat. I assume
+no responsibility for anything that goes wrong so caveat emptor.
 
-1. Provide a basic view of Application, ApplicationSet and AppProjects objects in the OpenShift console
-2. Support common interactions with Argo CD for operations like Sync, Refresh and Hard Refresh
-3. Provide basic support for Rollouts in the Admin perspective including operations like Promote, Promote Full, etc
+# Features
 
-Note that this plugin is community supported and is not part of the OpenShift GitOps product nor supported by Red Hat. I assume no responsibility for anything that goes wrong so caveat emptor.
+Here are some features of the plugin;
 
-![alt text](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-list.png)
+| Feature  | Description          | Screenshots        |
+| ------------- | -------------      | -------------- |
+| Application  | Filter on statuses<br/>View synced resources<br/>Common actions: Sync, Refresh (Soft and Hard), Terminate<br/>Punch out to Argo CD UI for app as well as resource  |  <a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-list.png" width=30% height=30%/></a><br/><a href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png"><img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png" width=30% height=30%/></a>  |
 
-More screenshots:
-
-[Application Details](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/gitops-admin-plugin-details.png)
-
-[Rollouts Details](https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/rollouts-details.png)
 
 # Current Status
 
