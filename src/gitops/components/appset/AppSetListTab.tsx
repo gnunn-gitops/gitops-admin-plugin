@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
+import { getResourceUrl, modelToGroupVersionKind, modelToRef } from '@gitops-utils/utils';
 import {
     Action,
     K8sResourceCommon,
@@ -21,6 +21,7 @@ import { useAppSetActionsProvider } from './hooks/useAppSetActionsProvider';
 import Status from './Status';
 import { getAppSetGeneratorCount, getAppSetStatus } from '@gitops-utils/gitops';
 import { ApplicationSetStatus } from '@gitops-utils/constants';
+import { Link } from 'react-router-dom-v5-compat';
 
 type AppSetListTabProps = {
     namespace: string;
@@ -84,7 +85,9 @@ const appSetListRow: React.FC<RowProps<ApplicationSetKind>> = ({ obj, activeColu
                 <ResourceLink kind="Namespace" name={obj.metadata.namespace} />
             </TableData>
             <TableData id='generators' activeColumnIDs={activeColumnIDs}>
-                {getAppSetGeneratorCount(obj)}
+                <Link to={getResourceUrl({model:ApplicationSetModel, resource:obj})+"/generators"}>
+                    {getAppSetGeneratorCount(obj)}
+                </Link>
             </TableData>
             <TableData id="status" activeColumnIDs={activeColumnIDs}>
                 <Status status={getAppSetStatus(obj)} />
