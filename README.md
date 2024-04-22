@@ -14,7 +14,7 @@ no responsibility for anything that goes wrong so caveat emptor.
 
 Here are some features of the plugin;
 
-<table style="width: 100%">
+<table class="none" style="width: 100%">
     <tr>
       <th style="width: 20%">Feature</th>
       <th style="width: 50%">Description</th>
