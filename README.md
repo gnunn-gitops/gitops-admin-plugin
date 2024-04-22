@@ -17,7 +17,7 @@ Here are some features of the plugin;
 <table class="none" style="width: 100%">
     <tr>
       <th style="width: 20%">Feature</th>
-      <th style="width: 50%">Description</th>
+      <th style="width: 50%">Description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
       <th style="width: 30%">Screenshots</th>
     </tr>
     <tr>
