@@ -24,10 +24,12 @@ Here are some features of the plugin;
       <td valign="top">Application</td>
       <td valign="top">
         <ul>
-            <li>Filter on statuses</li>
+            <li>Filter on sync and health statuses</li>
             <li>View synced resources</li>
+            <li>View last synced status</li>
+            <li>Modify sync properties (automated,self-heal, prune)</li>
             <li>Common actions: Sync, Refresh (Soft and Hard), Terminate</li>
-            <li>Punch out to Argo CD UI for app as well as resource</li>
+            <li>Punch out to Argo CD UI for app as well as specific resource</li>
         </ul>
       </td>
       <td >
@@ -38,6 +40,26 @@ Here are some features of the plugin;
             <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/apps-details.png">
         </a>
       </td>
+    </tr>
+    <tr>
+      <td valign="top">ApplicationSet</td>
+      <td valign="top">
+        <ul>
+            <li>Filter on status</li>
+            <li>View generators</li>
+            <li>View list of Applications for AppSet</li>
+        </ul>
+      </td>
+      <td >
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-list.png">
+          <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-list.png"/>
+        </a>
+        <a target="_blank" href="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
+            <img src="https://raw.githubusercontent.com/gnunn-gitops/gitops-admin-plugin/main/docs/img/appset-details.png">
+        </a>
+      </td>
+
+
     </tr>
 </table>
 
