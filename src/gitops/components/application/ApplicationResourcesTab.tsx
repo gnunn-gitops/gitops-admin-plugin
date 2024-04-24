@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { ApplicationKind, ApplicationResourceStatus } from '@gitops-models/ApplicationModel';
-import { K8sGroupVersionKind, ResourceLink, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel } from '@openshift-console/dynamic-plugin-sdk';
+import { K8sGroupVersionKind, ListPageBody, ListPageFilter, ResourceLink, RowFilter, RowFilterItem, RowProps, TableColumn, TableData, VirtualizedTable, useK8sModel, useListPageFilter } from '@openshift-console/dynamic-plugin-sdk';
 import { RouteComponentProps } from 'react-router';
 import { sortable } from '@patternfly/react-table';
 import SyncStatus from './Statuses/SyncStatus';
@@ -48,18 +48,25 @@ const ApplicationResourcesTab: React.FC<ApplicationResourcesTabProps> = ({ obj }
         resources = [];
     }
 
+    const [data, filteredData, onFilterChange] = useListPageFilter(resources, filters(resources));
+
     return (
         <div>
             <PageSection variant={PageSectionVariants.light}>
-                <VirtualizedTable
-                    data={resources}
-                    unfilteredData={resources}
-                    loaded={true}
-                    loadError={null}
-                    columns={useResourceColumns()}
-                    Row={resourceListRow}
-                    rowData={{ application: obj, argoBaseURL: argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}}
-                />
+                {obj.metadata &&
+                <ListPageBody>
+                    <ListPageFilter hideNameLabelFilters data={data} loaded={true} rowFilters={filters(resources)} onFilterChange={onFilterChange} />
+                    <VirtualizedTable
+                        data={filteredData}
+                        unfilteredData={resources}
+                        loaded={true}
+                        loadError={null}
+                        columns={useResourceColumns()}
+                        Row={resourceListRow}
+                        rowData={{ application: obj, argoBaseURL: argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}}
+                    />
+                </ListPageBody>
+            }
             </PageSection>
         </div>
     )
@@ -156,5 +163,33 @@ export const useResourceColumns = () => {
 
     return columns;
 };
+
+const filters = ( resources: ApplicationResourceStatus[] ): RowFilter[] => {
+
+    const kinds: RowFilterItem[] = resources.map( (resource) => {
+        return {id: resource.kind, title: resource.kind}
+    }).reduce<RowFilterItem[]>(function (result:RowFilterItem[], resource: RowFilterItem) {
+        if (!result.some(item => item.id === resource.id) ) {
+            result.push(resource);
+        }
+        return result;
+    }, [])
+
+    return [
+        {
+            filterGroupName: 'Kind',
+            type: 'resource-kind',
+            reducer: (resource) => (resource.kind),
+            filter: (input, resource) => {
+                if (input.selected?.length) {
+                    return input.selected.includes(resource.kind);
+                } else {
+                    return true;
+                }
+            },
+            items: kinds
+        }
+    ];
+}
 
 export default ApplicationResourcesTab;
