@@ -7,9 +7,10 @@ import { sortable } from '@patternfly/react-table';
 import SyncStatus from './Statuses/SyncStatus';
 import { PageSection, PageSectionVariants } from '@patternfly/react-core';
 import HealthStatus from './Statuses/HealthStatus';
-import { HealthStatus as HS } from '@gitops-utils/constants';
+import { HealthStatus as HS, SyncStatus as SS } from '@gitops-utils/constants';
 import ResourceRowActions from './ResourceRowActions';
 import { ArgoServer, getArgoServer } from '@gitops-utils/gitops';
+
 //import { useGitOpsTranslation } from '@gitops-utils/hooks/useGitOpsTranslation';
 
 type ApplicationResourcesTabProps = RouteComponentProps<{
@@ -166,16 +167,25 @@ export const useResourceColumns = () => {
 
 const filters = ( resources: ApplicationResourceStatus[] ): RowFilter[] => {
 
-    const kinds: RowFilterItem[] = resources.map( (resource) => {
-        return {id: resource.kind, title: resource.kind}
-    }).reduce<RowFilterItem[]>(function (result:RowFilterItem[], resource: RowFilterItem) {
-        if (!result.some(item => item.id === resource.id) ) {
-            result.push(resource);
-        }
-        return result;
-    }, [])
-
     return [
+        {
+            filterGroupName: 'Sync Status',
+            type: 'resource-sync',
+            reducer: (resource) => (resource.status),
+            filter: (input, resource) => {
+                if (input.selected?.length && resource?.status) {
+                    return input.selected.includes(resource.status)
+                } else if (!resource?.status) {
+                    return false;
+                }
+                return true;
+            },
+            items: [
+                { id: SS.SYNCED, title: SS.SYNCED },
+                { id: SS.OUT_OF_SYNC, title: SS.OUT_OF_SYNC },
+                { id: SS.UNKNOWN, title: SS.UNKNOWN },
+            ],
+        },
         {
             filterGroupName: 'Kind',
             type: 'resource-kind',
@@ -187,7 +197,14 @@ const filters = ( resources: ApplicationResourceStatus[] ): RowFilter[] => {
                     return true;
                 }
             },
-            items: kinds
+            items: resources.map( (resource) => {
+                return {id: resource.kind, title: resource.kind}
+            }).reduce<RowFilterItem[]>(function (result:RowFilterItem[], resource: RowFilterItem) {
+                if (!result.some(item => item.id === resource.id) ) {
+                    result.push(resource);
+                }
+                return result;
+            }, [])
         }
     ];
 }
