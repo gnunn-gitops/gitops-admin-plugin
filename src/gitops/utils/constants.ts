@@ -2,7 +2,9 @@ export const DEFAULT_NAMESPACE = 'default';
 
 export enum SyncStatus {
     SYNCED = "Synced",
+    SYNCED_FAILED = "SyncFailed",
     OUT_OF_SYNC = "OutOfSync",
+    PRUNE_SKIPPED = "PruneSkipped",
     UNKNOWN = "Unknown"
 }
 

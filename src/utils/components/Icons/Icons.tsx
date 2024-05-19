@@ -86,6 +86,8 @@ export const PhaseErrorIcon: React.FC<ColoredIconProps> = ({ className, title })
   <ExclamationCircleIcon color={dangerColor.value} className={className} title={title} />
 );
 
+export const SyncFailedIcon = PhaseErrorIcon;
+
 export const PhaseFailedIcon = PhaseErrorIcon;
 export const PhaseRunningIcon = HealthProgressingIcon;
 export const PhaseSucceededIcon = HealthHealthyIcon;
