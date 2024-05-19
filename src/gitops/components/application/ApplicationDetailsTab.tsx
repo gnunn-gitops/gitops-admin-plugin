@@ -188,6 +188,10 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
                   </Flex>
               </DetailsDescriptionGroup>
 
+              <DetailsDescriptionGroup title={t('Target Revision')} help={t('The specified revision for the Application.')}>
+                {obj?.spec?.source?.targetRevision?obj?.spec?.source?.targetRevision:"HEAD"}
+              </DetailsDescriptionGroup>
+
               <DetailsDescriptionGroup title={t('Project')} help={t('The Argo CD Project that this application belongs to.')}>
                   {/* TODO - Update to handle App in Any Namespace when controller namespace is in status */}
                   <ResourceLink groupVersionKind={{ group: 'argoproj.io', version: 'v1alpha1', kind: 'AppProject' }} name={obj?.spec?.project}/>
