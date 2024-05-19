@@ -12,7 +12,7 @@ const Revision: React.FC<RevisionProps> = ({ repoURL, revision, helm }) => {
     if (revision) {
         return (
             (
-                <div>
+                <>
                     {!helm &&
                         <ExternalLink href={createRevisionURL(repoURL, revision)}>
                             {revision.substring(0, 7) || ''}
@@ -21,7 +21,7 @@ const Revision: React.FC<RevisionProps> = ({ repoURL, revision, helm }) => {
                     {helm &&
                         <span>{ revision }</span>
                     }
-                </div>
+                </>
             )
         )
     } else {

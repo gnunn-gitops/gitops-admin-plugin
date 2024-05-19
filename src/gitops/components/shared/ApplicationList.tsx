@@ -129,11 +129,12 @@ const applicationListRow: React.FC<RowProps<ApplicationKind>> = ({ obj, activeCo
                 />
             </TableData>
             <TableData id="revision" activeColumnIDs={activeColumnIDs}>
-                <RevisionFragment
+                {obj?.spec?.source?.targetRevision?obj?.spec?.source?.targetRevision:"HEAD"}&nbsp;
+                (<RevisionFragment
                     revision={obj.status?.sync?.revision || ''}
                     repoURL={obj.spec.source?.repoURL}
                     helm={obj.status?.sourceType == "Helm"}
-                />
+                />)
             </TableData>
             <TableData id="project" activeColumnIDs={activeColumnIDs}>
                 {obj.spec?.project &&
@@ -189,7 +190,7 @@ const useApplicationColumns = (namespace) => {
             },
             {
                 title: 'Revision',
-                sort: 'status.sync.revision',
+                sort: 'spec.source.targetRevision',
                 id: 'revision',
                 transforms: [sortable],
             },
