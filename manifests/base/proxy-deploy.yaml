@@ -25,7 +25,7 @@ spec:
         name: gitops-plugin-proxy
     spec:
       containers:
-      - image: quay.io/gnunn/gitops-plugin-proxy:latest
+      - image: quay.io/gnunn/gitops-plugin-proxy:4.16
         imagePullPolicy: Always
         name: gitops-plugin-proxy
         ports:

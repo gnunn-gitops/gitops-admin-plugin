@@ -27,8 +27,6 @@ const metadata: ConsolePluginBuildMetadata = {
     useRolloutActionsProvider: "./rollout/components/hooks/useRolloutActionsProvider.tsx",
     yamlRolloutTemplates: "src/rollout/templates/index.ts",
 
-    modalProvider: "./utils/components/ModalProvider/ModalProvider.tsx",
-
     dashboardUtils: "./gitops/components/dashboards/dashboardUtils.ts",
     ApplicationInventory: "./gitops/components/dashboards/Applications.tsx",
     ApplicationSetInventory: "./gitops/components/dashboards/ApplicationSets.tsx",

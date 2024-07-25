@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useModal } from '@utils/components/ModalProvider/ModalProvider';
-import { Action, K8sVerb, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useAnnotationsModal, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
 
-import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { ApplicationSetKind, ApplicationSetModel, applicationSetModelRef } from '@gitops-models/ApplicationSetModel';
 
 type UseAppSetActionsProvider = (
@@ -13,11 +11,11 @@ type UseAppSetActionsProvider = (
 const t = (key: string) => key;
 
 export const useAppSetActionsProvider: UseAppSetActionsProvider = (appSet) => {
-  const { createModal } = useModal();
   const history = useHistory();
 
   const launchLabelsModal = useLabelsModal(appSet);
   const launchAnnotationsModal = useAnnotationsModal(appSet);
+  const launchDeleteModal = useDeleteModal(appSet);
 
   const actions = React.useMemo(
     () => [
@@ -69,19 +67,10 @@ export const useAppSetActionsProvider: UseAppSetActionsProvider = (appSet) => {
           resource: ApplicationSetModel.plural,
           namespace: appSet?.metadata?.namespace
         },
-        cta: () =>
-          createModal(({ isOpen, onClose }) => (
-            <ResourceDeleteModal
-              resource={appSet}
-              isOpen={isOpen}
-              onClose={onClose}
-              shouldRedirect={true}
-            />
-          )),
-        //   ,accessReview: asAccessReview(DataImportCronModel, cronTab, 'delete'),
+        cta: () => {launchDeleteModal()}
       },
     ],
-    [/*t, */ appSet, createModal /*, dataSource*/, history],
+    [/*t, */ appSet, history],
   );
 
   return [actions];

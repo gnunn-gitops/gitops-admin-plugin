@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { useModal } from '@utils/components/ModalProvider/ModalProvider';
 import { DEFAULT_NAMESPACE } from '@gitops-utils/constants';
-import { useAnnotationsModal, useK8sModel, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
+import { useAnnotationsModal, useK8sModel, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
 import { Dropdown, DropdownItem, KebabToggle } from '@patternfly/react-core/deprecated';
 
 import { useGitOpsTranslation } from '@utils/hooks/useGitOpsTranslation';
-import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { getObjectModifyPermissions, modelToRef } from '@gitops-utils/utils';
 
 type PodRowActionsProps = {
@@ -15,7 +13,6 @@ type PodRowActionsProps = {
 };
 
 const PodRowActions: React.FC<PodRowActionsProps> = ({ obj }) => {
-  const { createModal } = useModal();
   const history = useHistory();
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -27,6 +24,7 @@ const PodRowActions: React.FC<PodRowActionsProps> = ({ obj }) => {
 
   const launchLabelsModal = useLabelsModal(obj);
   const launchAnnotationsModal = useAnnotationsModal(obj);
+  const launchDeleteModal = useDeleteModal(obj);
 
   const onEditPod = () => {
     const cta = {
@@ -35,16 +33,6 @@ const PodRowActions: React.FC<PodRowActionsProps> = ({ obj }) => {
       }/yaml`,
     };
     history.push(cta.href);
-  };
-
-  const onDeleteModalToggle = () => {
-    createModal(({ isOpen, onClose }) => (
-      <ResourceDeleteModal
-        resource={obj}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
-    ));
   };
 
   const onToggle = (_event: any, isOpen: boolean) => {
@@ -68,7 +56,7 @@ const PodRowActions: React.FC<PodRowActionsProps> = ({ obj }) => {
         <DropdownItem onClick={onEditPod} key="pod-edit" isDisabled={!canUpdate}>
           {t('Edit Pod')}
         </DropdownItem>,
-        <DropdownItem onClick={onDeleteModalToggle} key="pod-delete" isDisabled={!canDelete}>
+        <DropdownItem onClick={launchDeleteModal} key="pod-delete" isDisabled={!canDelete}>
           {t('Delete Pod')}
         </DropdownItem>,
       ]}

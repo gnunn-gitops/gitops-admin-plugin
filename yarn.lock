@@ -241,7 +241,7 @@
 
 "@openshift-console/dynamic-plugin-sdk-internal@1.0.0":
   version "1.0.0"
-  resolved "https://registry.npmjs.org/@openshift-console/dynamic-plugin-sdk-internal/-/dynamic-plugin-sdk-internal-1.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@openshift-console/dynamic-plugin-sdk-internal/-/dynamic-plugin-sdk-internal-1.0.0.tgz#16b3cc864f796dbcb1d2e0b502fe1f43b8b73e9d"
   integrity sha512-e7Dxf8jj7OE+NrM1ksHs5l0lXoPtSwgw5G07C5zLJNDnFPNFQvEpLslstEjCej7rW1DmmwvZrWsv4yWHSS9/cA==
   dependencies:
     immutable "3.x"
@@ -254,10 +254,10 @@
     redux "4.0.1"
     redux-thunk "2.4.0"
 
-"@openshift-console/dynamic-plugin-sdk-webpack@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/@openshift-console/dynamic-plugin-sdk-webpack/-/dynamic-plugin-sdk-webpack-1.0.2.tgz"
-  integrity sha512-6Byj94mVqSd+gzdVnOxyYFAUfwIlY7ONDBVWToK9B4zJYXvpR9Zdq9ZZIZ27tb+IbfOZ4lNNVo056C0tE0FGcQ==
+"@openshift-console/dynamic-plugin-sdk-webpack@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@openshift-console/dynamic-plugin-sdk-webpack/-/dynamic-plugin-sdk-webpack-1.1.1.tgz#349326366f84defa8c81baa8be411257d0b1e954"
+  integrity sha512-1m1iBpdj0HNWQIEFAhMlI5pmigyN5B/Eqcb2nGAI2n030hOOxAalxySO95dvEFa2hiyXMUt4z/Tyq4fDYKZ2nw==
   dependencies:
     "@openshift/dynamic-plugin-sdk-webpack" "^4.0.2"
     ajv "^6.12.3"
@@ -270,10 +270,10 @@
     semver "6.x"
     webpack "5.75.0"
 
-"@openshift-console/dynamic-plugin-sdk@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/@openshift-console/dynamic-plugin-sdk/-/dynamic-plugin-sdk-1.1.0.tgz"
-  integrity sha512-gaNqhGq7nne+cC3QaCxuyK+SPvuC/K5Ww5tV2FabIepgbl3qKkUePrejPgvBJ52tMID1sn8prdW/rImYma6NwQ==
+"@openshift-console/dynamic-plugin-sdk@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@openshift-console/dynamic-plugin-sdk/-/dynamic-plugin-sdk-1.4.0.tgz#802c1225f22a6d59b16b5b47f0ff81f176f2db72"
+  integrity sha512-LcwNqG2ZzMKLiSQNpHBwAtzALQghUngILhdijndpIklSH0Dsqi05nhwAJPyuFrpwywZIj6BxE1tmaBzR5gUfcA==
   dependencies:
     classnames "2.x"
     immutable "3.x"
@@ -289,13 +289,6 @@
     reselect "4.x"
     typesafe-actions "^4.2.1"
     whatwg-fetch "2.x"
-
-"@openshift-console/plugin-shared@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/@openshift-console/plugin-shared/-/plugin-shared-0.0.1.tgz"
-  integrity sha512-sg823G7ijoE9s/jqZbR1zep/iHA2Bn0rVt+CRJ7YO+Ogc4EJQlSJFwvsQmk5rbGvpgHxi0X2CfarYTED+f2woQ==
-  dependencies:
-    classnames "2.x"
 
 "@openshift/dynamic-plugin-sdk-webpack@^4.0.2":
   version "4.0.2"
