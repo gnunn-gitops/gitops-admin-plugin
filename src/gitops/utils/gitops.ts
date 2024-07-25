@@ -1,8 +1,7 @@
 import { ApplicationKind, OperationState } from "@gitops-models/ApplicationModel";
 import { k8sListItems, K8sResourceCommon } from "@openshift-console/dynamic-plugin-sdk";
 import { ApplicationSetStatus, PhaseStatus } from "./constants";
-import { AppSetGenerator, ApplicationSetKind } from "@gitops-models/ApplicationSetModel";
-import { K8sResourceConditionStatus } from '@openshift-console/dynamic-plugin-sdk-internal/lib/extensions/console-types';
+import { AppSetGenerator, ApplicationSetKind, ResourceConditionStatus } from "@gitops-models/ApplicationSetModel";
 
 export const annotationRefreshKey = "argocd.argoproj.io/refresh";
 export const labelControllerNamespaceKey = "gitops.openshift.io/controllerNamespace";
@@ -135,11 +134,11 @@ export function getAppSetStatus(appset: ApplicationSetKind): ApplicationSetStatu
     if (appset.status?.conditions) {
         var status: ApplicationSetStatus = ApplicationSetStatus.HEALTHY
         appset.status.conditions.forEach(function (condition) {
-            if (condition.type == 'ErrorOccurred' && condition.status != K8sResourceConditionStatus.False) {
+            if (condition.type == 'ErrorOccurred' && condition.status != ResourceConditionStatus.False) {
                 status = ApplicationSetStatus.ERROR
-            } else if (condition.type == 'ParametersGenerated' && condition.status != K8sResourceConditionStatus.True) {
+            } else if (condition.type == 'ParametersGenerated' && condition.status != ResourceConditionStatus.True) {
                 status = ApplicationSetStatus.ERROR
-            } else if (condition.type == 'ApplicationSetUpToDate' && condition.status == K8sResourceConditionStatus.True) {
+            } else if (condition.type == 'ApplicationSetUpToDate' && condition.status == ResourceConditionStatus.True) {
                 status = ApplicationSetStatus.ERROR
             }
         });

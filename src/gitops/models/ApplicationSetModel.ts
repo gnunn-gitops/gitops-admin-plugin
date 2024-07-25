@@ -1,6 +1,5 @@
 import { modelToRef } from '@gitops-utils/utils';
 import { K8sResourceCommon } from '@openshift-console/dynamic-plugin-sdk';
-import { K8sResourceCondition } from '@openshift-console/dynamic-plugin-sdk-internal/lib/extensions/console-types';
 import { K8sModel, Selector } from '@openshift-console/dynamic-plugin-sdk/lib/api/common-types';
 
 export const ApplicationSetModel: K8sModel = {
@@ -99,8 +98,22 @@ export type AppSetGenerator = {
 export type ApplicationSetSpec = GeneratorParent & {
 }
 
+export enum ResourceConditionStatus {
+    True = "True",
+    False = "False",
+    Unknown = "Unknown"
+}
+export type ResourceCondition = {
+    type: string;
+    status: keyof typeof ResourceConditionStatus;
+    lastTransitionTime?: string;
+    reason?: string;
+    message?: string;
+};
+
+
 export type ApplicationSetStatus = {
-    conditions?: K8sResourceCondition[]
+    conditions?: ResourceCondition[]
 }
 
 export type ApplicationSetKind = K8sResourceCommon & {
