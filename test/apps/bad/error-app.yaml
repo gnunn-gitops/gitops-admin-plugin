@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: error-app
-  namespace: gitops-basic-demo
+  namespace: openshift-gitops
 spec:
   destination:
     namespace: demo
