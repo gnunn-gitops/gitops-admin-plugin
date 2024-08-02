@@ -127,7 +127,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
                     <FlexItem>{obj?.metadata?.name}</FlexItem>
                     <FlexItem>
                       <ExternalLink href={argoServer.protocol + "://" + argoServer.host + "/applications/" + obj?.metadata?.namespace + "/" + obj?.metadata?.name}>
-                        <img loading="lazy" src={require('@images/argo.png')} alt="Argo CD" width="19px" height="24px" />
+                        <img src={require('@images/argo.png')} alt="Argo CD" width="19px" height="24px" />
                       </ExternalLink>
                     </FlexItem>
                   </Flex>

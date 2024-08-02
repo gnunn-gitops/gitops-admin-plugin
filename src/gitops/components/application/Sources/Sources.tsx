@@ -33,7 +33,7 @@ const sourceListRow: React.FC<RowProps<ApplicationSource>> = ({ obj, activeColum
     return (
         <>
             <TableData id="type" activeColumnIDs={activeColumnIDs} className='gitops-admin-plugin__sources-type-column'>
-                <img loading="lazy" src={(obj.chart ? require("@images/helm.png"): require("@images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
+                <img src={(obj.chart ? require("@images/helm.png"): require("@images/git.png"))} alt={(obj.chart ? "Helm": "Git")} width="19px" height="24px" />
             </TableData>
             <TableData id="repository" activeColumnIDs={activeColumnIDs}>
                 <ExternalLink href={obj.repoURL}>

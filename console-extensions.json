@@ -508,6 +508,5 @@
                 "$codeRef": "ExternalSecretDetails"
             }
         }
-    },
-
+    }
 ]

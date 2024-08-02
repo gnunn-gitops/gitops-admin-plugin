@@ -18,7 +18,8 @@
         "@rollout-models/*": ["src/rollout/models/*"],
         "@rollout-services/*": ["src/rollout/services/*"],
         "@es-models/*": ["src/externalsecrets/models/*"],
-        "@images/*": ["src/images/*"]
+        "@images/*": ["src/images/*"],
+        "react": [ "./node_modules/@types/react" ]
       }
   },
   "include": ["src"]
