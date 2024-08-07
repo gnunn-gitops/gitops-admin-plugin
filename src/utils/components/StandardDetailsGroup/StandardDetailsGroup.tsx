@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useGitOpsTranslation } from "@utils/hooks/useGitOpsTranslation";
-import PencilAltIcon from '@patternfly/react-icons/dist/esm/icons/pencil-alt-icon';
+import { PencilAltIcon } from '@patternfly/react-icons';
 import { K8sModel, K8sResourceCommon, ResourceLink, Timestamp, useAnnotationsModal, useLabelsModal } from "@openshift-console/dynamic-plugin-sdk";
 import { Button, DescriptionListDescription, DescriptionListGroup, DescriptionListTermHelpText, DescriptionListTermHelpTextButton, Popover, Split, SplitItem } from "@patternfly/react-core";
 import MetadataLabels from './MetadataLabels';

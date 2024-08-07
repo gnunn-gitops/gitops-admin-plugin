@@ -107,6 +107,7 @@ const config: Configuration = {
     plugins: [
         new ConsoleRemotePlugin({
             pluginMetadata,
+            validateExtensionIntegrity: false
         }),
         new CopyWebpackPlugin({
             patterns: [{ from: path.resolve(__dirname, 'locales'), to: 'locales' }],

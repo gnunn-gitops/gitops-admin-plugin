@@ -4,11 +4,11 @@ import { SortByDirection, sortable } from '@patternfly/react-table';
 import { ImageInfo, ReplicaSetInfo, ReplicaSetStatus, getAnalysisRunSelector, getReplicaSetInfo } from 'src/rollout/utils/ReplicaSetInfo';
 import { RolloutKind } from '@rollout-models/RolloutModel';
 import { Label, LabelGroup, Tooltip } from '@patternfly/react-core';
-import ArrowCircleUpIcon from '@patternfly/react-icons/dist/esm/icons/arrow-circle-up-icon';
-import { RunningIcon } from '@patternfly/react-icons/dist/esm/icons/running-icon';
-import { EyeIcon } from '@patternfly/react-icons/dist/esm/icons/eye-icon';
-import { MigrationIcon } from '@patternfly/react-icons/dist/esm/icons/migration-icon';
-import { CubeIcon } from '@patternfly/react-icons/dist/esm/icons/cube-icon';
+import { ArrowCircleUpIcon } from '@patternfly/react-icons';
+import { RunningIcon } from '@patternfly/react-icons';
+import { EyeIcon } from '@patternfly/react-icons';
+import { MigrationIcon } from '@patternfly/react-icons';
+import { CubeIcon } from '@patternfly/react-icons';
 
 import { AnalysisRunStatusFragment } from '../AnalysisRunStatus/AnalysisRunStatus';
 import { RevisionsRowActions } from './RevisionsRowActions';
