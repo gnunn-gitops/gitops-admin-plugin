@@ -6,7 +6,7 @@ const metadata: ConsolePluginBuildMetadata = {
   },
   name: "gitops-admin-plugin",
   displayName: 'OpenShift GitOps Plugin',
-  version: "0.3.7",
+  version: "0.3.9",
   description: "Administrator Perspective Console Plugin for OpenShift GitOps",
   exposedModules: {
     ApplicationList: "./gitops/components/application/ApplicationListTab.tsx",
@@ -34,6 +34,8 @@ const metadata: ConsolePluginBuildMetadata = {
     ExternalSecretList: "./externalsecrets/components/ESListTab.tsx",
     ExternalSecretDetails: "./externalsecrets/components/ESNavPage.tsx",
     useESActionsProvider: "./externalsecrets/components/hooks/useESActionsProvider.tsx",
+
+    consoleFlags: "./utils/components/Flags"
   }
 };
 

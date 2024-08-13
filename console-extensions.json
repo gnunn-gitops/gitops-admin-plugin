@@ -1,8 +1,23 @@
 [
     {
+        "type": "console.flag/hookProvider",
+        "properties": {
+            "handler": {
+                "$codeRef": "consoleFlags.useGitOpsProvider"
+            }
+        }
+    },
+    {
+        "type": "console.flag/hookProvider",
+        "properties": {
+            "handler": {
+                "$codeRef": "consoleFlags.useExternalSecretsProvider"
+            }
+        }
+    },
+    {
         "type": "console.flag/model",
         "properties": {
-            "flag": "APPLICATION",
             "model": {
                 "group": "argoproj.io",
                 "kind": "Application",
@@ -12,28 +27,28 @@
     },
     {
         "type": "console.navigation/section",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "id": "gitops",
             "insertAfter": "workloads",
             "perspective": "admin",
-            "name": "%plugin__gitops-admin-plugin~GitOps%"
+            "name": "%plugin__GITOPS_ADMIN-plugin~GitOps%"
         }
     },
     {
         "type": "console.navigation/resource-ns",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATIONSET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "id": "applicationset",
-            "name": "%plugin__gitops-admin-plugin~ApplicationSets%",
+            "name": "%plugin__GITOPS_ADMIN-plugin~ApplicationSets%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -45,14 +60,14 @@
     },
     {
         "type": "console.navigation/resource-ns",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "id": "application",
-            "name": "%plugin__gitops-admin-plugin~Applications%",
+            "name": "%plugin__GITOPS_ADMIN-plugin~Applications%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -64,14 +79,14 @@
     },
     {
         "type": "console.navigation/resource-ns",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "id": "appproject",
-            "name": "%plugin__gitops-admin-plugin~Projects%",
+            "name": "%plugin__GITOPS_ADMIN-plugin~Projects%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -83,11 +98,11 @@
     },
     {
         "type": "console.page/resource/list",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -101,11 +116,11 @@
     },
     {
         "type": "console.page/resource/details",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -119,11 +134,11 @@
     },
     {
         "type": "console.action/resource-provider",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -137,11 +152,11 @@
     },
     {
         "type": "console.yaml-template",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "name": "default",
             "model": {
@@ -156,11 +171,11 @@
     },
     {
         "type": "console.action/resource-provider",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -174,11 +189,11 @@
     },
     {
         "type": "console.page/resource/list",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -192,11 +207,11 @@
     },
     {
         "type": "console.page/resource/details",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -210,11 +225,11 @@
     },
     {
         "type": "console.yaml-template",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "name": "default",
             "model": {
@@ -230,7 +245,6 @@
     {
         "type": "console.flag/model",
         "properties": {
-            "flag": "APPLICATIONSET",
             "model": {
                 "group": "argoproj.io",
                 "kind": "ApplicationSet",
@@ -240,11 +254,11 @@
     },
     {
         "type": "console.page/resource/list",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATIONSET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -258,11 +272,11 @@
     },
     {
         "type": "console.page/resource/details",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATIONSET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -277,7 +291,6 @@
     {
         "type": "console.flag/model",
         "properties": {
-            "flag": "ROLLOUT",
             "model": {
                 "group": "argoproj.io",
                 "kind": "Rollout",
@@ -287,14 +300,14 @@
     },
     {
         "type": "console.navigation/resource-ns",
-        // "flags": {
-        //     "required": [
-        //         "ROLLOUT"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "id": "rollout",
-            "name": "%plugin__gitops-admin-plugin~Rollouts%",
+            "name": "%plugin__GITOPS_ADMIN-plugin~Rollouts%",
             "perspective": "admin",
             "section": "workloads",
             "insertAfter": "statefulsets",
@@ -307,11 +320,11 @@
     },
     {
         "type": "console.page/resource/list",
-        // "flags": {
-        //     "required": [
-        //         "ROLLOUT"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -325,11 +338,11 @@
     },
     {
         "type": "console.action/resource-provider",
-        // "flags": {
-        //     "required": [
-        //         "ROLLOUT"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -343,11 +356,11 @@
     },
     {
         "type": "console.page/resource/details",
-        // "flags": {
-        //     "required": [
-        //         "ROLLOUT"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "argoproj.io",
@@ -361,11 +374,11 @@
     },
     {
         "type": "console.yaml-template",
-        // "flags": {
-        //     "required": [
-        //         "ROLLOUT"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "name": "default",
             "model": {
@@ -380,11 +393,11 @@
     },
     {
         "type": "console.dashboards/overview/inventory/item",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "mapper": {
                 "$codeRef": "ApplicationInventory.getApplicationStatusGroups"
@@ -396,11 +409,11 @@
     },
     {
         "type": "console.dashboards/overview/inventory/item/group",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATION"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "icon": {
                 "$codeRef": "ApplicationInventory.HealthSuspendedIcon"
@@ -410,11 +423,11 @@
     },
     {
         "type": "console.dashboards/overview/inventory/item",
-        // "flags": {
-        //     "required": [
-        //         "APPLICATIONSET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "GITOPS_ADMIN"
+            ]
+        },
         "properties": {
             "mapper": {
                 "$codeRef": "ApplicationSetInventory.getApplicationSetStatusGroups"
@@ -427,7 +440,6 @@
     {
         "type": "console.flag/model",
         "properties": {
-            "flag": "EXTERNAL_SECRET",
             "model": {
                 "group": "external-secrets.io",
                 "kind": "ExternalSecret",
@@ -437,14 +449,14 @@
     },
     {
         "type": "console.navigation/resource-ns",
-        // "flags": {
-        //     "required": [
-        //         "EXTERNAL_SECRET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
         "properties": {
             "id": "externalsecret",
-            "name": "%plugin__gitops-admin-plugin~ExternalSecrets%",
+            "name": "%plugin__GITOPS_ADMIN-plugin~ExternalSecrets%",
             "perspective": "admin",
             "section": "workloads",
             "insertAfter": "secrets",
@@ -457,11 +469,11 @@
     },
     {
         "type": "console.page/resource/list",
-        // "flags": {
-        //     "required": [
-        //         "EXTERNAL_SECRET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "external-secrets.io",
@@ -475,11 +487,11 @@
     },
     {
         "type": "console.action/resource-provider",
-        // "flags": {
-        //     "required": [
-        //         "EXTERNAL_SECRET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "external-secrets.io",
@@ -493,11 +505,11 @@
     },
     {
         "type": "console.page/resource/details",
-        // "flags": {
-        //     "required": [
-        //         "EXTERNAL_SECRET"
-        //     ]
-        // },
+        "flags": {
+            "required": [
+                "EXTERNAL_SECRET"
+            ]
+        },
         "properties": {
             "model": {
                 "group": "external-secrets.io",
