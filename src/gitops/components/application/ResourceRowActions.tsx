@@ -17,13 +17,13 @@ type ResourceRowActionsProps = {
   const ResourceRowActions: React.FC<ResourceRowActionsProps> = ({ resource, application, argoBaseURL }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [model] = useK8sModel({ group: resource.group, version: resource.version, kind: resource.kind });
+    const [object, setObject] = React.useState(null);
 
-    const getObject = () =>
-        k8sGet({
-            model: model,
-            name: resource.name,
-            ns: resource.namespace,
-        });
+    k8sGet({
+                model: model,
+                name: resource.name,
+                ns: resource.namespace,
+    }).then((object) => {setObject(object)});
 
     const onViewResource = () => {
       window.open(getResourceURL(argoBaseURL, resource), '_blank');
@@ -35,12 +35,6 @@ type ResourceRowActionsProps = {
 
     const onToggle = (_event: any, isOpen: boolean) => {
         setIsOpen(isOpen);
-    };
-
-    const onDeleteResource = async () => {
-        const obj = await getObject();
-        useDeleteModal(obj);
-
     };
 
     return (
@@ -57,7 +51,7 @@ type ResourceRowActionsProps = {
           <DropdownItem onClick={onSyncResource} key="resource-sync" isDisabled={resource.status==undefined}>
             {'Sync'}
           </DropdownItem>,
-          <DropdownItem onClick={onDeleteResource} key="resource-delete">
+          <DropdownItem onClick={useDeleteModal(object)} key="resource-delete">
             {'Delete'}
           </DropdownItem>
         ]}
