@@ -12,6 +12,7 @@ export const AnalysisRunModel: K8sModel = {
     kind: 'AnalysisRun',
     id: 'analysisrun',
     crd: true,
+    propagationPolicy: 'Background'
 };
 
 export type Provider = {

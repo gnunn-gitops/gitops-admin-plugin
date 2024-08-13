@@ -13,6 +13,7 @@ export const ApplicationSetModel: K8sModel = {
     kind: 'ApplicationSet',
     id: 'applicationset',
     crd: true,
+    propagationPolicy: 'Background'
 };
 
 export type ListAppSetGenerator = {

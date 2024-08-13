@@ -11,7 +11,8 @@ export const ExternalSecretModel: K8sModel = {
     namespaced: true,
     kind: 'ExternalSecret',
     id: 'externalsecret',
-    crd: true
+    crd: true,
+    propagationPolicy: 'Background'
   };
 
 export type ExternalSecretSpec = {

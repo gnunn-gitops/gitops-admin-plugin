@@ -12,6 +12,7 @@ export const RolloutModel: K8sModel = {
     kind: 'Rollout',
     id: 'rollout',
     crd: true,
+    propagationPolicy: 'Background'
 };
 
 export type RolloutStrategyBlueGreen = {

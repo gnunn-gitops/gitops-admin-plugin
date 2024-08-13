@@ -13,6 +13,7 @@ export const AppProjectModel: K8sModel = {
   kind: 'AppProject',
   id: 'appproject',
   crd: true,
+  propagationPolicy: 'Background'
 };
 
 export type ResourceAllowDeny = {
