@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Action, K8sVerb, k8sUpdate, useAnnotationsModal, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
-
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
+import { Action, K8sVerb, k8sUpdate, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { ExternalSecretKind, ExternalSecretModel, externalSecretModelRef } from '@es-models/ExternalSecrets';
 
 type UseESActionsProvider = (
@@ -12,10 +13,10 @@ const t = (key: string) => key;
 
 export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
   const history = useHistory();
+  const { createModal } = useModal();
 
   const launchLabelsModal = useLabelsModal(externalSecret);
   const launchAnnotationsModal = useAnnotationsModal(externalSecret);
-  const launchDeleteModal = useDeleteModal(externalSecret)
 
   const actions = React.useMemo(
     () => [
@@ -67,8 +68,16 @@ export const useESActionsProvider: UseESActionsProvider = (externalSecret) => {
           resource: ExternalSecretModel.plural,
           namespace: externalSecret?.metadata?.namespace
         },
-        cta: () => {launchDeleteModal()}
-      },
+        cta: () =>
+            createModal(({ isOpen, onClose }) => (
+              <ResourceDeleteModal
+                resource={externalSecret}
+                isOpen={isOpen}
+                onClose={onClose}
+                shouldRedirect={true}
+              />
+            )),
+        },
       {
         id: 'es-action-refresh',
         label: t('Refresh'),

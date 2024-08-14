@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 
-import { Action, K8sVerb, useAnnotationsModal, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import { RolloutKind, RolloutModel, rolloutModelRef } from 'src/rollout/models/RolloutModel';
 import { abortRollout, promoteRollout, restartRollout, retryRollout } from '@rollout-services/Rollout';
@@ -14,10 +16,10 @@ const t = (key: string) => key;
 
 export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) => {
   const history = useHistory();
+  const { createModal } = useModal();
 
   const launchLabelsModal = useLabelsModal(rollout);
   const launchAnnotationsModal = useAnnotationsModal(rollout);
-  const launchDeleteModal = useDeleteModal(rollout);
 
   const actions = React.useMemo(
     () => [
@@ -139,8 +141,16 @@ export const useRolloutActionsProvider: UseRolloutActionsProvider = (rollout) =>
           resource: RolloutModel.plural,
           namespace: rollout?.metadata?.namespace
         },
-        cta: () => {launchDeleteModal}
-      },
+        cta: () =>
+            createModal(({ isOpen, onClose }) => (
+              <ResourceDeleteModal
+                resource={rollout}
+                isOpen={isOpen}
+                onClose={onClose}
+                shouldRedirect={true}
+              />
+            )),
+        },
     ],
     [/*t, */ rollout, history],
   );

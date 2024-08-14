@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { AppProjectKind, AppProjectModel, appProjectModelRef } from '@gitops-models/AppProjectModel';
-import { Action, K8sVerb, useAnnotationsModal, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 type UseProjectActionsProvider = (
   appProject: AppProjectKind,
@@ -11,10 +12,10 @@ const t = (key: string) => key;
 
 export const useProjectActionsProvider: UseProjectActionsProvider = (appProject) => {
   const history = useHistory();
+  const { createModal } = useModal();
 
   const launchLabelsModal = useLabelsModal(appProject);
   const launchAnnotationsModal = useAnnotationsModal(appProject);
-  const launchDeleteModal = useDeleteModal(appProject);
 
   const actions = React.useMemo(
     () => [
@@ -66,8 +67,16 @@ export const useProjectActionsProvider: UseProjectActionsProvider = (appProject)
           resource: AppProjectModel.plural,
           namespace: appProject?.metadata?.namespace
         },
-        cta: () => {launchDeleteModal()}
-      },
+        cta: () =>
+            createModal(({ isOpen, onClose }) => (
+              <ResourceDeleteModal
+                resource={appProject}
+                isOpen={isOpen}
+                onClose={onClose}
+                shouldRedirect={true}
+              />
+            )),
+        },
     ],
     [/*t, */ appProject, history],
   );

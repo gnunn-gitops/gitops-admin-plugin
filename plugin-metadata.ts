@@ -35,6 +35,7 @@ const metadata: ConsolePluginBuildMetadata = {
     ExternalSecretDetails: "./externalsecrets/components/ESNavPage.tsx",
     useESActionsProvider: "./externalsecrets/components/hooks/useESActionsProvider.tsx",
 
+    modalProvider: "./utils/components/ModalProvider/ModalProvider.tsx",
     consoleFlags: "./utils/components/Flags"
   }
 };

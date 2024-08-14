@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 
-import { Action, K8sVerb, useAnnotationsModal, useLabelsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useAnnotationsModal, useLabelsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import { ApplicationSetKind, ApplicationSetModel, applicationSetModelRef } from '@gitops-models/ApplicationSetModel';
 
@@ -12,10 +14,10 @@ const t = (key: string) => key;
 
 export const useAppSetActionsProvider: UseAppSetActionsProvider = (appSet) => {
   const history = useHistory();
+  const { createModal } = useModal();
 
   const launchLabelsModal = useLabelsModal(appSet);
   const launchAnnotationsModal = useAnnotationsModal(appSet);
-  const launchDeleteModal = useDeleteModal(appSet);
 
   const actions = React.useMemo(
     () => [
@@ -67,8 +69,16 @@ export const useAppSetActionsProvider: UseAppSetActionsProvider = (appSet) => {
           resource: ApplicationSetModel.plural,
           namespace: appSet?.metadata?.namespace
         },
-        cta: () => {launchDeleteModal()}
-      },
+        cta: () =>
+            createModal(({ isOpen, onClose }) => (
+              <ResourceDeleteModal
+                resource={appSet}
+                isOpen={isOpen}
+                onClose={onClose}
+                shouldRedirect={true}
+              />
+            )),
+        },
     ],
     [/*t, */ appSet, history],
   );

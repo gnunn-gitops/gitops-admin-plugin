@@ -16,6 +16,17 @@
         }
     },
     {
+        "type": "console.context-provider",
+        "properties": {
+            "provider": {
+                "$codeRef": "modalProvider.ModalProvider"
+            },
+            "useValueHook": {
+                "$codeRef": "modalProvider.useModalValue"
+            }
+        }
+    },
+    {
         "type": "console.flag/model",
         "properties": {
             "model": {

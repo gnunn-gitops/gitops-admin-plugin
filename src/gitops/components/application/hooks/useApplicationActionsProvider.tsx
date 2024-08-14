@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-
+import { useModal } from '@utils/components/ModalProvider/ModalProvider';
+import ResourceDeleteModal from '@utils/components/ResourceDeleteModal/ResourceDeleteModal';
 import { ApplicationKind, ApplicationModel, applicationModelRef } from '@gitops-models/ApplicationModel';
-import { Action, K8sVerb, useLabelsModal, useAnnotationsModal, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { Action, K8sVerb, useLabelsModal, useAnnotationsModal } from '@openshift-console/dynamic-plugin-sdk';
 
 import { syncAppK8s, refreshAppk8s, terminateOpK8s } from '@gitops-services/ArgoCD';
 import { PhaseStatus } from '@gitops-utils/constants';
@@ -15,10 +16,10 @@ const t = (key: string) => key;
 
 export const useApplicationActionsProvider: UseApplicationActionsProvider = (application) => {
   const history = useHistory();
+  const { createModal } = useModal();
 
   const launchLabelsModal = useLabelsModal(application);
   const launchAnnotationsModal = useAnnotationsModal(application);
-  const launchDeleteModal = useDeleteModal(application);
 
   // TODO - Need to get namespace into accessReview, application is undefined so there needs to be a callback
   // of some sort. React.useCallback didn't work
@@ -128,7 +129,15 @@ export const useApplicationActionsProvider: UseApplicationActionsProvider = (app
           verb: 'delete' as K8sVerb,
           resource: ApplicationModel.plural
         },
-        cta: () => {launchDeleteModal()}
+        cta: () =>
+            createModal(({ isOpen, onClose }) => (
+              <ResourceDeleteModal
+                resource={application}
+                isOpen={isOpen}
+                onClose={onClose}
+                shouldRedirect={true}
+              />
+            )),
         }
     ],
     [t, application, history],
