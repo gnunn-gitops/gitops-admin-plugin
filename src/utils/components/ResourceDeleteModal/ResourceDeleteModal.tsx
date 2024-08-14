@@ -55,6 +55,7 @@ const ResourceDeleteModal = (props: ResourceDeleteModalProps) => {
       isOpen={isOpen}
       onClose={onClose}
       titleIconVariant={"warning"}
+
       actions={[
         <Button key="delete" variant="danger" onClick={submit}>
           {btnText || 'Delete'}
