@@ -115,7 +115,7 @@ const ApplicationDetailsTab: React.FC<ApplicationDetailsTabProps> = ({ obj }) =>
         </Title>
         <Grid hasGutter={true} span={2} sm={3} md={6} lg={6} xl={6} xl2={6}>
           <GridItem>
-            <DescriptionList className="pf-c-description-list">
+            <DescriptionList className="pf-c-description-list pf-v5-u-mr-md">
               <DescriptionListGroup className="pf-c-description-list__group">
                 <DescriptionListTermHelpText className="pf-c-description-list__term">
                   <Popover headerContent={<div>{t('Name')}</div>} bodyContent={<div>{t('Name must be unique within a namespace.')}</div>}>

@@ -27,14 +27,13 @@ const ProjectDetailsTab: React.FC<ProjectDetailsTabProps> = ({ obj }) => {
   const [canPatch] = getObjectModifyPermissions(obj, AppProjectModel);
 
   return (
-    <div>
       <PageSection variant={PageSectionVariants.light}>
         <Title headingLevel="h2" className="co-section-heading">
           {t('Project details')}
         </Title>
         <Grid hasGutter={true} span={2} sm={3} md={6} lg={6} xl={6} xl2={6}>
           <GridItem>
-            <DescriptionList>
+            <DescriptionList className="pf-c-description-list pf-v5-u-mr-md">
               <StandardDetailsGroup
                 obj={obj}
                 model={AppProjectModel}
@@ -44,18 +43,14 @@ const ProjectDetailsTab: React.FC<ProjectDetailsTabProps> = ({ obj }) => {
             </DescriptionList>
           </GridItem>
           <GridItem>
-            <DescriptionList>
-
+            <DescriptionList className="pf-c-description-list">
               <DetailsDescriptionGroup title={t('Description')} help={t('Description of Project.')}>
                 {obj?.spec?.description}
               </DetailsDescriptionGroup>
-
             </DescriptionList>
           </GridItem>
         </Grid>
       </PageSection>
-
-    </div>
   );
 };
 

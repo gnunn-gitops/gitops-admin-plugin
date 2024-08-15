@@ -37,7 +37,7 @@ const AppSetDetailsTab: React.FC<AppSetDetailsTabProps> = ({ obj }) => {
         </Title>
         <Grid hasGutter={true} span={2} sm={3} md={6} lg={6} xl={6} xl2={6}>
           <GridItem>
-            <DescriptionList>
+            <DescriptionList className="pf-c-description-list pf-v5-u-mr-md">
               <StandardDetailsGroup
                 obj={obj}
                 model={ApplicationSetModel}
@@ -47,7 +47,7 @@ const AppSetDetailsTab: React.FC<AppSetDetailsTabProps> = ({ obj }) => {
             </DescriptionList>
           </GridItem>
           <GridItem>
-            <DescriptionList>
+            <DescriptionList className="pf-c-description-list">
 
               <DetailsDescriptionGroup title={t('Status')} help={t('Status of ApplicationSet.')}>
                 <Status status={getAppSetStatus(obj)}/>
