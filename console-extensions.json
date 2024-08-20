@@ -47,7 +47,7 @@
             "id": "gitops",
             "insertAfter": "workloads",
             "perspective": "admin",
-            "name": "%plugin__GITOPS_ADMIN-plugin~GitOps%"
+            "name": "%plugin__gitops-admin-plugin~GitOps%"
         }
     },
     {
@@ -59,7 +59,7 @@
         },
         "properties": {
             "id": "applicationset",
-            "name": "%plugin__GITOPS_ADMIN-plugin~ApplicationSets%",
+            "name": "%plugin__gitops-admin-plugin~ApplicationSets%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -78,7 +78,7 @@
         },
         "properties": {
             "id": "application",
-            "name": "%plugin__GITOPS_ADMIN-plugin~Applications%",
+            "name": "%plugin__gitops-admin-plugin~Applications%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -97,7 +97,7 @@
         },
         "properties": {
             "id": "appproject",
-            "name": "%plugin__GITOPS_ADMIN-plugin~Projects%",
+            "name": "%plugin__gitops-admin-plugin~Projects%",
             "perspective": "admin",
             "section": "gitops",
             "model": {
@@ -318,7 +318,7 @@
         },
         "properties": {
             "id": "rollout",
-            "name": "%plugin__GITOPS_ADMIN-plugin~Rollouts%",
+            "name": "%plugin__gitops-admin-plugin~Rollouts%",
             "perspective": "admin",
             "section": "workloads",
             "insertAfter": "statefulsets",
@@ -467,7 +467,7 @@
         },
         "properties": {
             "id": "externalsecret",
-            "name": "%plugin__GITOPS_ADMIN-plugin~ExternalSecrets%",
+            "name": "%plugin__gitops-admin-plugin-plugin~ExternalSecrets%",
             "perspective": "admin",
             "section": "workloads",
             "insertAfter": "secrets",
