@@ -148,7 +148,7 @@ multi-tenant scenario Argo RBAC must be used to enforce separation between tenan
 namespace where Argo CD and the Applications are deployed. Otherwise the user will be able to view secrets they should not have access to, potentially modify Application objects to bypass Argo CD RBAC, etc.
 
 This plugin does work well with [Applications in Any Namespace](https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace) which
-is my preferred way to handle multi-tenancy despite it not currently being GA.
+is my preferred way to handle multi-tenancy.
 
 Outside of Applications in Any Namespace, at this time the plugin is best suited for cluster and Argo CD administrators who will typically have elevated permissions.
 
@@ -179,6 +179,7 @@ for that version.
 | ------------- | -------------      | -------------- |
 | 4.14 (not supported)  | 4.14-0.0.21  | 4.14 |
 | 4.15  | main  | 4.15, latest |
+| 4.16  | 4.16  | 4.16 |
 
 ## Deployment on cluster
 
