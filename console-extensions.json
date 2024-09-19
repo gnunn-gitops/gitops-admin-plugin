@@ -16,6 +16,22 @@
         }
     },
     {
+        "type": "console.flag/hookProvider",
+        "properties": {
+            "handler": {
+                "$codeRef": "consoleFlags.useCertificatesProvider"
+            }
+        }
+    },
+    {
+        "type": "console.flag/hookProvider",
+        "properties": {
+            "handler": {
+                "$codeRef": "consoleFlags.useCertificateRequestsProvider"
+            }
+        }
+    },
+    {
         "type": "console.context-provider",
         "properties": {
             "provider": {
@@ -529,6 +545,174 @@
             },
             "component": {
                 "$codeRef": "ExternalSecretDetails"
+            }
+        }
+    },
+    {
+        "type": "console.flag/model",
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "Certificate",
+                "version": "v1"
+            }
+        }
+    },
+    {
+        "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "CERTIFICATE"
+            ]
+        },
+        "properties": {
+            "id": "certificate",
+            "name": "%plugin__GITOPS_ADMIN-plugin~Certificates%",
+            "perspective": "admin",
+            "section": "workloads",
+            "insertAfter": "externalsecret",
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "Certificate",
+                "version": "v1"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "CERTIFICATE"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "Certificate",
+                "version": "v1"
+            },
+            "component": {
+                "$codeRef": "CertificateList"
+            }
+        }
+    },
+    {
+        "type": "console.action/resource-provider",
+        "flags": {
+            "required": [
+                "CERTIFICATE"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "Certificate",
+                "version": "v1"
+            },
+            "provider": {
+                "$codeRef": "useCertActionsProvider.useCertActionsProvider"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "CERTIFICATE"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "Certificate",
+                "version": "v1"
+            },
+            "component": {
+                "$codeRef": "CertificateDetails"
+            }
+        }
+    },
+    {
+        "type": "console.flag/model",
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "CertificateRequest",
+                "version": "v1"
+            }
+        }
+    },
+    {
+        "type": "console.navigation/resource-ns",
+        "flags": {
+            "required": [
+                "CERTIFICATE_REQUEST"
+            ]
+        },
+        "properties": {
+            "id": "certificaterequest",
+            "name": "%plugin__GITOPS_ADMIN-plugin~CertificateRequests%",
+            "perspective": "admin",
+            "section": "workloads",
+            "insertAfter": "certificate",
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "CertificateRequest",
+                "version": "v1"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/list",
+        "flags": {
+            "required": [
+                "CERTIFICATE_REQUEST"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "CertificateRequest",
+                "version": "v1"
+            },
+            "component": {
+                "$codeRef": "CertificateRequestList"
+            }
+        }
+    },
+    {
+        "type": "console.action/resource-provider",
+        "flags": {
+            "required": [
+                "CERTIFICATE_REQUEST"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "CertificateRequest",
+                "version": "v1"
+            },
+            "provider": {
+                "$codeRef": "useCRActionsProvider.useCRActionsProvider"
+            }
+        }
+    },
+    {
+        "type": "console.page/resource/details",
+        "flags": {
+            "required": [
+                "CERTIFICATE_REQUEST"
+            ]
+        },
+        "properties": {
+            "model": {
+                "group": "cert-manager.io",
+                "kind": "CertificateRequest",
+                "version": "v1"
+            },
+            "component": {
+                "$codeRef": "CertificateRequestDetails"
             }
         }
     }

@@ -35,6 +35,14 @@ const metadata: ConsolePluginBuildMetadata = {
     ExternalSecretDetails: "./externalsecrets/components/ESNavPage.tsx",
     useESActionsProvider: "./externalsecrets/components/hooks/useESActionsProvider.tsx",
 
+    CertificateList: "./certificates/components/CertListTab.tsx",
+    CertificateDetails: "./certificates/components/CertNavPage.tsx",
+    useCertActionsProvider: "./certificates/components/hooks/useCertActionsProvider.tsx",
+
+    CertificateRequestList: "./certificaterequests/components/CRListTab.tsx",
+    CertificateRequestDetails: "./certificaterequests/components/CRNavPage.tsx",
+    useCRActionsProvider: "./certificaterequests/components/hooks/useCRActionsProvider.tsx",
+
     modalProvider: "./utils/components/ModalProvider/ModalProvider.tsx",
     consoleFlags: "./utils/components/Flags"
   }

@@ -18,6 +18,8 @@
         "@rollout-models/*": ["src/rollout/models/*"],
         "@rollout-services/*": ["src/rollout/services/*"],
         "@es-models/*": ["src/externalsecrets/models/*"],
+        "@cert-models/*": ["src/certificates/models/*"],
+        "@cr-models/*": ["src/certificaterequests/models/*"],
         "@images/*": ["src/images/*"],
         "react": [ "./node_modules/@types/react" ]
       }
