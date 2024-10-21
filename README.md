@@ -186,7 +186,9 @@ for that version.
 The plugin can be installed from the manifests included in the `/manifests` folder using kustomize, make sure
 to use the correct branch for the desired version.
 
-```
+### With Plugin Patch Job
+
+```bash
 oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install
 ```
 
@@ -195,6 +197,15 @@ include this specific plugin. This enables deployment via Argo CD since everythi
 
 After running this command it may take a few minutes for the plugin to appear, check `oc get co` to see the
 status of the console operator.
+
+### Declartive
+
+If you define  `consoles.operator.openshift.io` through code, add ```gitops-admin-plugin``` to the yaml, then run the below:
+
+```bash
+oc apply -k https://github.com/gnunn-gitops/gitops-admin-plugin/manifests/overlays/install-gitops
+```
+
 
 ## Local development
 

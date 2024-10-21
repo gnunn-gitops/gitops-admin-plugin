@@ -8,7 +8,7 @@ metadata:
   name: gitops-admin-plugin
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -28,31 +28,46 @@ spec:
         app.kubernetes.io/part-of: gitops-admin-plugin
     spec:
       containers:
-      - image: quay.io/gnunn/gitops-admin-plugin:4.16
-        imagePullPolicy: Always
-        name: gitops-admin-plugin
-        ports:
-        - containerPort: 9443
-          protocol: TCP
-        resources:
-          requests:
-            cpu: 10m
-            memory: 50Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /var/cert
-          name: gitops-admin-plugin-cert
-          readOnly: true
-        - mountPath: /etc/nginx/nginx.conf
-          name: nginx-conf
-          readOnly: true
-          subPath: nginx.conf
+        - image: quay.io/gnunn/gitops-admin-plugin:4.16
+          imagePullPolicy: Always
+          name: gitops-admin-plugin
+          ports:
+            - containerPort: 9443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 10m
+              memory: 50Mi
+              ephemeral-storage: "32Mi"
+            limits:
+              cpu: 250m
+              memory: 150Mi
+              ephemeral-storage: "64Mi"
+          securityContext:
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /var/cert
+              name: gitops-admin-plugin-cert
+              readOnly: true
+            - mountPath: /etc/nginx/nginx.conf
+              name: nginx-conf
+              readOnly: true
+              subPath: nginx.conf
+            - mountPath: "/var/log/nginx/"
+              name: nginx-log
+            - mountPath: "/var/lib/nginx/tmp/"
+              name: nginx-tmp
+            - mountPath: "/run"
+              name: run
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -62,11 +77,20 @@ spec:
           type: RuntimeDefault
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: gitops-admin-plugin-cert
-        secret:
-          defaultMode: 420
-          secretName: gitops-admin-plugin-cert
-      - configMap:
-          defaultMode: 420
-          name: gitops-admin-plugin
-        name: nginx-conf
+        - name: gitops-admin-plugin-cert
+          secret:
+            defaultMode: 420
+            secretName: gitops-admin-plugin-cert
+        - configMap:
+            defaultMode: 420
+            name: gitops-admin-plugin
+          name: nginx-conf
+        - name: nginx-log
+          emptyDir:
+            sizeLimit: 16Mi
+        - name: nginx-tmp
+          emptyDir:
+            sizeLimit: 16Mi
+        - name: run
+          emptyDir:
+            sizeLimit: 16Mi

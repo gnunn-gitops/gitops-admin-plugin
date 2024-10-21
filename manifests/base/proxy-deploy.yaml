@@ -20,7 +20,6 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         name: gitops-plugin-proxy
     spec:

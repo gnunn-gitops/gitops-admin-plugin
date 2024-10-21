@@ -9,7 +9,6 @@ metadata:
 spec:
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: gitops-admin-plugin
         app.kubernetes.io/instance: gitops-admin-plugin
