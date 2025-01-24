@@ -1,6 +1,4 @@
 {
-  " Annotations": " Annotations",
-  " Edit": " Edit",
   "Abort": "Abort",
   "Actions": "Actions",
   "Active": "Active",
@@ -10,6 +8,7 @@
   "Annotations": "Annotations",
   "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.": "Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata. They are not queryable and should be preserved when modifying objects.",
   "Application details": "Application details",
+  "Applications Details": "Applications Details",
   "Applications": "Applications",
   "ApplicationSets": "ApplicationSets",
   "ApplicationSet details": "ApplicationSet details",
@@ -64,6 +63,7 @@
   "Pods": "Pods",
   "Preview": "Preview",
   "Project": "Project",
+  "Projects": "Projects",
   "Project details": "Project details",
   "Promote": "Promote",
   "Provides options to determine application synchronization behavior": "Provides options to determine application synchronization behavior",
