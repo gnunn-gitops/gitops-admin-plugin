@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ApplicationKind, ApplicationResourceStatus } from '@gitops-models/ApplicationModel';
 import { syncResourcek8s } from '@gitops-services/ArgoCD';
-import { useK8sModel, k8sGet, useDeleteModal } from '@openshift-console/dynamic-plugin-sdk';
+import { useK8sModel, useDeleteModal, k8sGet } from '@openshift-console/dynamic-plugin-sdk';
 import { Dropdown, DropdownItem, KebabToggle } from '@patternfly/react-core/deprecated';
 
 type ResourceRowActionsProps = {
@@ -19,11 +19,18 @@ type ResourceRowActionsProps = {
     const [model] = useK8sModel({ group: resource.group, version: resource.version, kind: resource.kind });
     const [object, setObject] = React.useState(null);
 
-    k8sGet({
+    React.useEffect(() => {
+        try {
+            k8sGet({
                 model: model,
                 name: resource.name,
                 ns: resource.namespace,
-    }).then((object) => {setObject(object)});
+            })
+            .then((object) => { setObject(object) });
+        } catch (e) {
+            console.log("Resource type "+resource.version+" / "+resource.group+"."+resource.kind+" is invalid");
+        }
+    });
 
     const onViewResource = () => {
       window.open(getResourceURL(argoBaseURL, resource), '_blank');
@@ -51,7 +58,7 @@ type ResourceRowActionsProps = {
           <DropdownItem onClick={onSyncResource} key="resource-sync" isDisabled={resource.status==undefined}>
             {'Sync'}
           </DropdownItem>,
-          <DropdownItem onClick={useDeleteModal(object)} key="resource-delete">
+          <DropdownItem onClick={useDeleteModal(object)} key="resource-delete" isDisabled={object == null}>
             {'Delete'}
           </DropdownItem>
         ]}
