@@ -56,7 +56,7 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
                 </DescriptionListTermHelpText>
               </SplitItem>
               <SplitItem>
-                <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={launchLabelsModal}>{t(' Edit')}</Button>
+                <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={launchLabelsModal}>{' ' + t('Edit')}</Button>
               </SplitItem>
             </Split>
             <DescriptionListDescription>
@@ -76,7 +76,7 @@ const StandardDetailsGroup: React.FC<StandardDetailsGroupProps> = ({ obj, model,
             </DescriptionListTermHelpText>
             <DescriptionListDescription>
               <div>
-                <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={launchAnnotationsModal}>{(obj.metadata?.annotations ? Object.keys(obj.metadata.annotations).length: 0) + t(' Annotations')}</Button>
+                <Button variant="link" isInline isDisabled={!canPatch} icon={<PencilAltIcon />} iconPosition={'right'} onClick={launchAnnotationsModal}>{(obj.metadata?.annotations ? Object.keys(obj.metadata.annotations).length: 0) + ' ' + t('Annotations')}</Button>
               </div>
             </DescriptionListDescription>
           </DescriptionListGroup>
