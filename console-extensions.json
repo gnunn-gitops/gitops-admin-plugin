@@ -467,7 +467,7 @@
         },
         "properties": {
             "id": "externalsecret",
-            "name": "%plugin__gitops-admin-plugin-plugin~ExternalSecrets%",
+            "name": "%plugin__gitops-admin-plugin~ExternalSecrets%",
             "perspective": "admin",
             "section": "workloads",
             "insertAfter": "secrets",
