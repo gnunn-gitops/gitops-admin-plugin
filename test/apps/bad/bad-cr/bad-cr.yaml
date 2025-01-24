@@ -1,0 +1,7 @@
+apiVersion: fake.redhat.com/v1
+kind: FakeCustomResource
+metadata:
+  name: fake
+  namespace: openshift-gitops
+spec:
+  somevalue: fake

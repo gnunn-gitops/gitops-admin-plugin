@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bad-resource
+  namespace: openshift-gitops
+spec:
+  destination:
+    namespace: demo
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: test/apps/bad/bad-cr
+    repoURL: https://github.com/gnunn-gitops/gitops-admin-plugin.git
+    targetRevision: HEAD
+  syncPolicy: {}
