@@ -22,7 +22,7 @@ spec:
           sleep $DELAY
         env:
         - name: DELAY
-          value: "10"
+          value: "12"
         image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:1.7
         imagePullPolicy: IfNotPresent
         name: long-job
